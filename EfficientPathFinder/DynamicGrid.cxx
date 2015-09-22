@@ -121,13 +121,18 @@ std::string DynamicGrid::ToASCII(JPS::PathVector& path) const
 	{
 		for (size_t x = 0; x < GetWidth(); ++x)
 		{
-			map[y][x] = environment[x][y] ? -79 : ' ';
+			map[y][x] = environment[x][y] ? '|' : ' ';
 		}
 	}
 
 	for (JPS::PathVector::iterator it = path.begin(); it != path.end(); ++it)
 	{
-		map[it->y][it->x] = -98;
+		size_t y = it->y;
+		size_t x = it->x;
+		if (x < width && y < height)
+		{
+			map[it->y][it->x] = '#';
+		}
 	}
 
 	std::string output;
