@@ -22,12 +22,12 @@ public:
 		_right(ev3dev::OUTPUT_D), 
 		_grip(ev3dev::OUTPUT_B)
 	{
-		if (Available())
+		/*if (Available())
 		{
 			_left.reset();
 			_right.reset();
 			_grip.reset();
-		}
+		}*/
 	}
 
 	~MotorControl()
@@ -64,14 +64,22 @@ int main()
 {
 	MotorControl control;
 
-	if (control.Available())
+	try
 	{
-		std::cout << "Running motors" << std::endl;
-		control.Move(33);
+		if (control.Available())
+		{
+			std::cout << "Running motors" << std::endl;
+			control.Move(33);
+		}
+		else
+		{
+			std::cout << "Control unavailable" << std::endl;
+		}
 	}
-	else
+	catch (const std::exception& ex)
 	{
-		std::cout << "Control unavailable" << std::endl;
+		std::cout << "Exception occured: " << ex.what() << std::endl;
 	}
+
 	return 0;
 }
