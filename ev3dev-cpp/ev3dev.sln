@@ -1,0 +1,19 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ev3dev", "ev3dev.vcxproj", "{A1C44C9C-E1C2-473E-A2B2-A4E0C6AF5114}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		EV3DEV|EV3 = EV3DEV|EV3
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A1C44C9C-E1C2-473E-A2B2-A4E0C6AF5114}.EV3DEV|EV3.ActiveCfg = Release|Win32
+		{A1C44C9C-E1C2-473E-A2B2-A4E0C6AF5114}.EV3DEV|EV3.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
