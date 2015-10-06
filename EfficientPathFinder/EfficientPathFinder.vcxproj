@@ -21,11 +21,13 @@
   <ItemGroup>
     <ClInclude Include="DynamicGrid.hxx" />
     <ClInclude Include="JPS.hxx" />
+    <ClInclude Include="MazeMap.hxx" />
     <ClInclude Include="StringSplitter.hxx" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DynamicGrid.cxx" />
     <ClCompile Include="main.cxx" />
+    <ClCompile Include="MazeMap.cxx" />
     <ClCompile Include="StringSplitter.cxx" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
