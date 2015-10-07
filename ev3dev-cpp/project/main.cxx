@@ -22,20 +22,28 @@ public:
 		_right(ev3dev::OUTPUT_D), 
 		_grip(ev3dev::OUTPUT_B)
 	{
-		/*if (Available())
-		{
-			_left.reset();
-			_right.reset();
-			_grip.reset();
-		}*/
+		//Reset();
 	}
 
 	~MotorControl()
 	{
-		if (Available())
+		//Reset();
+	}
+
+	void Reset()
+	{
+		if (_left.connected())
 		{
 			_left.reset();
+		}
+
+		if (_right.connected())
+		{
 			_right.reset();
+		}
+
+		if(_grip.connected())
+		{
 			_grip.reset();
 		}
 	}
@@ -46,6 +54,22 @@ public:
 		_right.set_duty_cycle_sp(-speed);
 		_left.run_forever();
 		_right.run_forever();
+	}
+
+	void Close()
+	{
+		_grip
+			.set_position_sp(10000)
+			.set_duty_cycle_sp(33)
+			.run_to_rel_pos();
+	}
+
+	void Open()
+	{
+		_grip
+			.set_position_sp(-10000)
+			.set_duty_cycle_sp(33)
+			.run_to_rel_pos();
 	}
 
 	bool Available() const
@@ -69,7 +93,9 @@ int main()
 		if (control.Available())
 		{
 			std::cout << "Running motors" << std::endl;
-			control.Move(33);
+			control.Close();
+			std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+			control.Open();
 		}
 		else
 		{
@@ -81,5 +107,6 @@ int main()
 		std::cout << "Exception occured: " << ex.what() << std::endl;
 	}
 
+	std::cout << "Exitting..." << std::endl;
 	return 0;
 }
