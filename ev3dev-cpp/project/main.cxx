@@ -40,7 +40,7 @@ int main(int argc, char** argv)
 	try
 	{
 		robot->DriveControl()->Turn(speed, (IDriveControl::Direction)direction, bias, degrees);
-		std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+		std::this_thread::sleep_for(std::chrono::milliseconds(100));
 		robot->DriveControl()->Move(speed, 5.0);
 	}
 	catch (const std::exception& ex)
