@@ -25,8 +25,9 @@ int main(int argc, char** argv)
 {
 	IRobot* robot = new EV3Robot();
 
-	if (argc != 5)
+	if (argc != 6)
 	{
+		std::cout << "Need 5 params: speed direction bias degrees distance" << std::endl;
 		return 0;
 	}
 
@@ -34,14 +35,23 @@ int main(int argc, char** argv)
 	int direction = std::stoi(argv[2]);
 	float bias = std::stof(argv[3]);
 	float degrees = std::stof(argv[4]);
+	float distance = std::stof(argv[5]);
 
-	std::cout << "S: " << speed << " D: " << direction << " B: " << bias << " *: " << degrees << std::endl;
+	std::cout << "S: " << speed << " D: " << direction << " B: " << bias << " *: " << degrees << " S: " << distance << std::endl;
 
 	try
 	{
+		robot->GripControl()->Close();
 		robot->DriveControl()->Turn(speed, (IDriveControl::Direction)direction, bias, degrees);
 		std::this_thread::sleep_for(std::chrono::milliseconds(100));
-		robot->DriveControl()->Move(speed, 5.0);
+		robot->DriveControl()->Move(speed, distance);
+		std::this_thread::sleep_for(std::chrono::milliseconds(100));
+		robot->DriveControl()->Turn(speed, IDriveControl::DirectionRight, 0.5, 180.0);
+		std::this_thread::sleep_for(std::chrono::milliseconds(100));
+		robot->DriveControl()->Move(speed, distance);
+		std::this_thread::sleep_for(std::chrono::milliseconds(100));
+		robot->DriveControl()->Turn(speed, IDriveControl::DirectionLeft, 0.5, 180.0);
+		robot->GripControl()->Open();
 	}
 	catch (const std::exception& ex)
 	{

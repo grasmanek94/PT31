@@ -63,6 +63,11 @@ void EV3DriveControl::Move(int speed, float centimeters)
 {
 	_state = StateMoving;
 
+	if (speed < 40)
+	{
+		speed = 40;
+	}
+
 	static const float units_per_cm = 500.0 / 17.0;
 	int units = (int)(centimeters * units_per_cm);
 
@@ -75,11 +80,80 @@ void EV3DriveControl::Move(int speed, float centimeters)
 		.set_duty_cycle_sp(speed)
 		.set_position_sp(-units)
 		.run_to_rel_pos();
+	
+	int begin_angle = GetRelativeDegrees();
 
-	while (_left.state().count("running") || _right.state().count("running"))
+	int left_start_pos = _left.position();
+	int right_start_pos = _right.position();
+
+	int left_speed = speed;
+	int right_speed = speed;
+
+	int last_case = 0;
+	int current_case = 0;
+	int diff = 0;
+
+	while (_left.state().count("running") && _right.state().count("running"))
 	{
-		std::this_thread::sleep_for(std::chrono::milliseconds(10));
+
+		int current_angle = (int)GetRelativeDegrees();
+		diff = begin_angle - current_angle;
+
+		if(diff == 0)
+		{
+			left_speed = speed;
+			right_speed = speed;
+
+			current_case = 0;
+		}
+		else if (diff > 0)//left relative to start
+		{
+			//so we need to go more right
+			left_speed = speed + speed / 7;
+			right_speed = speed - speed / 7;
+
+			current_case = 1;
+		}
+		else if (diff < 0)//right relative to start
+		{
+			//so we need to go more left
+			left_speed = speed - speed / 7;
+			right_speed = speed + speed / 7;
+
+			current_case = 2;
+		}
+
+		if (current_case != last_case)
+		{
+			last_case = current_case;
+
+			_right
+				.set_duty_cycle_sp(right_speed)
+				.set_position_sp((right_start_pos - _right.position()) - units)
+				.run_to_rel_pos();
+
+			_left
+				.set_duty_cycle_sp(left_speed)
+				.set_position_sp(units - (_left.position() - left_start_pos))
+				.run_to_rel_pos();
+		}
+
+		std::this_thread::sleep_for(std::chrono::milliseconds(5));
 	}
+
+	_left.stop();
+	_right.stop();
+
+	/*if (diff > 0)//left relative to start
+	{
+		//so we need to go more right
+		Turn(speed / 2 + speed / 3, DirectionRight, 1.00, (float)diff);
+	}
+	else if (diff < 0)//right relative to start
+	{
+		//so we need to go more left
+		Turn(speed / 2 + speed / 3, DirectionLeft, 1.00, (float)diff);
+	}*/
 
 	_state = StateStopped;
 }
@@ -123,7 +197,7 @@ void EV3DriveControl::Turn(int speed, Direction direction, float bias, float deg
 
 	float gyro_start = GetRelativeDegrees();
 
-	while (abs(GetRelativeDegrees() - gyro_start) < degrees)
+	while (abs(GetRelativeDegrees() - gyro_start) < degrees && (_left.state().count("running") || _right.state().count("running")))
 	{
 		std::this_thread::sleep_for(std::chrono::milliseconds(5));
 	}
@@ -146,4 +220,12 @@ bool EV3DriveControl::Available() const
 EV3DriveControl::State EV3DriveControl::GetState() const
 {
 	return _state;
+}
+
+void EV3DriveControl::Stop()
+{
+	_left.stop();
+	_right.stop();
+
+	_state = StateStopped;
 }

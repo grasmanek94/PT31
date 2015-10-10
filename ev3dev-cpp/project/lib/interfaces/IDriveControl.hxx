@@ -30,6 +30,8 @@ public:
 
 	virtual State GetState() const = 0;
 	virtual bool Available() const = 0;
+
+	virtual void Stop() = 0;
 };
 
 #endif

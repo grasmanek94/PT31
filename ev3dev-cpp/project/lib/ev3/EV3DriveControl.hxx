@@ -29,12 +29,14 @@ public:
 					ev3dev::port_type gyro_sensor = ev3dev::INPUT_3);
 
 	~EV3DriveControl();
+	//fwd | right + left -
 	float GetRelativeDegrees();
 	void Reset();
 	void Move(int speed, float centimeters);
 	void Turn(int speed, Direction direction, float bias, float degrees);
 	State GetState() const;
 	bool Available() const;
+	void Stop();
 };
 
 #endif
