@@ -58,7 +58,7 @@
 			CodeGeneration
 		</plugin>
 </profile>
-<XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Wed Oct 21 15:56:39 CEST 2015'>
+<XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Wed Oct 21 16:00:19 CEST 2015'>
   <XMI.header>    <XMI.documentation>
       <XMI.exporter>ArgoUML (using Netbeans XMI Writer version 1.0)</XMI.exporter>
       <XMI.exporterVersion>0.34(6) revised on $Date: 2010-01-11 22:20:14 +0100 (Mon, 11 Jan 2010) $ </XMI.exporterVersion>
@@ -1060,6 +1060,119 @@
           <UML:ModelElement.clientDependency>
             <UML:Abstraction xmi.idref = '-111-93-41--42--32ff5676:1508a13333f:-8000:0000000000000913'/>
           </UML:ModelElement.clientDependency>
+          <UML:Classifier.feature>
+            <UML:Attribute xmi.id = '-111-93-41--42--32ff5676:1508a13333f:-8000:0000000000000956'
+              name = '_GripControl' visibility = 'public' isSpecification = 'false' ownerScope = 'instance'
+              changeability = 'changeable' targetScope = 'instance'>
+              <UML:StructuralFeature.multiplicity>
+                <UML:Multiplicity xmi.id = '-111-93-41--42--32ff5676:1508a13333f:-8000:0000000000000957'>
+                  <UML:Multiplicity.range>
+                    <UML:MultiplicityRange xmi.id = '-111-93-41--42--32ff5676:1508a13333f:-8000:0000000000000958'
+                      lower = '1' upper = '1'/>
+                  </UML:Multiplicity.range>
+                </UML:Multiplicity>
+              </UML:StructuralFeature.multiplicity>
+              <UML:StructuralFeature.type>
+                <UML:Class xmi.idref = '-111-93-41--42--32ff5676:1508a13333f:-8000:000000000000092E'/>
+              </UML:StructuralFeature.type>
+            </UML:Attribute>
+            <UML:Attribute xmi.id = '-111-93-41--42--32ff5676:1508a13333f:-8000:0000000000000959'
+              name = '_DriveControl' visibility = 'public' isSpecification = 'false' ownerScope = 'instance'
+              changeability = 'changeable' targetScope = 'instance'>
+              <UML:StructuralFeature.multiplicity>
+                <UML:Multiplicity xmi.id = '-111-93-41--42--32ff5676:1508a13333f:-8000:000000000000095A'>
+                  <UML:Multiplicity.range>
+                    <UML:MultiplicityRange xmi.id = '-111-93-41--42--32ff5676:1508a13333f:-8000:000000000000095B'
+                      lower = '1' upper = '1'/>
+                  </UML:Multiplicity.range>
+                </UML:Multiplicity>
+              </UML:StructuralFeature.multiplicity>
+              <UML:StructuralFeature.type>
+                <UML:Class xmi.idref = '-111-93-41--42--32ff5676:1508a13333f:-8000:00000000000008EB'/>
+              </UML:StructuralFeature.type>
+            </UML:Attribute>
+            <UML:Attribute xmi.id = '-111-93-41--42--32ff5676:1508a13333f:-8000:000000000000095C'
+              name = '_Measure' visibility = 'public' isSpecification = 'false' ownerScope = 'instance'
+              changeability = 'changeable' targetScope = 'instance'>
+              <UML:StructuralFeature.multiplicity>
+                <UML:Multiplicity xmi.id = '-111-93-41--42--32ff5676:1508a13333f:-8000:000000000000095D'>
+                  <UML:Multiplicity.range>
+                    <UML:MultiplicityRange xmi.id = '-111-93-41--42--32ff5676:1508a13333f:-8000:000000000000095E'
+                      lower = '1' upper = '1'/>
+                  </UML:Multiplicity.range>
+                </UML:Multiplicity>
+              </UML:StructuralFeature.multiplicity>
+              <UML:StructuralFeature.type>
+                <UML:Class xmi.idref = '-111-93-41--42--32ff5676:1508a13333f:-8000:000000000000091B'/>
+              </UML:StructuralFeature.type>
+            </UML:Attribute>
+            <UML:Attribute xmi.id = '-111-93-41--42--32ff5676:1508a13333f:-8000:000000000000095F'
+              name = '_Calibration' visibility = 'public' isSpecification = 'false' ownerScope = 'instance'
+              changeability = 'changeable' targetScope = 'instance'>
+              <UML:StructuralFeature.multiplicity>
+                <UML:Multiplicity xmi.id = '-111-93-41--42--32ff5676:1508a13333f:-8000:0000000000000960'>
+                  <UML:Multiplicity.range>
+                    <UML:MultiplicityRange xmi.id = '-111-93-41--42--32ff5676:1508a13333f:-8000:0000000000000961'
+                      lower = '1' upper = '1'/>
+                  </UML:Multiplicity.range>
+                </UML:Multiplicity>
+              </UML:StructuralFeature.multiplicity>
+              <UML:StructuralFeature.type>
+                <UML:Class xmi.idref = '-111-93-41--42--32ff5676:1508a13333f:-8000:00000000000008AC'/>
+              </UML:StructuralFeature.type>
+            </UML:Attribute>
+            <UML:Operation xmi.id = '-111-93-41--42--32ff5676:1508a13333f:-8000:0000000000000962'
+              name = 'EV3Robot' visibility = 'public' isSpecification = 'false' ownerScope = 'instance'
+              isQuery = 'false' concurrency = 'sequential' isRoot = 'false' isLeaf = 'false'
+              isAbstract = 'false'>
+              <UML:BehavioralFeature.parameter>
+                <UML:Parameter xmi.id = '-111-93-41--42--32ff5676:1508a13333f:-8000:0000000000000963'
+                  name = 'return' isSpecification = 'false' kind = 'return'/>
+                <UML:Parameter xmi.id = '-111-93-41--42--32ff5676:1508a13333f:-8000:0000000000000964'
+                  name = 'grip_motor' isSpecification = 'false' kind = 'in'>
+                  <UML:Parameter.type>
+                    <UML:Class xmi.idref = '-111-93-41--42--32ff5676:1508a13333f:-8000:000000000000090E'/>
+                  </UML:Parameter.type>
+                </UML:Parameter>
+                <UML:Parameter xmi.id = '-111-93-41--42--32ff5676:1508a13333f:-8000:0000000000000965'
+                  name = 'grip_sensor' isSpecification = 'false' kind = 'in'>
+                  <UML:Parameter.type>
+                    <UML:Class xmi.idref = '-111-93-41--42--32ff5676:1508a13333f:-8000:000000000000090E'/>
+                  </UML:Parameter.type>
+                </UML:Parameter>
+                <UML:Parameter xmi.id = '-111-93-41--42--32ff5676:1508a13333f:-8000:0000000000000966'
+                  name = 'left_motor' isSpecification = 'false' kind = 'in'>
+                  <UML:Parameter.type>
+                    <UML:Class xmi.idref = '-111-93-41--42--32ff5676:1508a13333f:-8000:000000000000090E'/>
+                  </UML:Parameter.type>
+                </UML:Parameter>
+                <UML:Parameter xmi.id = '-111-93-41--42--32ff5676:1508a13333f:-8000:0000000000000967'
+                  name = 'right_motor' isSpecification = 'false' kind = 'in'>
+                  <UML:Parameter.type>
+                    <UML:Class xmi.idref = '-111-93-41--42--32ff5676:1508a13333f:-8000:000000000000090E'/>
+                  </UML:Parameter.type>
+                </UML:Parameter>
+                <UML:Parameter xmi.id = '-111-93-41--42--32ff5676:1508a13333f:-8000:0000000000000968'
+                  name = 'obstruction_sensor' isSpecification = 'false' kind = 'in'>
+                  <UML:Parameter.type>
+                    <UML:Class xmi.idref = '-111-93-41--42--32ff5676:1508a13333f:-8000:000000000000090E'/>
+                  </UML:Parameter.type>
+                </UML:Parameter>
+                <UML:Parameter xmi.id = '-111-93-41--42--32ff5676:1508a13333f:-8000:0000000000000969'
+                  name = 'distance_sensor' isSpecification = 'false' kind = 'in'>
+                  <UML:Parameter.type>
+                    <UML:Class xmi.idref = '-111-93-41--42--32ff5676:1508a13333f:-8000:000000000000090E'/>
+                  </UML:Parameter.type>
+                </UML:Parameter>
+                <UML:Parameter xmi.id = '-111-93-41--42--32ff5676:1508a13333f:-8000:000000000000096A'
+                  name = 'gyro_sensor' isSpecification = 'false' kind = 'in'>
+                  <UML:Parameter.type>
+                    <UML:Class xmi.idref = '-111-93-41--42--32ff5676:1508a13333f:-8000:000000000000090E'/>
+                  </UML:Parameter.type>
+                </UML:Parameter>
+              </UML:BehavioralFeature.parameter>
+            </UML:Operation>
+          </UML:Classifier.feature>
         </UML:Class>
         <UML:Abstraction xmi.id = '-111-93-41--42--32ff5676:1508a13333f:-8000:0000000000000913'
           isSpecification = 'false'>
@@ -1879,7 +1992,7 @@
     </group>
   </group>
   <group name="Fig3"
-       description="org.argouml.uml.diagram.static_structure.ui.FigInterface[1280, 1120, 168, 87]pathVisible=false;stereotypeView=0;operationsVisible=true;operationsVisible=true"
+       description="org.argouml.uml.diagram.static_structure.ui.FigInterface[24, 1024, 168, 87]pathVisible=false;stereotypeView=0;operationsVisible=true;operationsVisible=true"
        href="-111-93-41--42--32ff5676:1508a13333f:-8000:000000000000088A"
        fill="1"
        fillcolor="white"
@@ -1890,8 +2003,8 @@
     </private>
     
     <rectangle name="Fig3.0"
-      x="1280"
-      y="1120"
+      x="24"
+      y="1024"
       width="168"
       height="87"
       fill="1"
@@ -1900,8 +2013,8 @@
       strokecolor="black"
     />
     <text name="Fig3.1"
-      x="1281"
-      y="1121"
+      x="25"
+      y="1025"
       width="166"
       height="43"
       fill="0"
@@ -1916,7 +2029,7 @@
       justification="Center"
     >ILocation</text>
     <group name="Fig3.2"
-         description="org.argouml.uml.diagram.ui.FigStereotypesGroup[1281, 1121, 166, 20]"
+         description="org.argouml.uml.diagram.ui.FigStereotypesGroup[25, 1025, 166, 20]"
          href="-111-93-41--42--32ff5676:1508a13333f:-8000:000000000000088A"
          fill="0"
          fillcolor="white"
@@ -1927,8 +2040,8 @@
       </private>
       
       <rectangle name="Fig3.2.0"
-        x="1281"
-        y="1121"
+        x="25"
+        y="1025"
         width="166"
         height="20"
         fill="0"
@@ -1937,8 +2050,8 @@
         strokecolor="black"
       />
       <text name="Fig3.2.1"
-        x="1281"
-        y="1121"
+        x="25"
+        y="1025"
         width="166"
         height="18"
         fill="0"
@@ -1954,8 +2067,8 @@
       >&lt;&lt;interface&gt;&gt;</text>
     </group>
     <rectangle name="Fig3.3"
-      x="1280"
-      y="1164"
+      x="24"
+      y="1068"
       width="168"
       height="1"
       fill="1"
@@ -1964,7 +2077,7 @@
       strokecolor="black"
     />
     <group name="Fig3.4"
-         description="org.argouml.uml.diagram.ui.FigOperationsCompartment[1281, 1165, 166, 42]"
+         description="org.argouml.uml.diagram.ui.FigOperationsCompartment[25, 1069, 166, 42]"
          href="-111-93-41--42--32ff5676:1508a13333f:-8000:000000000000088A"
          fill="0"
          fillcolor="white"
@@ -1975,8 +2088,8 @@
       </private>
       
       <rectangle name="Fig3.4.0"
-        x="1281"
-        y="1165"
+        x="25"
+        y="1069"
         width="166"
         height="42"
         fill="0"
@@ -1985,8 +2098,8 @@
         strokecolor="black"
       />
       <text name="Fig3.4.1"
-        x="1281"
-        y="1165"
+        x="25"
+        y="1069"
         width="166"
         height="17"
         fill="0"
@@ -2001,8 +2114,8 @@
         justification="Left"
       >GetLocation() : vec4</text>
       <text name="Fig3.4.2"
-        x="1281"
-        y="1182"
+        x="25"
+        y="1086"
         width="166"
         height="23"
         fill="0"
@@ -3346,7 +3459,7 @@
     </path>
   </group>
   <group name="Fig16"
-       description="org.argouml.uml.diagram.static_structure.ui.FigClass[832, 640, 410, 184]pathVisible=false;stereotypeView=0;operationsVisible=true;attributesVisible=true;"
+       description="org.argouml.uml.diagram.static_structure.ui.FigClass[832, 640, 1198, 184]pathVisible=false;stereotypeView=0;operationsVisible=true;attributesVisible=true;"
        href="-111-93-41--42--32ff5676:1508a13333f:-8000:0000000000000912"
        fill="1"
        fillcolor="white"
@@ -3359,7 +3472,7 @@
     <rectangle name="Fig16.0"
       x="832"
       y="640"
-      width="410"
+      width="1198"
       height="184"
       fill="1"
       fillcolor="white"
@@ -3369,7 +3482,7 @@
     <text name="Fig16.1"
       x="833"
       y="641"
-      width="408"
+      width="1196"
       height="23"
       fill="0"
       fillcolor="white"
@@ -3408,7 +3521,7 @@
     <rectangle name="Fig16.3"
       x="832"
       y="664"
-      width="410"
+      width="1198"
       height="1"
       fill="1"
       fillcolor="black"
@@ -3416,7 +3529,7 @@
       strokecolor="black"
     />
     <group name="Fig16.4"
-         description="org.argouml.uml.diagram.ui.FigAttributesCompartment[833, 665, 408, 78]"
+         description="org.argouml.uml.diagram.ui.FigAttributesCompartment[833, 665, 1196, 104]"
          href="-111-93-41--42--32ff5676:1508a13333f:-8000:0000000000000912"
          fill="0"
          fillcolor="white"
@@ -3429,18 +3542,82 @@
       <rectangle name="Fig16.4.0"
         x="833"
         y="665"
-        width="408"
-        height="78"
+        width="1196"
+        height="104"
         fill="0"
         fillcolor="white"
         stroke="0"
         strokecolor="black"
       />
+      <text name="Fig16.4.1"
+        x="833"
+        y="665"
+        width="1196"
+        height="17"
+        fill="0"
+        fillcolor="white"
+        stroke="0"
+        strokecolor="black"
+        textcolor="black"
+        font="Dialog"
+        italic="false"
+        bold="false"
+        textsize="12"
+        justification="Left"
+      >_GripControl : EV3GripControl</text>
+      <text name="Fig16.4.2"
+        x="833"
+        y="682"
+        width="1196"
+        height="17"
+        fill="0"
+        fillcolor="white"
+        stroke="0"
+        strokecolor="black"
+        textcolor="black"
+        font="Dialog"
+        italic="false"
+        bold="false"
+        textsize="12"
+        justification="Left"
+      >_DriveControl : EV3DriveControl</text>
+      <text name="Fig16.4.3"
+        x="833"
+        y="699"
+        width="1196"
+        height="17"
+        fill="0"
+        fillcolor="white"
+        stroke="0"
+        strokecolor="black"
+        textcolor="black"
+        font="Dialog"
+        italic="false"
+        bold="false"
+        textsize="12"
+        justification="Left"
+      >_Measure : EV3Sensing</text>
+      <text name="Fig16.4.4"
+        x="833"
+        y="716"
+        width="1196"
+        height="23"
+        fill="0"
+        fillcolor="white"
+        stroke="0"
+        strokecolor="black"
+        textcolor="black"
+        font="Dialog"
+        italic="false"
+        bold="false"
+        textsize="12"
+        justification="Left"
+      >_Calibration : EV3Calibration</text>
     </group>
     <rectangle name="Fig16.5"
       x="832"
-      y="743"
-      width="410"
+      y="769"
+      width="1198"
       height="1"
       fill="1"
       fillcolor="black"
@@ -3448,7 +3625,7 @@
       strokecolor="black"
     />
     <group name="Fig16.6"
-         description="org.argouml.uml.diagram.ui.FigOperationsCompartment[833, 744, 408, 78]"
+         description="org.argouml.uml.diagram.ui.FigOperationsCompartment[833, 770, 1196, 53]"
          href="-111-93-41--42--32ff5676:1508a13333f:-8000:0000000000000912"
          fill="0"
          fillcolor="white"
@@ -3460,14 +3637,30 @@
       
       <rectangle name="Fig16.6.0"
         x="833"
-        y="744"
-        width="408"
-        height="78"
+        y="770"
+        width="1196"
+        height="53"
         fill="0"
         fillcolor="white"
         stroke="0"
         strokecolor="black"
       />
+      <text name="Fig16.6.1"
+        x="833"
+        y="770"
+        width="1196"
+        height="23"
+        fill="0"
+        fillcolor="white"
+        stroke="0"
+        strokecolor="black"
+        textcolor="black"
+        font="Dialog"
+        italic="false"
+        bold="false"
+        textsize="12"
+        justification="Left"
+      >EV3Robot(grip_motor : ev3_port_type,grip_sensor : ev3_port_type,left_motor : ev3_port_type,right_motor : ev3_port_type,obstruction_sensor : ev3_port_type,distance_sensor : ev3_port_type,gyro_sensor : ev3_port_type)</text>
     </group>
   </group>
   <group name="Fig17"
