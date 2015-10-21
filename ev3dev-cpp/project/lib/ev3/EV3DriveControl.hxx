@@ -31,6 +31,7 @@ public:
 	~EV3DriveControl();
 	//fwd | right + left -
 	float GetRelativeDegrees();
+	float GetRotationalSpeed();
 	void Reset();
 	void Move(int speed, float centimeters);
 	void Turn(int speed, Direction direction, float bias, float degrees);

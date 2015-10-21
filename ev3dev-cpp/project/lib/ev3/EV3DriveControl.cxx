@@ -31,6 +31,11 @@ EV3DriveControl::EV3DriveControl(
 		throw std::invalid_argument("Single port used for multiple devices");
 	}
 
+	_gyro_sensor.set_mode("GYRO-ANG");
+	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+	_gyro_sensor.set_mode("GYRO-G&A");
+	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+
 	Reset();
 }
 
@@ -41,7 +46,12 @@ EV3DriveControl::~EV3DriveControl()
 
 float EV3DriveControl::GetRelativeDegrees()
 {
-	return _gyro_sensor.float_value();
+	return _gyro_sensor.float_value(0);
+}
+
+float EV3DriveControl::GetRotationalSpeed()
+{
+	return _gyro_sensor.float_value(1);
 }
 
 void EV3DriveControl::Reset()
@@ -66,6 +76,10 @@ void EV3DriveControl::Move(int speed, float centimeters)
 	if (speed < 40)
 	{
 		speed = 40;
+	}
+	else if (speed > 100)
+	{
+		speed = 100;
 	}
 
 	static const float units_per_cm = 500.0 / 17.0;
@@ -172,11 +186,11 @@ void EV3DriveControl::Turn(int speed, Direction direction, float bias, float deg
 
 	if (direction == DirectionLeft)
 	{
-		degrees *= 0.96;//-4% error correction
+		degrees *= _Calibration->GetLeftTurnCorrection();//-4% error correction
 	}
 	else
 	{
-		degrees *= 1.02;//+2% error correction
+		degrees *= _Calibration->GetRightTurnCorrection();//+2% error correction
 	}
 
 	int dir_mult = direction == DirectionRight ? 1 : -1;

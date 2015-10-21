@@ -33,14 +33,17 @@ int EV3Calibration::GetGripCloseAmount() const
 {
 	return grip_close_amount;
 }
+
 float EV3Calibration::GetMoveUnitsPerCentimeter() const
 {
 	return move_units_per_cm;
 }
+
 float EV3Calibration::GetLeftTurnCorrection() const
 {
 	return turn_left_error_correction;
 }
+
 float EV3Calibration::GetRightTurnCorrection() const
 {
 	return turn_right_error_correction;
