@@ -2,6 +2,7 @@
 #define HEADER_EV3DriveControl_hxx
 
 #include <interfaces/IDriveControl.hxx>
+#include <interfaces/ILocation.hxx>
 #include <ev3dev/ev3dev.hxx>
 
 #include "EV3Calibration.hxx"

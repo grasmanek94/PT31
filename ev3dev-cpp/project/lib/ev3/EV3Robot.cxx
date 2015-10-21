@@ -9,21 +9,21 @@
 #include "EV3Robot.hxx"
 
 EV3Robot::EV3Robot(
-	ev3dev::port_type _grip_motor,
-	ev3dev::port_type _grip_sensor,
+	ev3dev::port_type grip_motor,
+	ev3dev::port_type grip_sensor,
 	ev3dev::port_type left_motor,
 	ev3dev::port_type right_motor,
 	ev3dev::port_type obstruction_sensor,
 	ev3dev::port_type distance_sensor,
 	ev3dev::port_type gyro_sensor)
 
-	:	_GripControl(&_calibration, _grip_motor, _grip_sensor),
-		_DriveControl(&_calibration, left_motor, right_motor, obstruction_sensor, gyro_sensor),
+	:	_GripControl(&_Calibration, grip_motor, grip_sensor),
+		_DriveControl(&_Calibration,left_motor, right_motor, obstruction_sensor, gyro_sensor),
 		_Measure(distance_sensor)
 {
 	//duplicate port usage check
 	std::vector<ev3dev::port_type> ports(
-		{ _grip_motor, _grip_sensor, left_motor, right_motor, obstruction_sensor, distance_sensor, gyro_sensor }
+		{ grip_motor, grip_sensor, left_motor, right_motor, obstruction_sensor, distance_sensor, gyro_sensor }
 	);
 	std::sort(ports.begin(), ports.end());
 	if ((std::unique(ports.begin(), ports.end()) != ports.end()))
@@ -45,4 +45,9 @@ EV3DriveControl* EV3Robot::DriveControl()
 EV3Sensing* EV3Robot::Measure()
 {
 	return &_Measure;
+}
+
+EV3Calibration* EV3Robot::Calibration()
+{
+	return &_Calibration;
 }

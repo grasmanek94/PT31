@@ -3,7 +3,7 @@
 
 #include "IDriveControl.hxx"
 
-class IMecanumControl : public IDriveControl
+class IMecanumControl : virtual public IDriveControl
 {
 public:
 	virtual void Strafe(int speed, Direction direction, float centimeters) = 0;//move sideways with e.g. Mecanum Wheels
