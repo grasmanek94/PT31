@@ -58,7 +58,7 @@
 			CodeGeneration
 		</plugin>
 </profile>
-<XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Wed Nov 04 13:59:20 CET 2015'>
+<XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Wed Nov 04 16:16:48 CET 2015'>
   <XMI.header>    <XMI.documentation>
       <XMI.exporter>ArgoUML (using Netbeans XMI Writer version 1.0)</XMI.exporter>
       <XMI.exporterVersion>0.34(6) revised on $Date: 2010-01-11 22:20:14 +0100 (Mon, 11 Jan 2010) $ </XMI.exporterVersion>
@@ -957,7 +957,7 @@
               </UML:StructuralFeature.type>
             </UML:Attribute>
             <UML:Operation xmi.id = '-111-93-41--42--32ff5676:1508a13333f:-8000:00000000000008FE'
-              name = '~EV3DriveControl' visibility = 'package' isSpecification = 'false'
+              name = 'EV3DriveControl' visibility = 'package' isSpecification = 'false'
               ownerScope = 'instance' isQuery = 'false' concurrency = 'sequential' isRoot = 'false'
               isLeaf = 'false' isAbstract = 'false'>
               <UML:BehavioralFeature.parameter>
@@ -3374,7 +3374,7 @@
         bold="false"
         textsize="12"
         justification="Left"
-      >~~EV3DriveControl()</text>
+      >~EV3DriveControl()</text>
       <text name="Fig10.6.2"
         x="601"
         y="504"
