@@ -18,10 +18,10 @@ EV3Robot::EV3Robot(
 	ev3dev::port_type distance_sensor,
 	ev3dev::port_type gyro_sensor)
 
-	:	_Location(locationProvider),
-		_GripControl(&_Calibration, grip_motor, grip_sensor),
+	:	_GripControl(&_Calibration, grip_motor, grip_sensor),
 		_DriveControl(&_Calibration,left_motor, right_motor, obstruction_sensor, gyro_sensor),
-		_Measure(distance_sensor)
+		_Measure(distance_sensor),
+		_Location(locationProvider)
 {
 	//duplicate port usage check
 	std::vector<ev3dev::port_type> ports(
