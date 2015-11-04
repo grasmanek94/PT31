@@ -8,7 +8,7 @@ class ILocation
 public:
 	//return x y z angle
 	virtual glm::vec4 GetLocation() = 0;
-	virtual bool Available() = 0;
+	virtual bool Available() const = 0;
 };
 
 #endif

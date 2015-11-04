@@ -16,8 +16,10 @@ private:
 	EV3DriveControl _DriveControl;
 	EV3Sensing		_Measure;
 	EV3Calibration	_Calibration;
+	ILocation*		_Location;
 public:
 	EV3Robot(
+		ILocation* locationProvider = NULL,
 		ev3dev::port_type grip_motor = ev3dev::OUTPUT_B,
 		ev3dev::port_type grip_sensor = ev3dev::INPUT_1,
 		ev3dev::port_type left_motor = ev3dev::OUTPUT_A,
@@ -30,6 +32,7 @@ public:
 	EV3DriveControl*	DriveControl();
 	EV3Sensing*			Measure();
 	EV3Calibration*		Calibration();
+	ILocation*			Location();
 };
 
 #endif

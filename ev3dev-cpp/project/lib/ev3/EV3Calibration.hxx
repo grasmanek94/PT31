@@ -19,6 +19,8 @@ public:
 	float GetMoveUnitsPerCentimeter() const;
 	float GetLeftTurnCorrection() const;
 	float GetRightTurnCorrection() const;
+
+	bool Available() const;
 };
 
 #endif

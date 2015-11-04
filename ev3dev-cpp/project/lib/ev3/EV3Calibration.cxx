@@ -48,3 +48,8 @@ float EV3Calibration::GetRightTurnCorrection() const
 {
 	return turn_right_error_correction;
 }
+
+bool EV3Calibration::Available() const
+{
+	return true;
+}

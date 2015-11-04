@@ -9,6 +9,7 @@
 #include "EV3Robot.hxx"
 
 EV3Robot::EV3Robot(
+	ILocation* locationProvider,
 	ev3dev::port_type grip_motor,
 	ev3dev::port_type grip_sensor,
 	ev3dev::port_type left_motor,
@@ -17,7 +18,8 @@ EV3Robot::EV3Robot(
 	ev3dev::port_type distance_sensor,
 	ev3dev::port_type gyro_sensor)
 
-	:	_GripControl(&_Calibration, grip_motor, grip_sensor),
+	:	_Location(locationProvider),
+		_GripControl(&_Calibration, grip_motor, grip_sensor),
 		_DriveControl(&_Calibration,left_motor, right_motor, obstruction_sensor, gyro_sensor),
 		_Measure(distance_sensor)
 {
@@ -50,4 +52,9 @@ EV3Sensing* EV3Robot::Measure()
 EV3Calibration* EV3Robot::Calibration()
 {
 	return &_Calibration;
+}
+
+ILocation* EV3Robot::Location()
+{
+	return _Location;
 }
