@@ -171,6 +171,9 @@
     <ClCompile Include="uwb_location\lib\somelib\somelib.cxx">
       <Filter>uwb_location\lib\somelib</Filter>
     </ClCompile>
+    <ClCompile Include="common\dummy.cxx">
+      <Filter>common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="project\lib\ev3dev\ev3dev.hxx">

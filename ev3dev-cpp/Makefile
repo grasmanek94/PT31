@@ -49,17 +49,32 @@ GLM: $(GLM_SOURCES)
 	@$(GPP) $(CFLAGS_COMMON) $(CFLAGS_STATIC_LIBRARY) $(GLM_INCLUDE_DIRS) $(GLM_SOURCES) -o $(GLM_LIBRARY)
 
 #######################################################################################################
-COMMON_LIBRARIES=			$(GLM_LIBRARY) \
-							-lpthread \
-							-ldl \
-							-lrt
-
-#######################################################################################################
 INCLUDE_DIRS_PROJECT=		$(GLM_INCLUDE_DIRS) \
 							-I./project \
 							-I./project/lib \
 							-I./common
+							
+#######################################################################################################
+LIBCOMMON_INCLUDE_DIRS=		$(INCLUDE_DIRS_PROJECT)
+LIBCOMMON_SOURCES=			$(shell find ./common/ -name '*.c*')
+LIBCOMMON_OBJ_DIR=			$(MAIN_BASE_DIR)libcommon/
+LIBCOMMON_OBJECTS=			$(addprefix $(LIBCOMMON_OBJ_DIR),$(LIBCOMMON_SOURCES))
+LIBCOMMON_LIBRARY=			$(MAIN_BASE_DIR)libcommon$(SUFFIX_SELECTED).a
+LIBCOMMON_DEFINES=			$(COMMON_DEFINITIONS)
 
+LibCommon: DEFAULT_CLEARER=$(LIBCOMMON_OBJ_DIR)
+LibCommon: COMMON_INCLUDES=$(LIBCOMMON_INCLUDE_DIRS)
+LibCommon: $(LIBCOMMON_OBJECTS)
+	@$(ARCHIVE) $(LIBCOMMON_LIBRARY) $(addsuffix $(SUFFIX_SELECTED).o,$(addprefix ./,$^)) > /dev/null
+	
+#######################################################################################################
+COMMON_LIBRARIES=			$(GLM_LIBRARY) \
+							-lpthread \
+							-ldl \
+							-lrt \
+							$(LIBCOMMON_LIBRARY)
+	
+#######################################################################################################
 PROJECT_NAME=				project
 
 LIBPROJECT_INCLUDE_DIRS=	$(INCLUDE_DIRS_PROJECT)
@@ -162,7 +177,7 @@ d td: CFLAGS_SELECTED=$(CFLAGS_COMBINED_DEBUG)
 r tr: SUFFIX_SELECTED=$(SUFFIX_RELEASE)
 r tr: CFLAGS_SELECTED=$(CFLAGS_COMBINED_RELEASE)
 
-d r: GLM LibProject AppProject LibUwbLoc UwbLocation
+d r: GLM LibCommon LibProject AppProject LibUwbLoc UwbLocation
 
-td tr: GoogleTest GoogleMock GLM LibProject LibUwbLoc TestProject
+td tr: GoogleTest GoogleMock GLM LibCommon LibProject LibUwbLoc TestProject
 #	valgrind $(TEST_EXECUTABLE)

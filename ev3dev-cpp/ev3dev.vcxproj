@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="common\dummy.cxx" />
     <ClCompile Include="libraries\googlemock\src\gmock-all.cc" />
     <ClCompile Include="libraries\googlemock\src\gmock-cardinalities.cc" />
     <ClCompile Include="libraries\googlemock\src\gmock-internal-utils.cc" />
