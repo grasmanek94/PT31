@@ -324,7 +324,7 @@
     <NMakeOutput>ev3dev</NMakeOutput>
     <NMakeCleanCommandLine>CLEAN.BAT</NMakeCleanCommandLine>
     <NMakeReBuildCommandLine>REBUILD.BAT</NMakeReBuildCommandLine>
-    <IncludePath>%(AdditionalIncludeDirectories);.\;.\common;.\libraries;.\libraries\glm;.\project;.\project\lib;.\uwb_location\;.\uwb_location\lib;$(VC_IncludePath);D:\Development\Sourcery_CodeBench_Lite_for_ARM_GNU_Linux\arm-none-linux-gnueabi\include\c++\4.8.3;D:\Development\Sourcery_CodeBench_Lite_for_ARM_GNU_Linux\arm-none-linux-gnueabi\libc\usr\include\;D:\Development\Sourcery_CodeBench_Lite_for_ARM_GNU_Linux\i686-mingw32\arm-none-linux-gnueabi\include;D:\Development\cygwin64\usr\include</IncludePath>
+    <IncludePath>%(AdditionalIncludeDirectories);.\;.\common;.\libraries;.\libraries\glm;.\project;.\project\lib;.\uwb_location\;.\uwb_location\lib;$(VC_IncludePath);$(PROFTAAK_T31_CROSS_COMPILE)\arm-none-linux-gnueabi\include\c++\4.8.3;$(PROFTAAK_T31_CROSS_COMPILE)\arm-none-linux-gnueabi\libc\usr\include\;$(PROFTAAK_T31_CROSS_COMPILE)\i686-mingw32\arm-none-linux-gnueabi\include;$(PROFTAAK_T31_CROSS_COMPILE)\usr\include;.\libraries\pixy\include;.\libraries\googlemock\include;.\libraries\googletest\include;.\pix_location;.\pix_location\lib;.\server;.\server\lib</IncludePath>
     <NMakePreprocessorDefinitions>WIN32</NMakePreprocessorDefinitions>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -332,7 +332,7 @@
     <NMakeOutput>ev3dev</NMakeOutput>
     <NMakeCleanCommandLine>CLEAN.BAT</NMakeCleanCommandLine>
     <NMakeReBuildCommandLine>REBUILD.BAT</NMakeReBuildCommandLine>
-    <IncludePath>%(AdditionalIncludeDirectories);.\;.\common;.\libraries;.\libraries\glm;.\project;.\project\lib;.\uwb_location\;.\uwb_location\lib;$(VC_IncludePath);D:\Development\Sourcery_CodeBench_Lite_for_ARM_GNU_Linux\arm-none-linux-gnueabi\include\c++\4.8.3;D:\Development\Sourcery_CodeBench_Lite_for_ARM_GNU_Linux\arm-none-linux-gnueabi\libc\usr\include\;D:\Development\Sourcery_CodeBench_Lite_for_ARM_GNU_Linux\i686-mingw32\arm-none-linux-gnueabi\include;D:\Development\cygwin64\usr\include</IncludePath>
+    <IncludePath>%(AdditionalIncludeDirectories);.\;.\common;.\libraries;.\libraries\glm;.\project;.\project\lib;.\uwb_location\;.\uwb_location\lib;$(VC_IncludePath);$(PROFTAAK_T31_CROSS_COMPILE)\arm-none-linux-gnueabi\include\c++\4.8.3;$(PROFTAAK_T31_CROSS_COMPILE)\arm-none-linux-gnueabi\libc\usr\include\;$(PROFTAAK_T31_CROSS_COMPILE)\i686-mingw32\arm-none-linux-gnueabi\include;$(PROFTAAK_T31_CROSS_COMPILE)\usr\include;.\libraries\pixy\include;.\libraries\googlemock\include;.\libraries\googletest\include;.\pix_location;.\pix_location\lib;.\server;.\server\lib</IncludePath>
     <NMakePreprocessorDefinitions>WIN32</NMakePreprocessorDefinitions>
   </PropertyGroup>
   <ItemDefinitionGroup>
