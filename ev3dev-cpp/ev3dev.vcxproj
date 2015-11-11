@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="common\dummy.cxx" />
     <ClCompile Include="libraries\googlemock\src\gmock-all.cc" />
     <ClCompile Include="libraries\googlemock\src\gmock-cardinalities.cc" />
     <ClCompile Include="libraries\googlemock\src\gmock-internal-utils.cc" />
@@ -30,11 +31,30 @@
     <ClCompile Include="libraries\__linux__\glm.cpp" />
     <ClCompile Include="libraries\__linux__\google_mock.cc" />
     <ClCompile Include="libraries\__linux__\google_test.cc" />
+    <ClCompile Include="pix_location\lib\somelib\somelib.cxx" />
+    <ClCompile Include="pix_location\main.cxx" />
+    <ClCompile Include="project\lib\configuration\CalibrationLoader.cxx" />
     <ClCompile Include="project\lib\ev3dev\ev3dev.cxx" />
+    <ClCompile Include="project\lib\ev3\EV3Calibration.cxx" />
+    <ClCompile Include="project\lib\ev3\EV3DriveControl.cxx" />
+    <ClCompile Include="project\lib\ev3\EV3GripControl.cxx" />
+    <ClCompile Include="project\lib\ev3\EV3Robot.cxx" />
+    <ClCompile Include="project\lib\ev3\EV3Sensing.cxx" />
     <ClCompile Include="project\main.cxx" />
+    <ClCompile Include="server\lib\somelib\somelib.cxx" />
+    <ClCompile Include="server\main.cxx" />
     <ClCompile Include="test\TestMain.cxx" />
+    <ClCompile Include="uwb_location\lib\somelib\somelib.cxx" />
+    <ClCompile Include="uwb_location\main.cxx" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="common\interfaces\ICalibration.hxx" />
+    <ClInclude Include="common\interfaces\IDriveControl.hxx" />
+    <ClInclude Include="common\interfaces\IGripControl.hxx" />
+    <ClInclude Include="common\interfaces\ILocation.hxx" />
+    <ClInclude Include="common\interfaces\IMecanumControl.hxx" />
+    <ClInclude Include="common\interfaces\IRobot.hxx" />
+    <ClInclude Include="common\interfaces\ISensing.hxx" />
     <ClInclude Include="libraries\glm\glm\common.hpp" />
     <ClInclude Include="libraries\glm\glm\exponential.hpp" />
     <ClInclude Include="libraries\glm\glm\ext.hpp" />
@@ -177,7 +197,13 @@
     <ClInclude Include="libraries\googletest\include\gtest\internal\gtest-tuple.h" />
     <ClInclude Include="libraries\googletest\include\gtest\internal\gtest-type-util.h" />
     <ClInclude Include="libraries\googletest\src\gtest-internal-inl.h" />
+    <ClInclude Include="project\lib\configuration\CalibrationLoader.hxx" />
     <ClInclude Include="project\lib\ev3dev\ev3dev.hxx" />
+    <ClInclude Include="project\lib\ev3\EV3Calibration.hxx" />
+    <ClInclude Include="project\lib\ev3\EV3DriveControl.hxx" />
+    <ClInclude Include="project\lib\ev3\EV3GripControl.hxx" />
+    <ClInclude Include="project\lib\ev3\EV3Robot.hxx" />
+    <ClInclude Include="project\lib\ev3\EV3Sensing.hxx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libraries\glm\glm\gtc\bitfield.inl" />
@@ -264,6 +290,7 @@
     <None Include="libraries\googletest\include\gtest\internal\gtest-param-util-generated.h.pump" />
     <None Include="libraries\googletest\include\gtest\internal\gtest-tuple.h.pump" />
     <None Include="libraries\googletest\include\gtest\internal\gtest-type-util.h.pump" />
+    <None Include="Makefile" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A1C44C9C-E1C2-473E-A2B2-A4E0C6AF5114}</ProjectGuid>
@@ -297,7 +324,7 @@
     <NMakeOutput>ev3dev</NMakeOutput>
     <NMakeCleanCommandLine>CLEAN.BAT</NMakeCleanCommandLine>
     <NMakeReBuildCommandLine>REBUILD.BAT</NMakeReBuildCommandLine>
-    <IncludePath>%(AdditionalIncludeDirectories);.\;.\project;.\project\lib;.\libraries;.\libraries\glm;$(VC_IncludePath);D:\Development\Sourcery_CodeBench_Lite_for_ARM_GNU_Linux\arm-none-linux-gnueabi\include\c++\4.8.3;D:\Development\Sourcery_CodeBench_Lite_for_ARM_GNU_Linux\arm-none-linux-gnueabi\libc\usr\include\;D:\Development\Sourcery_CodeBench_Lite_for_ARM_GNU_Linux\i686-mingw32\arm-none-linux-gnueabi\include;D:\Development\cygwin64\usr\include</IncludePath>
+    <IncludePath>%(AdditionalIncludeDirectories);.\;.\common;.\libraries;.\libraries\glm;.\project;.\project\lib;.\uwb_location\;.\uwb_location\lib;$(VC_IncludePath);D:\Development\Sourcery_CodeBench_Lite_for_ARM_GNU_Linux\arm-none-linux-gnueabi\include\c++\4.8.3;D:\Development\Sourcery_CodeBench_Lite_for_ARM_GNU_Linux\arm-none-linux-gnueabi\libc\usr\include\;D:\Development\Sourcery_CodeBench_Lite_for_ARM_GNU_Linux\i686-mingw32\arm-none-linux-gnueabi\include;D:\Development\cygwin64\usr\include</IncludePath>
     <NMakePreprocessorDefinitions>WIN32</NMakePreprocessorDefinitions>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -305,7 +332,7 @@
     <NMakeOutput>ev3dev</NMakeOutput>
     <NMakeCleanCommandLine>CLEAN.BAT</NMakeCleanCommandLine>
     <NMakeReBuildCommandLine>REBUILD.BAT</NMakeReBuildCommandLine>
-    <IncludePath>%(AdditionalIncludeDirectories);.\;.\project;.\project\lib;.\libraries;.\libraries\glm;$(VC_IncludePath);D:\Development\Sourcery_CodeBench_Lite_for_ARM_GNU_Linux\arm-none-linux-gnueabi\include\c++\4.8.3;D:\Development\Sourcery_CodeBench_Lite_for_ARM_GNU_Linux\arm-none-linux-gnueabi\libc\usr\include\;D:\Development\Sourcery_CodeBench_Lite_for_ARM_GNU_Linux\i686-mingw32\arm-none-linux-gnueabi\include;D:\Development\cygwin64\usr\include</IncludePath>
+    <IncludePath>%(AdditionalIncludeDirectories);.\;.\common;.\libraries;.\libraries\glm;.\project;.\project\lib;.\uwb_location\;.\uwb_location\lib;$(VC_IncludePath);D:\Development\Sourcery_CodeBench_Lite_for_ARM_GNU_Linux\arm-none-linux-gnueabi\include\c++\4.8.3;D:\Development\Sourcery_CodeBench_Lite_for_ARM_GNU_Linux\arm-none-linux-gnueabi\libc\usr\include\;D:\Development\Sourcery_CodeBench_Lite_for_ARM_GNU_Linux\i686-mingw32\arm-none-linux-gnueabi\include;D:\Development\cygwin64\usr\include</IncludePath>
     <NMakePreprocessorDefinitions>WIN32</NMakePreprocessorDefinitions>
   </PropertyGroup>
   <ItemDefinitionGroup>

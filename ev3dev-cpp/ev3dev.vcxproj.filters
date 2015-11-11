@@ -58,6 +58,45 @@
     <Filter Include="libraries\googletest\src">
       <UniqueIdentifier>{4ca3f00b-4071-4022-9d70-0da01ad41456}</UniqueIdentifier>
     </Filter>
+    <Filter Include="project\lib\ev3">
+      <UniqueIdentifier>{ff7bfbd7-822f-40ad-90a0-b229dd1edc65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="project\lib\configuration">
+      <UniqueIdentifier>{d9632f36-23fd-41c0-8220-1b69239a4892}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="common">
+      <UniqueIdentifier>{cc9fe0ec-fa0a-4f9a-b69d-69245f1b0dd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="common\interfaces">
+      <UniqueIdentifier>{6c698a53-6b83-4a09-a893-a1be044b06b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="uwb_location">
+      <UniqueIdentifier>{aa778c2e-de1d-4d45-82b2-86a4a2893ab3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="uwb_location\lib">
+      <UniqueIdentifier>{c850a8fa-b781-4b8c-a59e-9b3ca903ce36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="uwb_location\lib\somelib">
+      <UniqueIdentifier>{a0b758db-e6c5-49a8-ac36-4e72888972fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pix_location">
+      <UniqueIdentifier>{c581f4f9-a4aa-499a-9d94-6ba40350349b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pix_location\lib">
+      <UniqueIdentifier>{363ac7ba-9ad7-4122-9353-f2e5bf43c317}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pix_location\lib\somelib">
+      <UniqueIdentifier>{5c6464d6-b37b-4750-98f1-1a7300cde2e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="server">
+      <UniqueIdentifier>{bdbece5f-99cc-4197-b9e4-4810a5b61da4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="server\lib">
+      <UniqueIdentifier>{2ea56e3a-29d7-4621-8314-05cbf1e63579}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="server\lib\somelib">
+      <UniqueIdentifier>{2dbcf7c3-3f0a-4337-9334-593a22cca021}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="project\main.cxx">
@@ -125,6 +164,45 @@
     </ClCompile>
     <ClCompile Include="libraries\googletest\src\gtest-death-test.cc">
       <Filter>libraries\googletest\src</Filter>
+    </ClCompile>
+    <ClCompile Include="project\lib\ev3\EV3Robot.cxx">
+      <Filter>project\lib\ev3</Filter>
+    </ClCompile>
+    <ClCompile Include="project\lib\ev3\EV3Sensing.cxx">
+      <Filter>project\lib\ev3</Filter>
+    </ClCompile>
+    <ClCompile Include="project\lib\ev3\EV3DriveControl.cxx">
+      <Filter>project\lib\ev3</Filter>
+    </ClCompile>
+    <ClCompile Include="project\lib\ev3\EV3GripControl.cxx">
+      <Filter>project\lib\ev3</Filter>
+    </ClCompile>
+    <ClCompile Include="project\lib\ev3\EV3Calibration.cxx">
+      <Filter>project\lib\ev3</Filter>
+    </ClCompile>
+    <ClCompile Include="project\lib\configuration\CalibrationLoader.cxx">
+      <Filter>project\lib\configuration</Filter>
+    </ClCompile>
+    <ClCompile Include="uwb_location\main.cxx">
+      <Filter>uwb_location</Filter>
+    </ClCompile>
+    <ClCompile Include="uwb_location\lib\somelib\somelib.cxx">
+      <Filter>uwb_location\lib\somelib</Filter>
+    </ClCompile>
+    <ClCompile Include="common\dummy.cxx">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="pix_location\main.cxx">
+      <Filter>pix_location</Filter>
+    </ClCompile>
+    <ClCompile Include="pix_location\lib\somelib\somelib.cxx">
+      <Filter>pix_location\lib\somelib</Filter>
+    </ClCompile>
+    <ClCompile Include="server\main.cxx">
+      <Filter>server</Filter>
+    </ClCompile>
+    <ClCompile Include="server\lib\somelib\somelib.cxx">
+      <Filter>server\lib\somelib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -557,6 +635,45 @@
     <ClInclude Include="libraries\googletest\src\gtest-internal-inl.h">
       <Filter>libraries\googletest\src</Filter>
     </ClInclude>
+    <ClInclude Include="project\lib\ev3\EV3GripControl.hxx">
+      <Filter>project\lib\ev3</Filter>
+    </ClInclude>
+    <ClInclude Include="project\lib\ev3\EV3Robot.hxx">
+      <Filter>project\lib\ev3</Filter>
+    </ClInclude>
+    <ClInclude Include="project\lib\ev3\EV3Sensing.hxx">
+      <Filter>project\lib\ev3</Filter>
+    </ClInclude>
+    <ClInclude Include="project\lib\ev3\EV3DriveControl.hxx">
+      <Filter>project\lib\ev3</Filter>
+    </ClInclude>
+    <ClInclude Include="project\lib\ev3\EV3Calibration.hxx">
+      <Filter>project\lib\ev3</Filter>
+    </ClInclude>
+    <ClInclude Include="project\lib\configuration\CalibrationLoader.hxx">
+      <Filter>project\lib\configuration</Filter>
+    </ClInclude>
+    <ClInclude Include="common\interfaces\IGripControl.hxx">
+      <Filter>common\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="common\interfaces\ILocation.hxx">
+      <Filter>common\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="common\interfaces\IMecanumControl.hxx">
+      <Filter>common\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="common\interfaces\IRobot.hxx">
+      <Filter>common\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="common\interfaces\ISensing.hxx">
+      <Filter>common\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="common\interfaces\ICalibration.hxx">
+      <Filter>common\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="common\interfaces\IDriveControl.hxx">
+      <Filter>common\interfaces</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="libraries\glm\glm\gtx\closest_point.inl">
@@ -811,5 +928,6 @@
     <None Include="libraries\googletest\include\gtest\internal\gtest-type-util.h.pump">
       <Filter>libraries\googletest\gtest\internal</Filter>
     </None>
+    <None Include="Makefile" />
   </ItemGroup>
 </Project>

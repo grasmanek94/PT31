@@ -182,8 +182,4 @@ UpgradeLog*.htm
 # Microsoft Fakes
 FakesAssemblies/
 
-ev3dev-cpp/libraries/__linux__/obj/
-ev3dev-cpp/libraries/__linux__/project_REL.app
-ev3dev-cpp/libraries/__linux__/test_REL.app
-ev3dev-cpp/libraries/__linux__/project_DBG.app
-ev3dev-cpp/libraries/__linux__/test_DBG.app
+ev3dev-cpp/build/
