@@ -79,6 +79,24 @@
     <Filter Include="uwb_location\lib\somelib">
       <UniqueIdentifier>{a0b758db-e6c5-49a8-ac36-4e72888972fb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="pix_location">
+      <UniqueIdentifier>{c581f4f9-a4aa-499a-9d94-6ba40350349b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pix_location\lib">
+      <UniqueIdentifier>{363ac7ba-9ad7-4122-9353-f2e5bf43c317}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pix_location\lib\somelib">
+      <UniqueIdentifier>{5c6464d6-b37b-4750-98f1-1a7300cde2e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="server">
+      <UniqueIdentifier>{bdbece5f-99cc-4197-b9e4-4810a5b61da4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="server\lib">
+      <UniqueIdentifier>{2ea56e3a-29d7-4621-8314-05cbf1e63579}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="server\lib\somelib">
+      <UniqueIdentifier>{2dbcf7c3-3f0a-4337-9334-593a22cca021}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="project\main.cxx">
@@ -173,6 +191,18 @@
     </ClCompile>
     <ClCompile Include="common\dummy.cxx">
       <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="pix_location\main.cxx">
+      <Filter>pix_location</Filter>
+    </ClCompile>
+    <ClCompile Include="pix_location\lib\somelib\somelib.cxx">
+      <Filter>pix_location\lib\somelib</Filter>
+    </ClCompile>
+    <ClCompile Include="server\main.cxx">
+      <Filter>server</Filter>
+    </ClCompile>
+    <ClCompile Include="server\lib\somelib\somelib.cxx">
+      <Filter>server\lib\somelib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

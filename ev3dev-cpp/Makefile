@@ -183,6 +183,41 @@ PixLocation: $(PIX_LOC_OBJECTS)
 	@$(CHOSEN_GPP) $(CFLAGS_COMMON) $(CFLAGS_INCLUDE_DIRS) $(PIX_LOC_INCLUDE_DIRS) $(addsuffix $(SUFFIX_SELECTED).o,$(addprefix ./,$^)) $(PIX_LOC_LIBRARIES) -o $(PIX_LOC_EXECUTABLE)
 
 #######################################################################################################
+INCLUDE_DIRS_SVR=			$(GLM_INCLUDE_DIRS) \
+							-I./server \
+							-I./server/lib \
+							-I./common
+
+SVR_NAME=					server
+
+LIBSVR_INCLUDE_DIRS=		$(INCLUDE_DIRS_SVR)
+LIBSVRC_SOURCES=			$(shell find ./$(SVR_NAME)/lib/ -name '*.c*')
+LIBSVR_OBJ_DIR=				$(MAIN_BASE_DIR)lib$(SVR_NAME)/
+LIBSVR_OBJECTS=				$(addprefix $(LIBSVR_OBJ_DIR),$(LIBSVR_SOURCES))
+LIBSVR_LIBRARY=				$(MAIN_BASE_DIR)lib$(SVR_NAME)$(SUFFIX_SELECTED).a
+LIBSVR_DEFINES=				$(COMMON_DEFINITIONS)
+
+SVR_LIBRARIES=				$(COMMON_LIBRARIES) \
+							$(LIBSVR_LIBRARY) 
+SVR_INCLUDE_DIRS=			$(INCLUDE_DIRS_SVR)
+SVR_SOURCES=				$(shell find ./$(SVR_NAME)/ ! -path "./$(SVR_NAME)/lib/*" -name '*.c*')
+SVR_OBJ_DIR=				$(MAIN_BASE_DIR)obj/$(SVR_NAME)/
+SVR_OBJECTS=				$(addprefix $(SVR_OBJ_DIR),$(SVR_SOURCES))
+SVR_EXECUTABLE=				$(MAIN_BASE_DIR)$(SVR_NAME)$(SUFFIX_SELECTED).bin
+SVR_DEFINES=				$(COMMON_DEFINITIONS) \
+							-DSVR
+
+LibSvr: DEFAULT_CLEARER=$(LIBSVR_OBJ_DIR)
+LibSvr: COMMON_INCLUDES=$(LIBSVR_INCLUDE_DIRS)
+LibSvr: $(LIBSVR_OBJECTS)
+	@$(ARCHIVE) $(LIBSVR_LIBRARY) $(addsuffix $(SUFFIX_SELECTED).o,$(addprefix ./,$^)) > /dev/null
+
+Svr: DEFAULT_CLEARER=$(SVR_OBJ_DIR)
+Svr: COMMON_INCLUDES=$(SVR_INCLUDE_DIRS)
+Svr: $(SVR_OBJECTS)
+	@$(CHOSEN_GPP) $(CFLAGS_COMMON) $(CFLAGS_INCLUDE_DIRS) $(SVR_INCLUDE_DIRS) $(addsuffix $(SUFFIX_SELECTED).o,$(addprefix ./,$^)) $(SVR_LIBRARIES) -o $(SVR_EXECUTABLE)
+
+#######################################################################################################
 TEST_INCLUDE_DIRS=			$(INCLUDE_DIRS_PROJECT) \
 							$(INCLUDE_DIRS_UWB) \
 							$(INCLUDE_DIRS_PIX) \
@@ -205,7 +240,7 @@ TestProject: $(TEST_OBJECTS)
 	@$(CHOSEN_GPP) $(CFLAGS_COMMON) $(CFLAGS_INCLUDE_DIRS) $(TEST_INCLUDE_DIRS) $(addsuffix $(SUFFIX_SELECTED).o,$(addprefix ./,$^)) $(TEST_LIBRARIES) -o $(TEST_EXECUTABLE)
 
 #######################################################################################################
-all: ev3_r ev3_tr
+all: ev3_r ev3_tr rsp_r rsp_tr
 
 .DEFAULT:
 	@mkdir -p ./$(@D)
@@ -226,7 +261,7 @@ ev3_d ev3_td rsp_d rsp_td: CFLAGS_SELECTED=$(CFLAGS_COMBINED_DEBUG)
 ev3_r ev3_tr rsp_r rsp_tr: SUFFIX_SELECTED=$(SUFFIX_RELEASE)$(CHOSEN_NAM)
 ev3_r ev3_tr rsp_r rsp_tr: CFLAGS_SELECTED=$(CFLAGS_COMBINED_RELEASE)
 
-ev3_d ev3_r rsp_r rsp_d: GLM LibCommon LibProject AppProject LibUwbLoc UwbLocation LibPixLoc PixLocation
+ev3_d ev3_r rsp_r rsp_d: GLM LibCommon LibProject AppProject LibUwbLoc UwbLocation LibPixLoc PixLocation LibSvr Svr
 
-ev3_td ev3_tr rsp_tr rsp_td: GoogleTest GoogleMock GLM LibCommon LibProject LibUwbLoc LibPixLoc TestProject
+ev3_td ev3_tr rsp_tr rsp_td: GoogleTest GoogleMock GLM LibCommon LibProject LibUwbLoc LibPixLoc LibSvr TestProject
 #	valgrind $(TEST_EXECUTABLE)
