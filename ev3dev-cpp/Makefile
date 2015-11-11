@@ -153,7 +153,8 @@ UwbLocation: $(UWB_LOC_OBJECTS)
 INCLUDE_DIRS_PIX=			$(GLM_INCLUDE_DIRS) \
 							-I./pix_location \
 							-I./pix_location/lib \
-							-I./common
+							-I./common \
+							-I./libraries/pixy/$(SUFFIX_SELECTED)/
 
 PIX_NAME=					pix_location
 
@@ -165,7 +166,9 @@ LIBPIX_LOC_LIBRARY=			$(MAIN_BASE_DIR)lib$(PIX_NAME)$(SUFFIX_SELECTED).a
 LIBPIX_LOC_DEFINES=			$(COMMON_DEFINITIONS)
 
 PIX_LOC_LIBRARIES=			$(COMMON_LIBRARIES) \
-							$(LIBPIX_LOC_LIBRARY) 
+							$(LIBPIX_LOC_LIBRARY) \
+							-lpixy
+							
 PIX_LOC_INCLUDE_DIRS=		$(INCLUDE_DIRS_PIX)
 PIX_LOC_SOURCES=			$(shell find ./$(PIX_NAME)/ ! -path "./$(PIX_NAME)/lib/*" -name '*.c*')
 PIX_LOC_OBJ_DIR=			$(MAIN_BASE_DIR)obj/$(PIX_NAME)/
