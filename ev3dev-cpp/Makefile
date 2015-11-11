@@ -26,6 +26,8 @@ GPP_EV3=					arm-none-linux-gnueabi-g++
 GPP_EV3_NAM=_ev3
 GPP_RSP=					arm-linux-gnueabihf-c++
 GPP_RSP_NAM=_rsp
+GPP_NORMAL=					g++
+GPP_NORMAL_NAM=_native
 ARCHIVE=					ar rvs
 
 #######################################################################################################
@@ -240,7 +242,7 @@ TestProject: $(TEST_OBJECTS)
 	@$(CHOSEN_GPP) $(CFLAGS_COMMON) $(CFLAGS_INCLUDE_DIRS) $(TEST_INCLUDE_DIRS) $(addsuffix $(SUFFIX_SELECTED).o,$(addprefix ./,$^)) $(TEST_LIBRARIES) -o $(TEST_EXECUTABLE)
 
 #######################################################################################################
-all: ev3_r ev3_tr rsp_r rsp_tr
+all: ev3_r ev3_tr rsp_r rsp_tr r tr
 
 .DEFAULT:
 	@mkdir -p ./$(@D)
@@ -251,17 +253,20 @@ clean:
 
 ev3_d ev3_td ev3_r ev3_tr: CHOSEN_GPP=$(GPP_EV3)
 ev3_d ev3_td ev3_r ev3_tr: CHOSEN_NAM=$(GPP_EV3_NAM)
-	
+					
 rsp_d rsp_td rsp_r rsp_tr: CHOSEN_GPP=$(GPP_RSP)
 rsp_d rsp_td rsp_r rsp_tr: CHOSEN_NAM=$(GPP_RSP_NAM)
 
-ev3_d ev3_td rsp_d rsp_td: SUFFIX_SELECTED=$(SUFFIX_DEBUG)$(CHOSEN_NAM)
-ev3_d ev3_td rsp_d rsp_td: CFLAGS_SELECTED=$(CFLAGS_COMBINED_DEBUG)
+d td r tr: CHOSEN_GPP=$(GPP_NORMAL)
+d td r tr: CHOSEN_NAM=$(GPP_NORMAL_NAM)
 
-ev3_r ev3_tr rsp_r rsp_tr: SUFFIX_SELECTED=$(SUFFIX_RELEASE)$(CHOSEN_NAM)
-ev3_r ev3_tr rsp_r rsp_tr: CFLAGS_SELECTED=$(CFLAGS_COMBINED_RELEASE)
+ev3_d ev3_td rsp_d rsp_td d td: SUFFIX_SELECTED=$(SUFFIX_DEBUG)$(CHOSEN_NAM)
+ev3_d ev3_td rsp_d rsp_td d td: CFLAGS_SELECTED=$(CFLAGS_COMBINED_DEBUG)
 
-ev3_d ev3_r rsp_r rsp_d: GLM LibCommon LibProject AppProject LibUwbLoc UwbLocation LibPixLoc PixLocation LibSvr Svr
+ev3_r ev3_tr rsp_r rsp_tr r tr: SUFFIX_SELECTED=$(SUFFIX_RELEASE)$(CHOSEN_NAM)
+ev3_r ev3_tr rsp_r rsp_tr r tr: CFLAGS_SELECTED=$(CFLAGS_COMBINED_RELEASE)
 
-ev3_td ev3_tr rsp_tr rsp_td: GoogleTest GoogleMock GLM LibCommon LibProject LibUwbLoc LibPixLoc LibSvr TestProject
+ev3_d ev3_r rsp_d rsp_r d r: GLM LibCommon LibProject AppProject LibUwbLoc UwbLocation LibPixLoc PixLocation LibSvr Svr
+
+ev3_td ev3_tr rsp_tr rsp_td td tr: GoogleTest GoogleMock GLM LibCommon LibProject LibUwbLoc LibPixLoc LibSvr TestProject
 #	valgrind $(TEST_EXECUTABLE)
