@@ -115,6 +115,12 @@
     <Filter Include="path_processor\lib\DynamicGrid">
       <UniqueIdentifier>{03daf59d-230f-4e62-b11d-d384d575c254}</UniqueIdentifier>
     </Filter>
+    <Filter Include="common\interprocess_queue">
+      <UniqueIdentifier>{b99368e5-587c-4e96-82d3-dabbce8f961c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="path_processor\lib\PathProcessor">
+      <UniqueIdentifier>{678b4a91-efc9-4921-948f-b10349e384d4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="project\main.cxx">
@@ -715,6 +721,21 @@
     </ClInclude>
     <ClInclude Include="path_processor\lib\DynamicGrid\DynamicGrid.hxx">
       <Filter>path_processor\lib\DynamicGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="common\interprocess_queue\QueueItem.hxx">
+      <Filter>common\interprocess_queue</Filter>
+    </ClInclude>
+    <ClInclude Include="common\interprocess_queue\RawQueue.hxx">
+      <Filter>common\interprocess_queue</Filter>
+    </ClInclude>
+    <ClInclude Include="common\interprocess_queue\SharedMemoryHelper.hxx">
+      <Filter>common\interprocess_queue</Filter>
+    </ClInclude>
+    <ClInclude Include="common\interprocess_queue\IPCQueue.hxx">
+      <Filter>common\interprocess_queue</Filter>
+    </ClInclude>
+    <ClInclude Include="path_processor\lib\PathProcessor\PathProcessor.hxx">
+      <Filter>path_processor\lib\PathProcessor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

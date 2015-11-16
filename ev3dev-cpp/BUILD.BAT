@@ -1,6 +1,9 @@
 @echo off
 cd /D "%~dp0"
 set PATH=%PROFTAAK_T31_CROSS_COMPILE_BIN%;%PATH%
-make rsp_r rsp_tr rsp_d rsp_td
-make ev3_r ev3_tr ev3_d ev3_td
-rem make r tr d td
+make rsp_r rsp_tr
+make rsp_d rsp_td
+make ev3_r ev3_tr
+make ev3_d ev3_td
+make r tr
+make d td

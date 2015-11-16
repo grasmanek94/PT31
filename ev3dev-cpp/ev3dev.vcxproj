@@ -59,6 +59,10 @@
     <ClInclude Include="common\interfaces\IMecanumControl.hxx" />
     <ClInclude Include="common\interfaces\IRobot.hxx" />
     <ClInclude Include="common\interfaces\ISensing.hxx" />
+    <ClInclude Include="common\interprocess_queue\IPCQueue.hxx" />
+    <ClInclude Include="common\interprocess_queue\QueueItem.hxx" />
+    <ClInclude Include="common\interprocess_queue\RawQueue.hxx" />
+    <ClInclude Include="common\interprocess_queue\SharedMemoryHelper.hxx" />
     <ClInclude Include="libraries\glm\glm\common.hpp" />
     <ClInclude Include="libraries\glm\glm\exponential.hpp" />
     <ClInclude Include="libraries\glm\glm\ext.hpp" />
@@ -204,6 +208,7 @@
     <ClInclude Include="path_processor\lib\DynamicGrid\DynamicGrid.hxx" />
     <ClInclude Include="path_processor\lib\Environment\Environment.hxx" />
     <ClInclude Include="path_processor\lib\JumpPointSearch\JPS.hxx" />
+    <ClInclude Include="path_processor\lib\PathProcessor\PathProcessor.hxx" />
     <ClInclude Include="path_processor\lib\StringSplitter\StringSplitter.hxx" />
     <ClInclude Include="project\lib\configuration\CalibrationLoader.hxx" />
     <ClInclude Include="project\lib\ev3dev\ev3dev.hxx" />
@@ -335,7 +340,7 @@
     <NMakeOutput>ev3dev</NMakeOutput>
     <NMakeCleanCommandLine>CLEAN.BAT</NMakeCleanCommandLine>
     <NMakeReBuildCommandLine>REBUILD.BAT</NMakeReBuildCommandLine>
-    <IncludePath>%(AdditionalIncludeDirectories);.\;.\common;.\libraries;.\libraries\glm;.\project;.\project\lib;.\uwb_location\;.\uwb_location\lib;$(VC_IncludePath);$(PROFTAAK_T31_CROSS_COMPILE)\arm-none-linux-gnueabi\include\c++\4.8.3;$(PROFTAAK_T31_CROSS_COMPILE)\arm-none-linux-gnueabi\libc\usr\include\;$(PROFTAAK_T31_CROSS_COMPILE)\i686-mingw32\arm-none-linux-gnueabi\include;$(PROFTAAK_T31_CROSS_COMPILE)\usr\include;.\libraries\pixy\include;.\libraries\googlemock\include;.\libraries\googletest\include;.\pix_location;.\pix_location\lib;.\server;.\server\lib</IncludePath>
+    <IncludePath>%(AdditionalIncludeDirectories);.\;.\common;.\libraries;.\libraries\glm;.\project;.\project\lib;.\uwb_location\;.\uwb_location\lib;$(VC_IncludePath);$(PROFTAAK_T31_CROSS_COMPILE)\arm-none-linux-gnueabi\include\c++\4.8.3;$(PROFTAAK_T31_CROSS_COMPILE)\arm-none-linux-gnueabi\libc\usr\include\;$(PROFTAAK_T31_CROSS_COMPILE)\i686-mingw32\arm-none-linux-gnueabi\include;$(PROFTAAK_T31_CROSS_COMPILE)\usr\include;.\libraries\pixy\include;.\libraries\googlemock\include;.\libraries\googletest\include;.\pix_location;.\pix_location\lib;.\server;.\server\lib;.\path_processor;.\path_processor\lib</IncludePath>
     <NMakePreprocessorDefinitions>WIN32</NMakePreprocessorDefinitions>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -343,7 +348,7 @@
     <NMakeOutput>ev3dev</NMakeOutput>
     <NMakeCleanCommandLine>CLEAN.BAT</NMakeCleanCommandLine>
     <NMakeReBuildCommandLine>REBUILD.BAT</NMakeReBuildCommandLine>
-    <IncludePath>%(AdditionalIncludeDirectories);.\;.\common;.\libraries;.\libraries\glm;.\project;.\project\lib;.\uwb_location\;.\uwb_location\lib;$(VC_IncludePath);$(PROFTAAK_T31_CROSS_COMPILE)\arm-none-linux-gnueabi\include\c++\4.8.3;$(PROFTAAK_T31_CROSS_COMPILE)\arm-none-linux-gnueabi\libc\usr\include\;$(PROFTAAK_T31_CROSS_COMPILE)\i686-mingw32\arm-none-linux-gnueabi\include;$(PROFTAAK_T31_CROSS_COMPILE)\usr\include;.\libraries\pixy\include;.\libraries\googlemock\include;.\libraries\googletest\include;.\pix_location;.\pix_location\lib;.\server;.\server\lib</IncludePath>
+    <IncludePath>%(AdditionalIncludeDirectories);.\;.\common;.\libraries;.\libraries\glm;.\project;.\project\lib;.\uwb_location\;.\uwb_location\lib;$(VC_IncludePath);$(PROFTAAK_T31_CROSS_COMPILE)\arm-none-linux-gnueabi\include\c++\4.8.3;$(PROFTAAK_T31_CROSS_COMPILE)\arm-none-linux-gnueabi\libc\usr\include\;$(PROFTAAK_T31_CROSS_COMPILE)\i686-mingw32\arm-none-linux-gnueabi\include;$(PROFTAAK_T31_CROSS_COMPILE)\usr\include;.\libraries\pixy\include;.\libraries\googlemock\include;.\libraries\googletest\include;.\pix_location;.\pix_location\lib;.\server;.\server\lib;.\path_processor;.\path_processor\lib</IncludePath>
     <NMakePreprocessorDefinitions>WIN32</NMakePreprocessorDefinitions>
   </PropertyGroup>
   <ItemDefinitionGroup>

@@ -61,11 +61,13 @@
 #define FSTREAM_CACHE_SIZE 16
 #endif
 
+#define NO_LINUX_HEADERS
+
 #ifndef NO_LINUX_HEADERS
 #include <linux/fb.h>
 #include <linux/input.h>
 #else
-#define KEY_CNT 8
+#define KEY_CNT (8)
 #endif
 static const int bits_per_long = sizeof(long) * 8;
 
@@ -964,14 +966,21 @@ bool button::process()
 
 //-----------------------------------------------------------------------------
 
-#ifndef NO_LINUX_HEADERS
+#define KEY_BACKSPACE		14
+#define KEY_LEFT		105
+#define KEY_RIGHT		106
+#define KEY_UP			103
+#define KEY_DOWN		108
+#define KEY_ENTER		28
+
+#//ifndef NO_LINUX_HEADERS
 button button::back (KEY_BACKSPACE);
 button button::left (KEY_LEFT);
 button button::right(KEY_RIGHT);
 button button::up   (KEY_UP);
 button button::down (KEY_DOWN);
 button button::enter(KEY_ENTER);
-#endif
+//#endif
 
 //-----------------------------------------------------------------------------
 
