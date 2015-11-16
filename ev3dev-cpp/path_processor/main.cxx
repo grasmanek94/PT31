@@ -77,12 +77,12 @@ class RawQueue
 public:
 	typedef QueueItem<max_data_size_bytes> _Item;
 private:
-	size_t count;// need to prevent overwrite of non-read items
+	size_t count; // need to prevent overwrite of non-read items
 	_Item* ptr_pushed;
 	_Item* ptr_popped;
 	_Item* items_begin;
 	_Item* items_end;
-	_Item* items;// Item items[queue_size];
+	_Item* items; // Item items[queue_size];
 public:
 	RawQueue()
 	{
@@ -96,11 +96,11 @@ public:
 
 	inline size_t Count() const
 	{
-		//if (ptr_pushed < ptr_popped)
-		//{
-		//	return ptr_popped - ptr_pushed;
-		//}
-		//return ptr_popped - ptr_pushed;
+		/*if (ptr_pushed < ptr_popped)
+		{
+			return ptr_popped - ptr_pushed;
+		}
+		return ptr_popped - ptr_pushed;*/
 		return count;
 	}
 

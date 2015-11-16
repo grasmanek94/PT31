@@ -97,6 +97,12 @@
     <Filter Include="server\lib\somelib">
       <UniqueIdentifier>{2dbcf7c3-3f0a-4337-9334-593a22cca021}</UniqueIdentifier>
     </Filter>
+    <Filter Include="path_processor">
+      <UniqueIdentifier>{bea44548-1cb2-4b3e-a7d8-8ac54dcfb668}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="path_processor\lib">
+      <UniqueIdentifier>{ef6227ad-3d97-4b9d-b0b5-05e27dbe5056}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="project\main.cxx">
@@ -203,6 +209,18 @@
     </ClCompile>
     <ClCompile Include="server\lib\somelib\somelib.cxx">
       <Filter>server\lib\somelib</Filter>
+    </ClCompile>
+    <ClCompile Include="path_processor\main.cxx">
+      <Filter>path_processor</Filter>
+    </ClCompile>
+    <ClCompile Include="path_processor\lib\StringSplitter.cxx">
+      <Filter>path_processor\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="path_processor\lib\DynamicGrid.cxx">
+      <Filter>path_processor\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="path_processor\lib\Environment.cxx">
+      <Filter>path_processor\lib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -674,6 +692,18 @@
     <ClInclude Include="common\interfaces\IDriveControl.hxx">
       <Filter>common\interfaces</Filter>
     </ClInclude>
+    <ClInclude Include="path_processor\lib\StringSplitter.hxx">
+      <Filter>path_processor\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="path_processor\lib\DynamicGrid.hxx">
+      <Filter>path_processor\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="path_processor\lib\JPS.hxx">
+      <Filter>path_processor\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="path_processor\lib\Environment.hxx">
+      <Filter>path_processor\lib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="libraries\glm\glm\gtx\closest_point.inl">
@@ -929,5 +959,10 @@
       <Filter>libraries\googletest\gtest\internal</Filter>
     </None>
     <None Include="Makefile" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="path_processor\component_description.txt">
+      <Filter>path_processor</Filter>
+    </Text>
   </ItemGroup>
 </Project>

@@ -31,6 +31,10 @@
     <ClCompile Include="libraries\__linux__\glm.cpp" />
     <ClCompile Include="libraries\__linux__\google_mock.cc" />
     <ClCompile Include="libraries\__linux__\google_test.cc" />
+    <ClCompile Include="path_processor\lib\DynamicGrid.cxx" />
+    <ClCompile Include="path_processor\lib\Environment.cxx" />
+    <ClCompile Include="path_processor\lib\StringSplitter.cxx" />
+    <ClCompile Include="path_processor\main.cxx" />
     <ClCompile Include="pix_location\lib\somelib\somelib.cxx" />
     <ClCompile Include="pix_location\main.cxx" />
     <ClCompile Include="project\lib\configuration\CalibrationLoader.cxx" />
@@ -197,6 +201,10 @@
     <ClInclude Include="libraries\googletest\include\gtest\internal\gtest-tuple.h" />
     <ClInclude Include="libraries\googletest\include\gtest\internal\gtest-type-util.h" />
     <ClInclude Include="libraries\googletest\src\gtest-internal-inl.h" />
+    <ClInclude Include="path_processor\lib\DynamicGrid.hxx" />
+    <ClInclude Include="path_processor\lib\Environment.hxx" />
+    <ClInclude Include="path_processor\lib\JPS.hxx" />
+    <ClInclude Include="path_processor\lib\StringSplitter.hxx" />
     <ClInclude Include="project\lib\configuration\CalibrationLoader.hxx" />
     <ClInclude Include="project\lib\ev3dev\ev3dev.hxx" />
     <ClInclude Include="project\lib\ev3\EV3Calibration.hxx" />
@@ -291,6 +299,9 @@
     <None Include="libraries\googletest\include\gtest\internal\gtest-tuple.h.pump" />
     <None Include="libraries\googletest\include\gtest\internal\gtest-type-util.h.pump" />
     <None Include="Makefile" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="path_processor\component_description.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A1C44C9C-E1C2-473E-A2B2-A4E0C6AF5114}</ProjectGuid>
