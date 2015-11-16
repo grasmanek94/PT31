@@ -63,7 +63,7 @@ public:
 		_used_data_size = size;
 	}
 
-	inline template <class T> T& Convert()
+	template <class T> inline T& Convert()
 	{
 		//e.g. int* = Convert<int*>() // array of integers
 		//or Convert<int*>()[0] = 5;
@@ -87,7 +87,7 @@ public:
 	RawQueue()
 	{
 		count = 0;
-		memset(items, 0, sizeof(Item)*max_items);
+		memset(items, 0, sizeof(_Item)*max_items);
 		ptr_pushed = &items[0];
 		ptr_popped = &items[0];
 		items_begin = &items[0];
@@ -111,7 +111,7 @@ public:
 			return false;
 		}
 
-		memcpy(ptr_popped, item, sizeof(Item));
+		memcpy(ptr_popped, item, sizeof(_Item));
 
 		++count;
 		if (++ptr_popped == items_end)
@@ -128,7 +128,7 @@ public:
 			return false;
 		}
 
-		memcpy(item, ptr_pushed, sizeof(Item));
+		memcpy(item, ptr_pushed, sizeof(_Item));
 
 		--count;
 		if (++ptr_pushed == items_end)
@@ -144,6 +144,10 @@ public:
 	}
 };
 
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
+#include <errno.h>
 #include <sys/types.h>
 #include <sys/mman.h>
 #include <sys/stat.h>
@@ -177,7 +181,7 @@ T my_shm_create(const std::string& shm_name, size_t size, int& shm_fd)
 template <typename T>
 T my_shm_open(const std::string& shm_name, int& shm_fd)
 {
-	shm_fd = shm_open(shm_name, O_RDWR, 0777);
+	shm_fd = shm_open(shm_name.c_str(), O_RDWR, 0777);
 	if (shm_fd == -1)
 	{
 		return NULL;
@@ -201,7 +205,7 @@ public:
 	typedef RawQueue<max_data_size_bytes, max_items> _RawQueue;
 private:
 	_RawQueue* queue_shared_memory;
-	sem_t queue_operation_semaphore;
+	sem_t* queue_operation_semaphore;
 	int shm_fd;
 	std::string queue_name;
 public:
@@ -244,17 +248,17 @@ public:
 
 	bool BeginOperation()
 	{
-		return sem_wait(&queue_operation_semaphore) == 0;
+		return sem_wait(queue_operation_semaphore) == 0;
 	}
 
 	bool EndOperation()
 	{
-		return sem_post(&queue_operation_semaphore) == 0;
+		return sem_post(queue_operation_semaphore) == 0;
 	}
 
 	bool TryBeginOperation()
 	{
-		return sem_trywait(&queue_operation_semaphore) == 0;
+		return sem_trywait(queue_operation_semaphore) == 0;
 	}
 
 	_RawQueue* GetQueue()
@@ -265,7 +269,7 @@ public:
 	~IPCQueue()
 	{
 		close(shm_fd);
-		sem_close(&queue_operation_semaphore);
+		sem_close(queue_operation_semaphore);
 
 		shm_unlink(queue_name.c_str());
 		sem_unlink(queue_name.c_str())
@@ -287,7 +291,7 @@ private:
 	JPS::PathVector* temp_path;
 public:
 	PathProcessor(const std::string& base_map = Environment::Map)
-		:	grid(new DynamicGrid(base_map))
+		:	grid(new DynamicGrid(base_map)),
 			requestQueue("PathProcessor.requestQueue"),
 			calculatedQueue("PathProcessor.calculatedQueue"),
 			temp_item(new MyQueueItem()),
@@ -313,7 +317,7 @@ public:
 			bool EndedOperation = false;
 			if (requestQueue.TryBeginOperation())
 			{
-				Queue* q = requestQueue.GetQueue();
+				MyQueue* q = requestQueue.GetQueue();
 
 				if (q->Count())
 				{
@@ -333,7 +337,7 @@ public:
 
 							temp_item->SetActionIdentifier(found);
 							size_t data_size = temp_path->size() * sizeof(JPS::Position);
-							memcpy(&temp_item->Convert<JPS::PathVector>(), temp_path, );
+							memcpy(&temp_item->Convert<JPS::PathVector>(), temp_path, data_size);
 							temp_item->SetUsedDataSize(data_size);
 
 							calculatedQueue.BeginOperation();
