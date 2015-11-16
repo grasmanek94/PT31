@@ -2,8 +2,8 @@
 #include <string>
 
 #include "DynamicGrid.hxx"
-#include "JPS.hxx"
-#include "StringSplitter.hxx"
+#include <JumpPointSearch/JPS.hxx>
+#include <StringSplitter/StringSplitter.hxx>
 
 DynamicGrid::DynamicGrid(size_t width, size_t height)
 	: width(width), height(height)

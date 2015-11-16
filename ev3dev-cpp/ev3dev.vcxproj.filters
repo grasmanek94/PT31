@@ -103,6 +103,18 @@
     <Filter Include="path_processor\lib">
       <UniqueIdentifier>{ef6227ad-3d97-4b9d-b0b5-05e27dbe5056}</UniqueIdentifier>
     </Filter>
+    <Filter Include="path_processor\lib\JumpPointSearch">
+      <UniqueIdentifier>{d67c76e9-f555-48dc-a403-78de81e2aa47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="path_processor\lib\StringSplitter">
+      <UniqueIdentifier>{006f7248-7a3b-4bf2-9593-7a6ec90d1ef9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="path_processor\lib\Environment">
+      <UniqueIdentifier>{9703a037-49f2-4d55-ab77-e3d1fc526361}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="path_processor\lib\DynamicGrid">
+      <UniqueIdentifier>{03daf59d-230f-4e62-b11d-d384d575c254}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="project\main.cxx">
@@ -213,14 +225,14 @@
     <ClCompile Include="path_processor\main.cxx">
       <Filter>path_processor</Filter>
     </ClCompile>
-    <ClCompile Include="path_processor\lib\StringSplitter.cxx">
-      <Filter>path_processor\lib</Filter>
+    <ClCompile Include="path_processor\lib\StringSplitter\StringSplitter.cxx">
+      <Filter>path_processor\lib\StringSplitter</Filter>
     </ClCompile>
-    <ClCompile Include="path_processor\lib\DynamicGrid.cxx">
-      <Filter>path_processor\lib</Filter>
+    <ClCompile Include="path_processor\lib\Environment\Environment.cxx">
+      <Filter>path_processor\lib\Environment</Filter>
     </ClCompile>
-    <ClCompile Include="path_processor\lib\Environment.cxx">
-      <Filter>path_processor\lib</Filter>
+    <ClCompile Include="path_processor\lib\DynamicGrid\DynamicGrid.cxx">
+      <Filter>path_processor\lib\DynamicGrid</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -692,17 +704,17 @@
     <ClInclude Include="common\interfaces\IDriveControl.hxx">
       <Filter>common\interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="path_processor\lib\StringSplitter.hxx">
-      <Filter>path_processor\lib</Filter>
+    <ClInclude Include="path_processor\lib\JumpPointSearch\JPS.hxx">
+      <Filter>path_processor\lib\JumpPointSearch</Filter>
     </ClInclude>
-    <ClInclude Include="path_processor\lib\DynamicGrid.hxx">
-      <Filter>path_processor\lib</Filter>
+    <ClInclude Include="path_processor\lib\StringSplitter\StringSplitter.hxx">
+      <Filter>path_processor\lib\StringSplitter</Filter>
     </ClInclude>
-    <ClInclude Include="path_processor\lib\JPS.hxx">
-      <Filter>path_processor\lib</Filter>
+    <ClInclude Include="path_processor\lib\Environment\Environment.hxx">
+      <Filter>path_processor\lib\Environment</Filter>
     </ClInclude>
-    <ClInclude Include="path_processor\lib\Environment.hxx">
-      <Filter>path_processor\lib</Filter>
+    <ClInclude Include="path_processor\lib\DynamicGrid\DynamicGrid.hxx">
+      <Filter>path_processor\lib\DynamicGrid</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

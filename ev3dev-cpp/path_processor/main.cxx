@@ -1,9 +1,10 @@
 #include <iostream>
 #include <string>
 #include <new>
+#include <cstring>
 
-#include "lib/DynamicGrid.hxx"
-#include "lib/Environment.hxx"
+#include "lib/DynamicGrid/DynamicGrid.hxx"
+#include "lib/Environment/Environment.hxx"
 
 template <size_t max_data_size_bytes = 2048>
 class QueueItem
@@ -63,7 +64,7 @@ public:
 		_used_data_size = size;
 	}
 
-	template <class T> inline T& Convert()
+	template <typename T> T Convert()
 	{
 		// e.g. int* = Convert<int*>() // array of integers
 		// or Convert<int*>()[0] = 5;
@@ -169,7 +170,7 @@ T my_shm_create(const std::string& shm_name, size_t size, int& shm_fd)
 		return NULL;
 	}
 
-	T shm_addr = (T*)mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0);
+	T shm_addr = (T)mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0);
 	if (shm_addr == MAP_FAILED)
 	{
 		return NULL;
@@ -189,7 +190,7 @@ T my_shm_open(const std::string& shm_name, int& shm_fd)
 
 	size_t size = lseek(shm_fd, 0, SEEK_END);
 
-	T shm_addr = (char *)mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0);
+	T shm_addr = (T)mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0);
 	if (shm_addr == MAP_FAILED)
 	{
 		return NULL;
@@ -272,7 +273,7 @@ public:
 		sem_close(queue_operation_semaphore);
 
 		shm_unlink(queue_name.c_str());
-		sem_unlink(queue_name.c_str())
+		sem_unlink(queue_name.c_str());
 	}
 };
 
@@ -284,8 +285,8 @@ private:
 	IPCQueue<max_data_size_bytes, max_items> requestQueue;
 	IPCQueue<max_data_size_bytes, max_items> calculatedQueue;
 
-	typedef IPCQueue< max_data_size_bytes, max_items>::_RawQueue MyQueue;
-	typedef MyQueue::_Item MyQueueItem;
+	typedef typename IPCQueue< max_data_size_bytes, max_items>::_RawQueue MyQueue;
+	typedef typename MyQueue::_Item MyQueueItem;
 
 	MyQueueItem* temp_item;
 	JPS::PathVector* temp_path;
@@ -323,10 +324,11 @@ public:
 				{
 					if (q->Pop(temp_item))
 					{
-						if (temp_item->GetUsedDataSize() >= sizeof(JPS::Position) * 2)
+						if (temp_item->GetUsedDataSize() >= (sizeof(JPS::Position) * 2))
 						{
-							JPS::Position start(temp_item->Convert<JPS::Position*>()[0]);
-							JPS::Position target(temp_item->Convert<JPS::Position*>()[1]);
+							JPS::Position* pos_array = temp_item->template Convert<JPS::Position*>();
+							JPS::Position start(pos_array[0]);
+							JPS::Position target(pos_array[1]);
 
 							EndedOperation = true;
 							requestQueue.EndOperation();
@@ -337,7 +339,7 @@ public:
 
 							temp_item->SetActionIdentifier(found);
 							size_t data_size = temp_path->size() * sizeof(JPS::Position);
-							memcpy(&temp_item->Convert<JPS::PathVector>(), temp_path, data_size);
+							memcpy(temp_item->template Convert<JPS::Position*>(), temp_path->data(), data_size);
 							temp_item->SetUsedDataSize(data_size);
 
 							calculatedQueue.BeginOperation();

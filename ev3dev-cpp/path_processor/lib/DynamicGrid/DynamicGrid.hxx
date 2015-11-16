@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <string>
-#include "JPS.hxx"
+#include <JumpPointSearch/JPS.hxx>
 
 class DynamicGrid
 {
@@ -37,7 +37,7 @@ public:
 	bool JumpNavigate(JPS::Position start, JPS::Position target, JPS::PathVector& path) const;
 	bool FullNavigate(JPS::Position start, JPS::Position target, JPS::PathVector& path) const;
 
-	void DynamicGrid::FromASCII(const std::string& map_data, char wall = '#');
+	void FromASCII(const std::string& map_data, char wall = '#');
 
 	std::string ToASCII(JPS::PathVector& path
 		//, char wall = '#'/*-79 178*/, char solution = '×'/*-98 158*/

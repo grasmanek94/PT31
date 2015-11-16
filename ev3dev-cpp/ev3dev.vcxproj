@@ -31,9 +31,9 @@
     <ClCompile Include="libraries\__linux__\glm.cpp" />
     <ClCompile Include="libraries\__linux__\google_mock.cc" />
     <ClCompile Include="libraries\__linux__\google_test.cc" />
-    <ClCompile Include="path_processor\lib\DynamicGrid.cxx" />
-    <ClCompile Include="path_processor\lib\Environment.cxx" />
-    <ClCompile Include="path_processor\lib\StringSplitter.cxx" />
+    <ClCompile Include="path_processor\lib\DynamicGrid\DynamicGrid.cxx" />
+    <ClCompile Include="path_processor\lib\Environment\Environment.cxx" />
+    <ClCompile Include="path_processor\lib\StringSplitter\StringSplitter.cxx" />
     <ClCompile Include="path_processor\main.cxx" />
     <ClCompile Include="pix_location\lib\somelib\somelib.cxx" />
     <ClCompile Include="pix_location\main.cxx" />
@@ -201,10 +201,10 @@
     <ClInclude Include="libraries\googletest\include\gtest\internal\gtest-tuple.h" />
     <ClInclude Include="libraries\googletest\include\gtest\internal\gtest-type-util.h" />
     <ClInclude Include="libraries\googletest\src\gtest-internal-inl.h" />
-    <ClInclude Include="path_processor\lib\DynamicGrid.hxx" />
-    <ClInclude Include="path_processor\lib\Environment.hxx" />
-    <ClInclude Include="path_processor\lib\JPS.hxx" />
-    <ClInclude Include="path_processor\lib\StringSplitter.hxx" />
+    <ClInclude Include="path_processor\lib\DynamicGrid\DynamicGrid.hxx" />
+    <ClInclude Include="path_processor\lib\Environment\Environment.hxx" />
+    <ClInclude Include="path_processor\lib\JumpPointSearch\JPS.hxx" />
+    <ClInclude Include="path_processor\lib\StringSplitter\StringSplitter.hxx" />
     <ClInclude Include="project\lib\configuration\CalibrationLoader.hxx" />
     <ClInclude Include="project\lib\ev3dev\ev3dev.hxx" />
     <ClInclude Include="project\lib\ev3\EV3Calibration.hxx" />
