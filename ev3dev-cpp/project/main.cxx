@@ -5,7 +5,9 @@
 #include <sstream>
 #include <algorithm>
 #include <atomic>
+#include <string>
 
+#define NO_LINUX_HEADERS
 #ifndef NO_LINUX_HEADERS
 #include <unistd.h>
 #include <fcntl.h>

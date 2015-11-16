@@ -966,14 +966,16 @@ bool button::process()
 
 //-----------------------------------------------------------------------------
 
+#ifdef NO_LINUX_HEADERS
 #define KEY_BACKSPACE		14
 #define KEY_LEFT		105
 #define KEY_RIGHT		106
 #define KEY_UP			103
 #define KEY_DOWN		108
 #define KEY_ENTER		28
+#endif
 
-#//ifndef NO_LINUX_HEADERS
+//#ifndef NO_LINUX_HEADERS
 button button::back (KEY_BACKSPACE);
 button button::left (KEY_LEFT);
 button button::right(KEY_RIGHT);
