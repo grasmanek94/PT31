@@ -1,0 +1,13 @@
+Name: path_processor
+
+Authors: 
+	- Rafal Grasman
+
+Owner/Copyright holder:
+	- T31C
+
+Description: 
+	- maintains information about environment (movable/non-movable)
+	- listens for pathplanning requests (via IPC)
+	- plans paths/routes
+	- queues calculated paths (via IPC)

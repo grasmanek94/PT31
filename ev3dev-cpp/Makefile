@@ -59,9 +59,11 @@ GLM: $(GLM_SOURCES)
 	@$(CHOSEN_GPP) $(CFLAGS_COMMON) $(CFLAGS_STATIC_LIBRARY) $(GLM_INCLUDE_DIRS) $(GLM_SOURCES) -o $(GLM_LIBRARY)
 
 #######################################################################################################
+PROJECT_NAME=				project
+
 INCLUDE_DIRS_PROJECT=		$(GLM_INCLUDE_DIRS) \
-							-I./project \
-							-I./project/lib \
+							-I./$(PROJECT_NAME) \
+							-I./$(PROJECT_NAME)/lib \
 							-I./common
 							
 #######################################################################################################
@@ -85,8 +87,6 @@ COMMON_LIBRARIES=			$(GLM_LIBRARY) \
 							$(LIBCOMMON_LIBRARY)
 	
 #######################################################################################################
-PROJECT_NAME=				project
-
 LIBPROJECT_INCLUDE_DIRS=	$(INCLUDE_DIRS_PROJECT)
 LIBPROJECT_SOURCES=			$(shell find ./$(PROJECT_NAME)/lib/ -name '*.c*')
 LIBPROJECT_OBJ_DIR=			$(MAIN_BASE_DIR)lib$(PROJECT_NAME)/
@@ -115,12 +115,12 @@ AppProject: $(APP_PROJECT_OBJECTS)
 	@$(CHOSEN_GPP) $(CFLAGS_COMMON) $(CFLAGS_INCLUDE_DIRS) $(APP_PROJECT_INCLUDE_DIRS) $(addsuffix $(SUFFIX_SELECTED).o,$(addprefix ./,$^)) $(APP_PROJECT_LIBRARIES) -o $(APP_PROJECT_EXECUTABLE)
 
 #######################################################################################################
-INCLUDE_DIRS_UWB=			$(GLM_INCLUDE_DIRS) \
-							-I./uwb_location \
-							-I./uwb_location/lib \
-							-I./common
-
 UWB_NAME=					uwb_location
+
+INCLUDE_DIRS_UWB=			$(GLM_INCLUDE_DIRS) \
+							-I./$(UWB_NAME) \
+							-I./$(UWB_NAME)/lib \
+							-I./common
 
 LIBUWB_LOC_INCLUDE_DIRS=	$(INCLUDE_DIRS_UWB)
 LIBUWB_LOC_SOURCES=			$(shell find ./$(UWB_NAME)/lib/ -name '*.c*')
@@ -150,13 +150,13 @@ UwbLocation: $(UWB_LOC_OBJECTS)
 	@$(CHOSEN_GPP) $(CFLAGS_COMMON) $(CFLAGS_INCLUDE_DIRS) $(UWB_LOC_INCLUDE_DIRS) $(addsuffix $(SUFFIX_SELECTED).o,$(addprefix ./,$^)) $(UWB_LOC_LIBRARIES) -o $(UWB_LOC_EXECUTABLE)
 
 #######################################################################################################
-INCLUDE_DIRS_PIX=			$(GLM_INCLUDE_DIRS) \
-							-I./pix_location \
-							-I./pix_location/lib \
-							-I./common \
-							-I./libraries/pixy/$(SUFFIX_SELECTED)/
-
 PIX_NAME=					pix_location
+
+INCLUDE_DIRS_PIX=			$(GLM_INCLUDE_DIRS) \
+							-I./$(PIX_NAME) \
+							-I./$(PIX_NAME)/lib \
+							-I./common
+#							-I./libraries/pixy/$(SUFFIX_SELECTED)/
 
 LIBPIX_LOC_INCLUDE_DIRS=	$(INCLUDE_DIRS_PIX)
 LIBPIX_LOC_SOURCES=			$(shell find ./$(PIX_NAME)/lib/ -name '*.c*')
@@ -188,15 +188,15 @@ PixLocation: $(PIX_LOC_OBJECTS)
 	@$(CHOSEN_GPP) $(CFLAGS_COMMON) $(CFLAGS_INCLUDE_DIRS) $(PIX_LOC_INCLUDE_DIRS) $(addsuffix $(SUFFIX_SELECTED).o,$(addprefix ./,$^)) $(PIX_LOC_LIBRARIES) -o $(PIX_LOC_EXECUTABLE)
 
 #######################################################################################################
-INCLUDE_DIRS_SVR=			$(GLM_INCLUDE_DIRS) \
-							-I./server \
-							-I./server/lib \
-							-I./common
-
 SVR_NAME=					server
 
+INCLUDE_DIRS_SVR=			$(GLM_INCLUDE_DIRS) \
+							-I./$(SVR_NAME) \
+							-I./$(SVR_NAME)/lib \
+							-I./common
+
 LIBSVR_INCLUDE_DIRS=		$(INCLUDE_DIRS_SVR)
-LIBSVRC_SOURCES=			$(shell find ./$(SVR_NAME)/lib/ -name '*.c*')
+LIBSVR_SOURCES=				$(shell find ./$(SVR_NAME)/lib/ -name '*.c*')
 LIBSVR_OBJ_DIR=				$(MAIN_BASE_DIR)lib$(SVR_NAME)/
 LIBSVR_OBJECTS=				$(addprefix $(LIBSVR_OBJ_DIR),$(LIBSVR_SOURCES))
 LIBSVR_LIBRARY=				$(MAIN_BASE_DIR)lib$(SVR_NAME)$(SUFFIX_SELECTED).a
@@ -221,6 +221,42 @@ Svr: DEFAULT_CLEARER=$(SVR_OBJ_DIR)
 Svr: COMMON_INCLUDES=$(SVR_INCLUDE_DIRS)
 Svr: $(SVR_OBJECTS)
 	@$(CHOSEN_GPP) $(CFLAGS_COMMON) $(CFLAGS_INCLUDE_DIRS) $(SVR_INCLUDE_DIRS) $(addsuffix $(SUFFIX_SELECTED).o,$(addprefix ./,$^)) $(SVR_LIBRARIES) -o $(SVR_EXECUTABLE)
+
+#######################################################################################################
+PPR_NAME=					path_processor
+
+INCLUDE_DIRS_PPR=			$(GLM_INCLUDE_DIRS) \
+							-I./$(PPR_NAME) \
+							-I./$(PPR_NAME)/lib \
+							-I./common
+
+
+LIBPPR_INCLUDE_DIRS=		$(INCLUDE_DIRS_PPR)
+LIBPPRC_SOURCES=			$(shell find ./$(PPR_NAME)/lib/ -name '*.c*')
+LIBPPR_OBJ_DIR=				$(MAIN_BASE_DIR)lib$(PPR_NAME)/
+LIBPPR_OBJECTS=				$(addprefix $(LIBPPR_OBJ_DIR),$(LIBPPR_SOURCES))
+LIBPPR_LIBRARY=				$(MAIN_BASE_DIR)lib$(PPR_NAME)$(SUFFIX_SELECTED).a
+LIBPPR_DEFINES=				$(COMMON_DEFINITIONS)
+
+PPR_LIBRARIES=				$(COMMON_LIBRARIES) \
+							$(LIBPPR_LIBRARY) 
+PPR_INCLUDE_DIRS=			$(INCLUDE_DIRS_PPR)
+PPR_SOURCES=				$(shell find ./$(PPR_NAME)/ ! -path "./$(PPR_NAME)/lib/*" -name '*.c*')
+PPR_OBJ_DIR=				$(MAIN_BASE_DIR)obj/$(PPR_NAME)/
+PPR_OBJECTS=				$(addprefix $(PPR_OBJ_DIR),$(PPR_SOURCES))
+PPR_EXECUTABLE=				$(MAIN_BASE_DIR)$(PPR_NAME)$(SUFFIX_SELECTED).bin
+PPR_DEFINES=				$(COMMON_DEFINITIONS) \
+							-DPPR
+
+LibPpr: DEFAULT_CLEARER=$(LIBPPR_OBJ_DIR)
+LibPpr: COMMON_INCLUDES=$(LIBPPR_INCLUDE_DIRS)
+LibPpr: $(LIBPPR_OBJECTS)
+	@$(ARCHIVE) $(LIBPPR_LIBRARY) $(addsuffix $(SUFFIX_SELECTED).o,$(addprefix ./,$^)) > /dev/null
+
+Ppr: DEFAULT_CLEARER=$(PPR_OBJ_DIR)
+Ppr: COMMON_INCLUDES=$(PPR_INCLUDE_DIRS)
+Ppr: $(PPR_OBJECTS)
+	@$(CHOSEN_GPP) $(CFLAGS_COMMON) $(CFLAGS_INCLUDE_DIRS) $(PPR_INCLUDE_DIRS) $(addsuffix $(SUFFIX_SELECTED).o,$(addprefix ./,$^)) $(PPR_LIBRARIES) -o $(PPR_EXECUTABLE)
 
 #######################################################################################################
 TEST_INCLUDE_DIRS=			$(INCLUDE_DIRS_PROJECT) \
@@ -269,7 +305,7 @@ ev3_d ev3_td rsp_d rsp_td d td: CFLAGS_SELECTED=$(CFLAGS_COMBINED_DEBUG)
 ev3_r ev3_tr rsp_r rsp_tr r tr: SUFFIX_SELECTED=$(SUFFIX_RELEASE)$(CHOSEN_NAM)
 ev3_r ev3_tr rsp_r rsp_tr r tr: CFLAGS_SELECTED=$(CFLAGS_COMBINED_RELEASE)
 
-ev3_d ev3_r rsp_d rsp_r d r: GLM LibCommon LibProject AppProject LibUwbLoc UwbLocation LibPixLoc PixLocation LibSvr Svr
+ev3_d ev3_r rsp_d rsp_r d r: GLM LibCommon LibProject AppProject LibUwbLoc UwbLocation LibPixLoc PixLocation LibSvr Svr LibPpr Ppr
 
-ev3_td ev3_tr rsp_tr rsp_td td tr: GoogleTest GoogleMock GLM LibCommon LibProject LibUwbLoc LibPixLoc LibSvr TestProject
+ev3_td ev3_tr rsp_tr rsp_td td tr: GoogleTest GoogleMock GLM LibCommon LibProject LibUwbLoc LibPixLoc LibSvr LibPpr TestProject
 #	valgrind $(TEST_EXECUTABLE)
