@@ -65,8 +65,8 @@ public:
 
 	template <class T> inline T& Convert()
 	{
-		//e.g. int* = Convert<int*>() // array of integers
-		//or Convert<int*>()[0] = 5;
+		// e.g. int* = Convert<int*>() // array of integers
+		// or Convert<int*>()[0] = 5;
 		return (T)_data;
 	}
 };
@@ -77,12 +77,12 @@ class RawQueue
 public:
 	typedef QueueItem<max_data_size_bytes> _Item;
 private:
-	size_t count;//need to prevent overwrite of non-read items
+	size_t count;// need to prevent overwrite of non-read items
 	_Item* ptr_pushed;
 	_Item* ptr_popped;
 	_Item* items_begin;
 	_Item* items_end;
-	_Item* items;//Item items[queue_size];
+	_Item* items;// Item items[queue_size];
 public:
 	RawQueue()
 	{
@@ -231,7 +231,7 @@ public:
 		queue_shared_memory = my_shm_create<_RawQueue*>(queue_name, _RawQueue::GetSizeBytes(), shm_fd);
 		if (queue_shared_memory)
 		{
-			//use C++98 placement new to call constructor when new shared memory region has been created
+			// use C++98 placement new to call constructor when new shared memory region has been created
 			new (queue_shared_memory) _RawQueue();
 		}
 		else
