@@ -8,7 +8,7 @@ struct Location {
 
 class LocationProvider {
 	public:
-		virtual Location getLocation() = 0;
+		virtual Location getLocation(int id) = 0;
 };
 
 #endif
