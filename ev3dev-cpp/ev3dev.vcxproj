@@ -209,6 +209,7 @@
     <ClInclude Include="path_processor\lib\Environment\Environment.hxx" />
     <ClInclude Include="path_processor\lib\JumpPointSearch\JPS.hxx" />
     <ClInclude Include="path_processor\lib\PathProcessor\PathProcessor.hxx" />
+    <ClInclude Include="path_processor\lib\PathProcessor\PathProcessorQueue.hxx" />
     <ClInclude Include="path_processor\lib\StringSplitter\StringSplitter.hxx" />
     <ClInclude Include="project\lib\configuration\CalibrationLoader.hxx" />
     <ClInclude Include="project\lib\ev3dev\ev3dev.hxx" />

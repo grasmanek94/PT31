@@ -5,6 +5,9 @@
 
 #include "QueueItem.hxx"
 
+#include <iostream>
+#include <string>
+
 template <size_t max_data_size_bytes = 2048, size_t max_items = 128>
 class RawQueue
 {
@@ -16,16 +19,23 @@ private:
 	_Item* ptr_popped;
 	_Item* items_begin;
 	_Item* items_end;
-	_Item* items; // Item items[queue_size];
+	_Item items[max_items]; // Item items[queue_size];
 public:
 	RawQueue()
 	{
+		std::cout << "count = 0;..." << std::endl;
 		count = 0;
-		memset(items, 0, sizeof(_Item)*max_items);
+		std::cout << "memset(items, 0, sizeof(_Item)*max_items);" << std::endl;
+		memset(items, 0, sizeof(items));
+		std::cout << "ptr_pushed = &items[0];" << std::endl;
 		ptr_pushed = &items[0];
+		std::cout << "ptr_popped = &items[0];" << std::endl;
 		ptr_popped = &items[0];
+		std::cout << "items_begin = &items[0];" << std::endl;
 		items_begin = &items[0];
+		std::cout << "items_end = &items[max_items - 1];" << std::endl;
 		items_end = &items[max_items - 1];
+		std::cout << "CONSTRUCTED" << std::endl;
 	}
 
 	inline size_t Count() const
@@ -74,7 +84,17 @@ public:
 
 	static size_t GetSizeBytes()
 	{
-		return sizeof(RawQueue) + sizeof(_Item) * max_items - sizeof(_Item*);
+		return sizeof(RawQueue);
+	}
+
+	size_t MaxCount() const
+	{
+		return max_items;
+	}
+
+	size_t MaxBytesPerElem() const
+	{
+		return max_data_size_bytes;
 	}
 };
 

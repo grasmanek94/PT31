@@ -13,14 +13,26 @@ int main()
 	if (ppq.Request().BeginOperation())
 	{
 		std::cout << "SUCCESS: ppq.Request().BeginOperation()" << std::endl;
+
+		std::cout << "DOING: PPQ::MyRawQueue* q = ppq.Request().GetQueue()" << std::endl;
 		PPQ::MyRawQueue* q = ppq.Request().GetQueue();
 
-		PPQ::MyQueueItem item;	
+		std::cout << "DOING: PPQ::MyQueueItem item" << std::endl;
+		PPQ::MyQueueItem item;
+
+		std::cout << "DOING: JPS::Position* arr = item.template Convert<JPS::Position*>()" << std::endl;
 		JPS::Position* arr = item.template Convert<JPS::Position*>();
+
+		std::cout << "DOING: arr[0] = JPS::Pos(1, 1)" << std::endl;
 		arr[0] = JPS::Pos(1, 1);
+
+		std::cout << "DOING: arr[1] = JPS::Pos(32, 32)" << std::endl;
 		arr[1] = JPS::Pos(32, 32);
+
+		std::cout << "DOING: item.SetUsedDataSize(sizeof(JPS::Position) * 2)" << std::endl;
 		item.SetUsedDataSize(sizeof(JPS::Position) * 2);
 
+		std::cout << "TRYING: q->Push(&item)" << std::endl;
 		if (q->Push(&item))
 		{
 			std::cout << "SUCCESS: q->Push(&item)" << std::endl;

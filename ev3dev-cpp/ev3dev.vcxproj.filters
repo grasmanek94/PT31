@@ -737,6 +737,9 @@
     <ClInclude Include="path_processor\lib\PathProcessor\PathProcessor.hxx">
       <Filter>path_processor\lib\PathProcessor</Filter>
     </ClInclude>
+    <ClInclude Include="path_processor\lib\PathProcessor\PathProcessorQueue.hxx">
+      <Filter>path_processor\lib\PathProcessor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="libraries\glm\glm\gtx\closest_point.inl">
