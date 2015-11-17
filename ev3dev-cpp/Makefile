@@ -205,6 +205,7 @@ SRVR_NAME=					server
 
 INCLUDE_DIRS_SRVR=			-I./$(SRVR_NAME) \
 							-I./$(SRVR_NAME)/lib \
+							-I./$(PPR_NAME)/lib \
 							$(COMMON_INCLUDE_DIRS)
 
 LIBSRVR_INCLUDE_DIRS=		$(INCLUDE_DIRS_SRVR)
@@ -216,7 +217,9 @@ LIBSRVR_LIBRARY=			$(MAIN_BASE_DIR)lib$(LIBSRVR_NAME).a
 LIBSRVR_DEFINES=			$(COMMON_DEFINITIONS)
 
 SRVR_LIBRARIES=				$(COMMON_LIBRARIES) \
-							-l$(LIBSRVR_NAME)
+							-l$(LIBSRVR_NAME) \
+							-l$(LIBPPR_NAME)
+							
 SRVR_INCLUDE_DIRS=			$(INCLUDE_DIRS_SRVR)
 SRVR_SOURCES=				$(shell find ./$(SRVR_NAME)/ ! -path "./$(SRVR_NAME)/lib/*" -name '*.c*')
 SRVR_OBJ_DIR=				$(MAIN_BASE_DIR)obj/$(SRVR_NAME)/
