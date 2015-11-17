@@ -1,6 +1,7 @@
 cmake_minimum_required (VERSION 3.3)
 project (pixylocation)
 
+#TODO: require libpixyusb
 #find_package (libpixyusb REQUIRED)
 
 option (TARGET_RPI
