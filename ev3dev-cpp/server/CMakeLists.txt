@@ -1,11 +1,16 @@
-cmake_minimum_required (VERSION 3.3)
-project (pixylocation)
+cmake_minimum_required (VERSION 3.0)
+project (tmd)
+
+set (CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake" )
+set(BOOST_LIBS thread system chrono)
 
 #TODO: require libpixyusb
 #find_package (libpixyusb REQUIRED)
+find_package ( libusb-1.0 REQUIRED )
+find_package ( Boost 1.49 COMPONENTS ${BOOST_LIBS} REQUIRED)
 
-option (TARGET_RPI
-        "Compile for raspberry pi" OFF)
+#option (TARGET_RPI
+#        "Compile for raspberry pi" OFF)
 
 set (LIBRARY_OUTPUT_PATH "build/x86")
 set (CMAKE_FILES_DIRECTORY "build/CMakeFiles")
@@ -16,9 +21,16 @@ if (TARGET_RPI)
 	set (LIBRARY_OUTPUT_PATH "build/rpi")
 endif (TARGET_RPI)
 
-include_directories (include
-				     /usr/include/libusb-1.0)
+include_directories ("src"
+                     "include"
+				     "/usr/include/libusb-1.0")
 set (CMAKE_CXX_FLAGS "-Werror -Wall")
-set (sources "src/PixyLocationProvider.cxx")
-add_library (pixylocation ${sources})
+set (sources "src/PixyLocationProvider.cxx" 
+             "src/main.cxx")
+add_executable (tmd ${sources})
+target_link_libraries(tmd pixyusb)
+target_link_libraries(tmd usb-1.0)
+
+find_package(Boost COMPONENTS ${BOOST_LIBS} REQUIRED)
+target_link_libraries(tmd ${Boost_LIBRARIES})
 
