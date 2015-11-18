@@ -62,8 +62,10 @@
     <ClInclude Include="common\interfaces\IRobot.hxx" />
     <ClInclude Include="common\interfaces\ISensing.hxx" />
     <ClInclude Include="common\interprocess_queue\IPCQueue.hxx" />
+    <ClInclude Include="common\interprocess_queue\IPCShmQueue.hxx" />
     <ClInclude Include="common\interprocess_queue\QueueItem.hxx" />
     <ClInclude Include="common\interprocess_queue\RawQueue.hxx" />
+    <ClInclude Include="common\interprocess_queue\RawShmQueue.hxx" />
     <ClInclude Include="common\interprocess_queue\SharedMemoryHelper.hxx" />
     <ClInclude Include="common\JumpPointSearch\JPS.hxx" />
     <ClInclude Include="common\StringSplitter\StringSplitter.hxx" />

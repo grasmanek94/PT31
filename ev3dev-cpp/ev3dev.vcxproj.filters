@@ -740,6 +740,12 @@
     <ClInclude Include="common\StringSplitter\StringSplitter.hxx">
       <Filter>common\StringSplitter</Filter>
     </ClInclude>
+    <ClInclude Include="common\interprocess_queue\RawShmQueue.hxx">
+      <Filter>common\interprocess_queue</Filter>
+    </ClInclude>
+    <ClInclude Include="common\interprocess_queue\IPCShmQueue.hxx">
+      <Filter>common\interprocess_queue</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="libraries\glm\glm\gtx\closest_point.inl">
