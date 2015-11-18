@@ -78,13 +78,20 @@ ApplicationWindow {
         anchors.left: parent.left
         anchors.right: parent.right
 
-        Flickable {
+        ScrollView {
+            id: logView
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            anchors.leftMargin: 10
+            anchors.rightMargin: 10
+            anchors.bottomMargin: 10
+
             Text {
                 id: logBox
-
-                text: "Log"
-
-                anchors.fill: parent
+                text: qsTr("Logghjsdd\nddd\ndddddd\n\n\n\n\nddddddddddd\nddddddddddd")
+                textFormat: Text.PlainText
             }
         }
     }
