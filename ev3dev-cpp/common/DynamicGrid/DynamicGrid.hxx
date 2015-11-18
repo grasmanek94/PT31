@@ -42,7 +42,7 @@ public:
 	std::string ToASCII(JPS::PathVector& path
 		//, char wall = '#'/*-79 178*/, char solution = '×'/*-98 158*/
 		) const;
-
+	std::string ToASCII(JPS::Position* path, size_t size) const;
 };
 
 #endif

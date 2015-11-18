@@ -150,3 +150,40 @@ std::string DynamicGrid::ToASCII(JPS::PathVector& path) const
 
 	return output;
 }
+
+std::string DynamicGrid::ToASCII(JPS::Position* path, size_t size) const
+{
+	std::vector<std::string> map;
+	map.resize(GetHeight());
+	for (std::vector<std::string>::iterator it = map.begin(); it != map.end(); ++it)
+	{
+		it->assign(GetWidth(), ' ');
+	}
+
+	for (size_t y = 0; y < GetHeight(); ++y)
+	{
+		for (size_t x = 0; x < GetWidth(); ++x)
+		{
+			map[y][x] = environment[x][y] ? '|' : ' ';
+		}
+	}
+
+	for (size_t i = 0; i < size; ++i)
+	{
+		//size_t y = it->y;
+		//size_t x = it->x;
+		//if (x < width && y < height)
+		//{
+		map[path[i].y][path[i].x] = '#';
+		//}
+	}
+
+	std::string output;
+
+	for (std::vector<std::string>::iterator it = map.begin(); it != map.end(); ++it)
+	{
+		output += *it + "\n";
+	}
+
+	return output;
+}

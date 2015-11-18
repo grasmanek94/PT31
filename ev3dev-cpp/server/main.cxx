@@ -3,39 +3,32 @@
 
 #include <JumpPointSearch/JPS.hxx>
 #include <PathProcessor/PathProcessorQueue.hxx>
+#include <DynamicGrid/DynamicGrid.hxx>
+#include <Environment/Environment.hxx>
 
 typedef PathProcessorQueue<> PPQ;
 PPQ ppq;
 
 int main()
 {
-	std::cout << "TRYING: ppq.Request().BeginOperation()" << std::endl;
 	if (ppq.Request().BeginOperation())
 	{
-		std::cout << "SUCCESS: ppq.Request().BeginOperation()" << std::endl;
-
-		std::cout << "DOING: PPQ::MyRawQueue* q = ppq.Request().GetQueue()" << std::endl;
 		PPQ::MyRawQueue* req_q = ppq.Request().GetQueue();
 
-		std::cout << "DOING: PPQ::MyQueueItem item" << std::endl;
 		PPQ::MyQueueItem item;
 
-		std::cout << "DOING: JPS::Position* arr = item.template Convert<JPS::Position*>()" << std::endl;
 		JPS::Position* arr = item.template Convert<JPS::Position*>();
 
-		std::cout << "DOING: arr[0] = JPS::Pos(1, 1)" << std::endl;
-		arr[0] = JPS::Pos(1, 1);
+		arr[0] = JPS::Pos(2, 2);
 
-		std::cout << "DOING: arr[1] = JPS::Pos(32, 32)" << std::endl;
-		arr[1] = JPS::Pos(32, 32);
+		arr[1] = JPS::Pos(30, 30);
 
-		std::cout << "DOING: item.SetUsedDataSize(sizeof(JPS::Position) * 2)" << std::endl;
 		item.SetUsedDataSize(sizeof(JPS::Position) * 2);
 
-		std::cout << "TRYING: req_q->Push(&item)" << std::endl;
 		if (req_q->Push(&item))
 		{
 			std::cout << "SUCCESS: req_q->Push(&item)" << std::endl;
+			std::cout << item << std::endl;
 			ppq.Request().EndOperation();
 
 			while (true)
@@ -60,6 +53,10 @@ int main()
 							{
 								std::cout << "Element " << i << " POS:(" << calculated_positions[i].x << "," << calculated_positions[i].y << ")" << std::endl;
 							}
+							if (elems)
+							{
+								std::cout << DynamicGrid(Environment::Map).ToASCII(calculated_positions, elems) << std::endl;
+							}
 							break;
 						}
 						else
@@ -73,10 +70,6 @@ int main()
 					}
 					ppq.Calculated().EndOperation();
 				}
-				else
-				{
-					std::cout << "FAILED: ppq.Calculated().BeginOperation()" << std::endl;
-				}
 				sleep(5);
 			}
 		}
@@ -85,10 +78,6 @@ int main()
 			std::cout << "FAILED: req_q->Push(&item)" << std::endl;
 			ppq.Request().EndOperation();
 		}
-	}
-	else
-	{		
-		std::cout << "FAILED: PPQ.Request().BeginOperation()" << std::endl;
 	}
 	return 0;
 }

@@ -12,6 +12,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="common\dummy.cxx" />
+    <ClCompile Include="common\DynamicGrid\DynamicGrid.cxx" />
+    <ClCompile Include="common\Environment\Environment.cxx" />
+    <ClCompile Include="common\StringSplitter\StringSplitter.cxx" />
     <ClCompile Include="libraries\googlemock\src\gmock-all.cc" />
     <ClCompile Include="libraries\googlemock\src\gmock-cardinalities.cc" />
     <ClCompile Include="libraries\googlemock\src\gmock-internal-utils.cc" />
@@ -31,9 +34,6 @@
     <ClCompile Include="libraries\__linux__\glm.cpp" />
     <ClCompile Include="libraries\__linux__\google_mock.cc" />
     <ClCompile Include="libraries\__linux__\google_test.cc" />
-    <ClCompile Include="path_processor\lib\DynamicGrid\DynamicGrid.cxx" />
-    <ClCompile Include="path_processor\lib\Environment\Environment.cxx" />
-    <ClCompile Include="path_processor\lib\StringSplitter\StringSplitter.cxx" />
     <ClCompile Include="path_processor\main.cxx" />
     <ClCompile Include="pix_location\lib\somelib\somelib.cxx" />
     <ClCompile Include="pix_location\main.cxx" />
@@ -52,6 +52,8 @@
     <ClCompile Include="uwb_location\main.cxx" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="common\DynamicGrid\DynamicGrid.hxx" />
+    <ClInclude Include="common\Environment\Environment.hxx" />
     <ClInclude Include="common\interfaces\ICalibration.hxx" />
     <ClInclude Include="common\interfaces\IDriveControl.hxx" />
     <ClInclude Include="common\interfaces\IGripControl.hxx" />
@@ -63,6 +65,8 @@
     <ClInclude Include="common\interprocess_queue\QueueItem.hxx" />
     <ClInclude Include="common\interprocess_queue\RawQueue.hxx" />
     <ClInclude Include="common\interprocess_queue\SharedMemoryHelper.hxx" />
+    <ClInclude Include="common\JumpPointSearch\JPS.hxx" />
+    <ClInclude Include="common\StringSplitter\StringSplitter.hxx" />
     <ClInclude Include="libraries\glm\glm\common.hpp" />
     <ClInclude Include="libraries\glm\glm\exponential.hpp" />
     <ClInclude Include="libraries\glm\glm\ext.hpp" />
@@ -205,12 +209,8 @@
     <ClInclude Include="libraries\googletest\include\gtest\internal\gtest-tuple.h" />
     <ClInclude Include="libraries\googletest\include\gtest\internal\gtest-type-util.h" />
     <ClInclude Include="libraries\googletest\src\gtest-internal-inl.h" />
-    <ClInclude Include="path_processor\lib\DynamicGrid\DynamicGrid.hxx" />
-    <ClInclude Include="path_processor\lib\Environment\Environment.hxx" />
-    <ClInclude Include="path_processor\lib\JumpPointSearch\JPS.hxx" />
     <ClInclude Include="path_processor\lib\PathProcessor\PathProcessor.hxx" />
     <ClInclude Include="path_processor\lib\PathProcessor\PathProcessorQueue.hxx" />
-    <ClInclude Include="path_processor\lib\StringSplitter\StringSplitter.hxx" />
     <ClInclude Include="project\lib\configuration\CalibrationLoader.hxx" />
     <ClInclude Include="project\lib\ev3dev\ev3dev.hxx" />
     <ClInclude Include="project\lib\ev3\EV3Calibration.hxx" />

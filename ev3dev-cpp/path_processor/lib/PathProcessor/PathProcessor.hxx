@@ -5,8 +5,8 @@
 #include <string>
 
 #include <JumpPointSearch/JPS.hxx>
-#include "lib/DynamicGrid/DynamicGrid.hxx"
-#include "lib/Environment/Environment.hxx"
+#include "DynamicGrid/DynamicGrid.hxx"
+#include "Environment/Environment.hxx"
 #include "PathProcessorQueue.hxx"
 
 template <size_t max_data_size_bytes = 2048, size_t max_items = 128>
@@ -46,72 +46,56 @@ public:
 	{
 		while (true)
 		{
-			std::cout << "TRYING: queues.Request().BeginOperation()" << std::endl;
 			bool EndedOperation = false;
 			if (queues.Request().BeginOperation())
 			{
-				std::cout << "SUCCESS: queues.Request().BeginOperation()" << std::endl;
 				MyQueue* req_q = queues.Request().GetQueue();
 
 				if (req_q->Count())
 				{
-					std::cout << "SUCCESS: req_q->Count()" << std::endl;
 					if (req_q->Pop(temp_item))
 					{
-						std::cout << "SUCCESS: req_q->Pop(temp_item) [" << temp_item->GetUsedDataSize() << "]" << std::endl;
 						if (temp_item->GetUsedDataSize() >= (sizeof(JPS::Position) * 2))
 						{
-							std::cout << "SUCCESS: temp_item->GetUsedDataSize() >= (sizeof(JPS::Position) * 2)" << std::endl;
 							JPS::Position* pos_array = temp_item->template Convert<JPS::Position*>();
 							JPS::Position start(pos_array[0]);
 							JPS::Position target(pos_array[1]);
 
 							EndedOperation = true;
-							std::cout << "DOING: queues.Request().EndOperation()" << std::endl;
 							queues.Request().EndOperation();
 
 							temp_path->clear();
 
-							std::cout << "DOING: grid->JumpNavigate(start, target, *temp_path)" << std::endl;
-							bool found = grid->JumpNavigate(start, target, *temp_path);
+							//bool found = grid->JumpNavigate(start, target, *temp_path);
+							bool found = grid->FullNavigate(start, target, *temp_path);
 
 							temp_item->SetActionIdentifier(found);
+
 							size_t data_size = temp_path->size() * sizeof(JPS::Position);
+							temp_item->ReInit(0, 0, data_size, temp_path->data());
 							memcpy(temp_item->template Convert<JPS::Position*>(), temp_path->data(), data_size);
 							temp_item->SetUsedDataSize(data_size);
 
-							std::cout << "DOING: queues.Calculated().BeginOperation()" << std::endl;
 							queues.Calculated().BeginOperation();
-							std::cout << "DOING: queues.Calculated().GetQueue()->Push(temp_item)" << std::endl;
+							std::cout << *temp_item << std::endl;
 							queues.Calculated().GetQueue()->Push(temp_item);
-							std::cout << "DOING: queues.Calculated().EndOperation()" << std::endl;
 							queues.Calculated().EndOperation();
-						}
-						else
-						{
-							std::cout << "FAILED: temp_item->GetUsedDataSize() >= (sizeof(JPS::Position) * 2)" << std::endl;
+
+							if (found)
+							{
+								std::cout << grid->ToASCII(temp_item->template Convert<JPS::Position*>(), data_size / sizeof(JPS::Position)) << std::endl;
+							}
 						}
 					}
-					else
-					{
-						std::cout << "FAILED: req_q->Pop(temp_item)" << std::endl;
-					}
-				}
-				else
-				{
-					std::cout << "FAILED: req_q->Count()" << std::endl;
 				}
 			}
 			else
 			{
 				EndedOperation = true;
-				std::cout << "FAILED: queues.Request().BeginOperation()" << std::endl;
 			}
 			if (!EndedOperation)
 			{
-				std::cout << "DOING: queues.Request().EndOperation()" << std::endl;
 				queues.Request().EndOperation();
-				std::cout << "DONE: queues.Request().EndOperation()" << std::endl;
 			}
 			sleep(5);
 		}

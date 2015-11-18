@@ -34,13 +34,13 @@ public:
 			return false;
 		}
 
-		memcpy(&item[popped], item, sizeof(_Item));
+		memcpy(&items[pushed], item, sizeof(_Item));
 
 		++count;
 
-		if (++popped == max_items)
+		if (++pushed == max_items)
 		{
-			popped = 0;
+			pushed = 0;
 		}
 		return true;
 	}
@@ -52,12 +52,12 @@ public:
 			return false;
 		}
 
-		memcpy(item, &items[pushed], sizeof(_Item));
+		memcpy(item, &items[popped], sizeof(_Item));
 
 		--count;
-		if (++pushed == max_items)
+		if (++popped == max_items)
 		{
-			pushed = 0;
+			popped = 0;
 		}
 		return true;
 	}
