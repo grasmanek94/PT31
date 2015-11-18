@@ -1,34 +1,27 @@
 #ifndef IPCQUEUE_H
 #define IPCQUEUE_H
 
-#include <iostream>
-
 #include <string>
 #include <new>
 #include <semaphore.h>
 
-#include <sys/stat.h>
-#include <sys/file.h>
-#include <fcntl.h>
-
 #include "SharedMemoryHelper.hxx"
 #include "QueueItem.hxx"
-#include "RawQueue.hxx"
+#include "RawShmQueue.hxx"
 
 template <size_t max_data_size_bytes = 2048, size_t max_items = 128>
-class IPCQueue
+class IPCShmQueue
 {
 public:
-	typedef RawQueue<max_data_size_bytes, max_items> _RawQueue;
+	typedef RawShmQueue<max_data_size_bytes, max_items> _RawQueue;
 	typedef typename _RawQueue::_Item _Item;
 private:
 	_RawQueue* queue_shared_memory;
 	sem_t* queue_operation_semaphore;
 	sem_t* memory_prepare_semaphore;
+	sem_t* queue_counter_semaphore;
 	int shm_fd;
 	std::string queue_name;
-	int deletion_fd_protection;
-	bool creator;
 
 	void PrepSem(const std::string& name, sem_t** semaphore, int initial)
 	{
@@ -49,36 +42,15 @@ private:
 		return queue_shared_memory;
 	}
 public:
-	IPCQueue(const std::string& queue_name)
+	IPCShmQueue(const std::string& queue_name)
 		:	queue_shared_memory(NULL),
 			queue_operation_semaphore(SEM_FAILED),
 			memory_prepare_semaphore(SEM_FAILED),
+			queue_counter_semaphore(SEM_FAILED),
 			shm_fd(-1),
-			queue_name(queue_name),
-			deletion_fd_protection(-1),
-			creator(false)
+			queue_name(queue_name)
 	{
-
-		deletion_fd_protection = open(("/tmp/deletion_fd_protection.ipc_lockcheck." + queue_name).c_str(), O_CREAT | O_RDWR);
-		if (deletion_fd_protection == -1)
-		{
-			throw std::exception(/*"Cannot access critical lock file"*/);
-		}
-
-		if (flock(deletion_fd_protection, LOCK_EX) == 0)
-		{
-			std::cout << "CTOR: UNLINKING OLD LOCKS" << std::endl;
-			creator = true;
-
-			shm_unlink(queue_name.c_str());
-			sem_unlink((queue_name).c_str());
-			sem_unlink(("SHM_PROT_" + queue_name).c_str());
-		}
-		else
-		{
-			std::cout << "CTOR: USING OLD LOCKS: " << errno << std::endl;
-		}
-
+		PrepSem("QUEUE_CTR_" + queue_name, &queue_counter_semaphore, 0);
 		PrepSem("SHM_PROT_" + queue_name, &memory_prepare_semaphore, 1);
 		PrepSem(queue_name, &queue_operation_semaphore, 1);
 
@@ -119,38 +91,32 @@ public:
 
 	bool Push(_Item* item)
 	{
-		return Queue()->Push(item);
+		return Queue()->Push(item, queue_counter_semaphore);
 	}
 
 	bool Pop(_Item* item)
 	{
-		return Queue()->Pop(item);
+		return Queue()->Pop(item, queue_counter_semaphore);
 	}
 
 	size_t Count()
 	{
-		return Queue()->Count();
+		return Queue()->Count(queue_counter_semaphore);
 	}
 
-	~IPCQueue()
+	~IPCShmQueue()
 	{
+		/*close(shm_fd);
+		shm_unlink(queue_name.c_str());
+
 		sem_close(queue_operation_semaphore);
-		sem_close(memory_prepare_semaphore);
-		close(shm_fd);
+		sem_unlink(queue_name.c_str());
 
-		if (deletion_fd_protection != -1)
-		{
-			if (!creator && flock(deletion_fd_protection, LOCK_EX) == 0)
-			{
-				std::cout << "DTOR: UNLINKING OLD LOCKS" << std::endl;
+		sem_close(memory_prepare_semaphore);		
+		sem_unlink(("SHM_PROT_" + queue_name).c_str());
 
-				shm_unlink(queue_name.c_str());
-				sem_unlink(queue_name.c_str());
-				sem_unlink(("SHM_PROT_" + queue_name).c_str());
-			}
-
-			close(deletion_fd_protection);
-		}
+		sem_close(queue_counter_semaphore);
+		sem_unlink(("QUEUE_CTR_" + queue_name).c_str());*/
 	}
 };
 

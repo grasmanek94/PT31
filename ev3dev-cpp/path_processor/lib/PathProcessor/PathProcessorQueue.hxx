@@ -9,7 +9,7 @@ class PathProcessorQueue
 public:
 	typedef IPCQueue< max_data_size_bytes, max_items> MyIPCQueue;
 	typedef typename MyIPCQueue::_RawQueue MyRawQueue;
-	typedef typename MyRawQueue::_Item MyQueueItem;
+	typedef typename MyIPCQueue::_Item MyQueueItem;
 
 private:
 
@@ -23,14 +23,14 @@ public:
 			calculatedQueue("PathProcessor.calculatedQueue")
 	{ }
 
-	MyIPCQueue& Request()
+	MyIPCQueue* Request()
 	{
-		return requestQueue;
+		return &requestQueue;
 	}
 
-	MyIPCQueue& Calculated()
+	MyIPCQueue* Calculated()
 	{
-		return calculatedQueue;
+		return &calculatedQueue;
 	}
 };
 #endif

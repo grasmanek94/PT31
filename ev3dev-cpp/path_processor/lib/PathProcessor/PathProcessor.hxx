@@ -22,6 +22,8 @@ private:
 	MyQueueItem* temp_item;
 	JPS::PathVector* temp_path;
 
+	typename PPQ::MyIPCQueue* request_queue;
+	typename PPQ::MyIPCQueue* calculated_queue;
 public:
 	PathProcessor(const std::string& base_map = Environment::Map)
 		:	grid(new DynamicGrid(base_map)),
@@ -44,58 +46,53 @@ public:
 
 	void Run()
 	{
+		request_queue = queues.Request();
+		calculated_queue = queues.Calculated();
+
 		while (true)
 		{
-			bool EndedOperation = false;
-			if (queues.Request().BeginOperation())
-			{
-				MyQueue* req_q = queues.Request().GetQueue();
+			request_queue->Wait();
+			calculated_queue->Wait();
 
-				if (req_q->Count())
+			std::cout << "R SIZE: " << request_queue->Count() << std::endl;
+			std::cout << "C SIZE: " << calculated_queue->Count() << std::endl;
+			bool pop_result = request_queue->Pop(temp_item);
+
+			calculated_queue->Post();
+			request_queue->Post();
+
+			if (pop_result && temp_item->GetUsedDataSize() >= (sizeof(JPS::Position) * 2))
+			{
+				JPS::Position* pos_array = temp_item->template Convert<JPS::Position*>();
+				JPS::Position start(pos_array[0]);
+				JPS::Position target(pos_array[1]);
+
+				temp_path->clear();
+
+				//bool found = grid->JumpNavigate(start, target, *temp_path);
+				bool found = grid->FullNavigate(start, target, *temp_path);
+
+				temp_item->SetActionIdentifier(found);
+
+				size_t data_size = temp_path->size() * sizeof(JPS::Position);
+				temp_item->ReInit(0, 0, data_size, temp_path->data());
+				memcpy(temp_item->template Convert<JPS::Position*>(), temp_path->data(), data_size);
+				temp_item->SetUsedDataSize(data_size);
+
+				calculated_queue->Wait();
+
+				calculated_queue->Push(temp_item);
+
+				calculated_queue->Post();
+
+				if (found)
 				{
-					if (req_q->Pop(temp_item))
-					{
-						if (temp_item->GetUsedDataSize() >= (sizeof(JPS::Position) * 2))
-						{
-							JPS::Position* pos_array = temp_item->template Convert<JPS::Position*>();
-							JPS::Position start(pos_array[0]);
-							JPS::Position target(pos_array[1]);
-
-							EndedOperation = true;
-							queues.Request().EndOperation();
-
-							temp_path->clear();
-
-							//bool found = grid->JumpNavigate(start, target, *temp_path);
-							bool found = grid->FullNavigate(start, target, *temp_path);
-
-							temp_item->SetActionIdentifier(found);
-
-							size_t data_size = temp_path->size() * sizeof(JPS::Position);
-							temp_item->ReInit(0, 0, data_size, temp_path->data());
-							memcpy(temp_item->template Convert<JPS::Position*>(), temp_path->data(), data_size);
-							temp_item->SetUsedDataSize(data_size);
-
-							queues.Calculated().BeginOperation();
-							std::cout << *temp_item << std::endl;
-							queues.Calculated().GetQueue()->Push(temp_item);
-							queues.Calculated().EndOperation();
-
-							if (found)
-							{
-								std::cout << grid->ToASCII(temp_item->template Convert<JPS::Position*>(), data_size / sizeof(JPS::Position)) << std::endl;
-							}
-						}
-					}
+					std::cout << grid->ToASCII(temp_item->template Convert<JPS::Position*>(), data_size / sizeof(JPS::Position)) << std::endl;
 				}
-			}
-			else
-			{
-				EndedOperation = true;
-			}
-			if (!EndedOperation)
-			{
-				queues.Request().EndOperation();
+				else
+				{
+					std::cout << "NOT FOUND" << std::endl;
+				}
 			}
 			sleep(5);
 		}

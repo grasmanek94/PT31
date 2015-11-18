@@ -6,37 +6,48 @@
 #include "QueueItem.hxx"
 
 template <size_t max_data_size_bytes = 2048, size_t max_items = 128>
-class RawQueue
+class RawShmQueue
 {
 public:
 	typedef QueueItem<max_data_size_bytes> _Item;
 private:
-	size_t count;
 	size_t pushed;
 	size_t popped;
 	_Item  items[max_items];
 
+	void CountDecrease(sem_t* sem)
+	{
+		sem_wait(sem);
+	}
+
+	void CountIncrease(sem_t* sem)
+	{
+		sem_post(sem);
+	}
+
 public:
-	RawQueue()
+	RawShmQueue()
 	{
-		memset(this, 0, sizeof(RawQueue));
+		memset(this, 0, sizeof(RawShmQueue));
 	}
 
-	size_t Count() const
+	size_t Count(sem_t* sem) const
 	{
-		return count;
+		int count = 0;
+		sem_getvalue(sem, &count);
+		return (size_t)count;
 	}
 
-	bool Push(_Item* item)
+	bool Push(_Item* item, sem_t* sem)
 	{
-		if (Count() == max_items)
+		if (Count(sem) == max_items)
 		{
 			return false;
 		}
 
 		memcpy((void*)&items[pushed], item, sizeof(_Item));
 
-		++count;
+		CountIncrease(sem);
 		if (++pushed == max_items)
 		{
 			pushed = 0;
@@ -44,16 +55,16 @@ public:
 		return true;
 	}
 
-	bool Pop(_Item* item)
+	bool Pop(_Item* item, sem_t* sem)
 	{
-		if (Count() == 0)
+		if (Count(sem) == 0)
 		{
 			return false;
 		}
 
 		memcpy(item, (void*)&items[popped], sizeof(_Item));
 
-		--count;
+		CountDecrease(sem);
 		if (++popped == max_items)
 		{
 			popped = 0;
@@ -63,7 +74,7 @@ public:
 
 	static size_t GetSizeBytes()
 	{
-		return sizeof(RawQueue);
+		return sizeof(RawShmQueue);
 	}
 
 	static size_t MaxCount()

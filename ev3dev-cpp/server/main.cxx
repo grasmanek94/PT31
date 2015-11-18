@@ -7,77 +7,65 @@
 #include <Environment/Environment.hxx>
 
 typedef PathProcessorQueue<> PPQ;
-PPQ ppq;
+PPQ queues;
 
 int main()
 {
-	if (ppq.Request().BeginOperation())
+	PPQ::MyIPCQueue* request_queue = queues.Request();
+	PPQ::MyIPCQueue* calculated_queue = queues.Calculated();
+
+	PPQ::MyQueueItem item;
+	JPS::Position* arr = item.template Convert<JPS::Position*>();
+
+	arr[0] = JPS::Pos(2, 2);
+	arr[1] = JPS::Pos(30, 30);
+
+	item.SetUsedDataSize(sizeof(JPS::Position) * 2);
+
+	request_queue->Wait();
+
+	bool push_result = request_queue->Push(&item);
+	size_t rq_size = request_queue->Count();
+
+	request_queue->Post();
+
+	if (push_result)
 	{
-		PPQ::MyRawQueue* req_q = ppq.Request().GetQueue();
-
-		PPQ::MyQueueItem item;
-
-		JPS::Position* arr = item.template Convert<JPS::Position*>();
-
-		arr[0] = JPS::Pos(2, 2);
-
-		arr[1] = JPS::Pos(30, 30);
-
-		item.SetUsedDataSize(sizeof(JPS::Position) * 2);
-
-		if (req_q->Push(&item))
+		std::cout << "PUSHED, SIZE: " << rq_size << std::endl;
+		std::cout << item << std::endl;
+			
+		while (true)
 		{
-			std::cout << "SUCCESS: req_q->Push(&item)" << std::endl;
-			std::cout << item << std::endl;
-			ppq.Request().EndOperation();
+			request_queue->Wait();
+			calculated_queue->Wait();
 
-			while (true)
+			std::cout << "R SIZE: " << request_queue->Count() << std::endl;
+			std::cout << "C SIZE: " << calculated_queue->Count() << std::endl;
+			bool pop_result = calculated_queue->Pop(&item);
+
+			calculated_queue->Post();
+			request_queue->Post();
+
+			if (pop_result)
 			{
-				if (ppq.Calculated().BeginOperation())
+				size_t size = item.GetUsedDataSize();
+				size_t elems = (size / sizeof(JPS::Position));
+
+				JPS::Position* calculated_positions = item.template Convert<JPS::Position*>();
+				if (elems)
 				{
-					std::cout << "SUCCESS: ppq.Calculated().BeginOperation()" << std::endl;
-					PPQ::MyRawQueue* calc_q = ppq.Calculated().GetQueue();
-
-					if (calc_q->Count())
-					{
-						std::cout << "SUCCESS: calc_q->Count()" << std::endl;
-						if (calc_q->Pop(&item))
-						{
-							size_t size = item.GetUsedDataSize();
-							size_t elems = (size / sizeof(JPS::Position));
-							std::cout << "SUCCESS: c->Pop(&item)" << std::endl;
-							std::cout << "SIZE: " << size << " bytes (ELEMENTS: " << elems << " )" << std::endl;
-
-							JPS::Position* calculated_positions = item.template Convert<JPS::Position*>();
-							for (size_t i = 0; i < elems; ++i)
-							{
-								std::cout << "Element " << i << " POS:(" << calculated_positions[i].x << "," << calculated_positions[i].y << ")" << std::endl;
-							}
-							if (elems)
-							{
-								std::cout << DynamicGrid(Environment::Map).ToASCII(calculated_positions, elems) << std::endl;
-							}
-							break;
-						}
-						else
-						{
-							std::cout << "FAILED: calc_q->Pop(&item)" << std::endl;
-						}				
-					}
-					else
-					{
-						std::cout << "FAILED: c->Count()" << std::endl;
-					}
-					ppq.Calculated().EndOperation();
+					std::cout << DynamicGrid(Environment::Map).ToASCII(calculated_positions, elems) << std::endl;
 				}
-				sleep(5);
+				else
+				{
+					std::cout << "NOT FOUND" << std::endl;
+				}
+				break;
 			}
-		}
-		else
-		{
-			std::cout << "FAILED: req_q->Push(&item)" << std::endl;
-			ppq.Request().EndOperation();
+
+			sleep(5);
 		}
 	}
+
 	return 0;
 }
