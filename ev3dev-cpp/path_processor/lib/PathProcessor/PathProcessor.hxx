@@ -51,14 +51,14 @@ public:
 			if (queues.Request().BeginOperation())
 			{
 				std::cout << "SUCCESS: queues.Request().BeginOperation()" << std::endl;
-				MyQueue* q = queues.Request().GetQueue();
+				MyQueue* req_q = queues.Request().GetQueue();
 
-				if (q->Count())
+				if (req_q->Count())
 				{
-					std::cout << "SUCCESS: q->Count()" << std::endl;
-					if (q->Pop(temp_item))
+					std::cout << "SUCCESS: req_q->Count()" << std::endl;
+					if (req_q->Pop(temp_item))
 					{
-						std::cout << "SUCCESS: q->Pop(temp_item)" << std::endl;
+						std::cout << "SUCCESS: req_q->Pop(temp_item) [" << temp_item->GetUsedDataSize() << "]" << std::endl;
 						if (temp_item->GetUsedDataSize() >= (sizeof(JPS::Position) * 2))
 						{
 							std::cout << "SUCCESS: temp_item->GetUsedDataSize() >= (sizeof(JPS::Position) * 2)" << std::endl;
@@ -94,16 +94,17 @@ public:
 					}
 					else
 					{
-						std::cout << "FAILED: q->Pop(temp_item)" << std::endl;
+						std::cout << "FAILED: req_q->Pop(temp_item)" << std::endl;
 					}
 				}
 				else
 				{
-					std::cout << "FAILED: q->Count()" << std::endl;
+					std::cout << "FAILED: req_q->Count()" << std::endl;
 				}
 			}
 			else
 			{
+				EndedOperation = true;
 				std::cout << "FAILED: queues.Request().BeginOperation()" << std::endl;
 			}
 			if (!EndedOperation)
@@ -112,7 +113,7 @@ public:
 				queues.Request().EndOperation();
 				std::cout << "DONE: queues.Request().EndOperation()" << std::endl;
 			}
-			sleep(1);
+			sleep(5);
 		}
 	}
 };

@@ -52,8 +52,8 @@ public:
 			std::cout << "SUCCESS: queue_operation_semaphore = sem_open(queue_name.c_str(), O_CREAT | O_EXCL, 0777, 1)" << std::endl;
 		}
 
-		std::cout << "DOING: EndOperation()" << std::endl;
-		EndOperation();
+		//std::cout << "DOING: EndOperation()" << std::endl;
+		//EndOperation();
 		std::cout << "DOING: BeginOperation()" << std::endl;
 		BeginOperation();
 

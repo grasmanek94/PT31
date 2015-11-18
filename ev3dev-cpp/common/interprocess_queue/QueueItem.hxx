@@ -24,6 +24,12 @@ public:
 		_action_identifier(action_identifier),
 		_used_data_size(data_size)
 	{
+		if (_used_data_size > max_data_size_bytes)
+		{
+			_used_data_size = max_data_size_bytes;
+			// should really throw here....?
+		}
+
 		memcpy(_data, data, _used_data_size);
 		if (max_data_size_bytes - _used_data_size > 0)
 		{

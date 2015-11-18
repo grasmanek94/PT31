@@ -15,7 +15,7 @@ int main()
 		std::cout << "SUCCESS: ppq.Request().BeginOperation()" << std::endl;
 
 		std::cout << "DOING: PPQ::MyRawQueue* q = ppq.Request().GetQueue()" << std::endl;
-		PPQ::MyRawQueue* q = ppq.Request().GetQueue();
+		PPQ::MyRawQueue* req_q = ppq.Request().GetQueue();
 
 		std::cout << "DOING: PPQ::MyQueueItem item" << std::endl;
 		PPQ::MyQueueItem item;
@@ -32,10 +32,10 @@ int main()
 		std::cout << "DOING: item.SetUsedDataSize(sizeof(JPS::Position) * 2)" << std::endl;
 		item.SetUsedDataSize(sizeof(JPS::Position) * 2);
 
-		std::cout << "TRYING: q->Push(&item)" << std::endl;
-		if (q->Push(&item))
+		std::cout << "TRYING: req_q->Push(&item)" << std::endl;
+		if (req_q->Push(&item))
 		{
-			std::cout << "SUCCESS: q->Push(&item)" << std::endl;
+			std::cout << "SUCCESS: req_q->Push(&item)" << std::endl;
 			ppq.Request().EndOperation();
 
 			while (true)
@@ -43,12 +43,12 @@ int main()
 				if (ppq.Calculated().BeginOperation())
 				{
 					std::cout << "SUCCESS: ppq.Calculated().BeginOperation()" << std::endl;
-					PPQ::MyRawQueue* c = ppq.Calculated().GetQueue();
+					PPQ::MyRawQueue* calc_q = ppq.Calculated().GetQueue();
 
-					if (c->Count())
+					if (calc_q->Count())
 					{
-						std::cout << "SUCCESS: c->Count()" << std::endl;
-						if (c->Pop(&item))
+						std::cout << "SUCCESS: calc_q->Count()" << std::endl;
+						if (calc_q->Pop(&item))
 						{
 							size_t size = item.GetUsedDataSize();
 							size_t elems = (size / sizeof(JPS::Position));
@@ -64,7 +64,7 @@ int main()
 						}
 						else
 						{
-							std::cout << "FAILED: c->Pop(&item)" << std::endl;
+							std::cout << "FAILED: calc_q->Pop(&item)" << std::endl;
 						}				
 					}
 					else
@@ -77,19 +77,18 @@ int main()
 				{
 					std::cout << "FAILED: ppq.Calculated().BeginOperation()" << std::endl;
 				}
-				sleep(1);
+				sleep(5);
 			}
 		}
 		else
 		{
-			std::cout << "FAILED: q->Push(&item)" << std::endl;
+			std::cout << "FAILED: req_q->Push(&item)" << std::endl;
 			ppq.Request().EndOperation();
 		}
 	}
 	else
 	{		
 		std::cout << "FAILED: PPQ.Request().BeginOperation()" << std::endl;
-		ppq.Request().EndOperation();
 	}
 	return 0;
 }
