@@ -65,7 +65,7 @@ public:
 			throw std::exception(/*"Cannot access critical lock file"*/);
 		}
 
-		if (flock(deletion_fd_protection, LOCK_EX) == 0)
+		if (flock(deletion_fd_protection, LOCK_EX | LOCK_NB) == 0)
 		{
 			std::cout << "CTOR: UNLINKING OLD LOCKS" << std::endl;
 			creator = true;
@@ -140,7 +140,7 @@ public:
 
 		if (deletion_fd_protection != -1)
 		{
-			if (!creator && flock(deletion_fd_protection, LOCK_EX) == 0)
+			if (!creator && flock(deletion_fd_protection, LOCK_EX | LOCK_NB) == 0)
 			{
 				std::cout << "DTOR: UNLINKING OLD LOCKS" << std::endl;
 
