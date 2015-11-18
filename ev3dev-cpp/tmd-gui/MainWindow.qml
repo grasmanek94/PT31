@@ -9,7 +9,7 @@ ApplicationWindow {
     width: 600
     height: 500
 
-    Column {
+    Item {
         id: topColumn
 
         height: 60
@@ -69,7 +69,7 @@ ApplicationWindow {
         source: "qrc:/qtquickplugin/images/template_image.png"
     }
 
-    Column {
+    Item {
         id: bottomColumn
 
         height: 80
