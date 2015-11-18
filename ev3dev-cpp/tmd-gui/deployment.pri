@@ -12,3 +12,6 @@ unix:!android {
 
 export(INSTALLS)
 
+DISTFILES += \
+    $$PWD/MainWindow.qml
+
