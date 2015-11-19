@@ -240,6 +240,9 @@
     <ClCompile Include="common\StringSplitter\StringSplitter.cxx">
       <Filter>common\StringSplitter</Filter>
     </ClCompile>
+    <ClCompile Include="server\queue_push_pop_example.cxx">
+      <Filter>server_main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="project\lib\ev3dev\ev3dev.hxx">

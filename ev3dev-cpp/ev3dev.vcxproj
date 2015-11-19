@@ -47,6 +47,7 @@
     <ClCompile Include="project\main.cxx" />
     <ClCompile Include="server\lib\somelib\somelib.cxx" />
     <ClCompile Include="server\main.cxx" />
+    <ClCompile Include="server\queue_push_pop_example.cxx" />
     <ClCompile Include="test\TestMain.cxx" />
     <ClCompile Include="uwb_location\lib\somelib\somelib.cxx" />
     <ClCompile Include="uwb_location\main.cxx" />
