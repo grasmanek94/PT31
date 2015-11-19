@@ -182,4 +182,9 @@ UpgradeLog*.htm
 # Microsoft Fakes
 FakesAssemblies/
 
-ev3dev-cpp/build/
+maze_sys/build/
+maze_sys/Debug/
+maze_sys/Release/
+maze_sys/obj/
+win_debug/Debug
+win_debug/Release

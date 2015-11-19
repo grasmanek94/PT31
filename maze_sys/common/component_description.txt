@@ -1,0 +1,10 @@
+Name: common
+
+Authors: 
+	- Rafal Grasman
+
+Owner/Copyright holder:
+	- T31C
+
+Description: 
+	- Contains all the common code that can be used in any compilation unit

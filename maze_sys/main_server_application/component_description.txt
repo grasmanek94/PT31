@@ -1,0 +1,10 @@
+Name: main_server_application
+
+Authors: 
+	- Rafal Grasman
+
+Owner/Copyright holder:
+	- T31C
+
+Description: 
+	- The main application of the server
