@@ -67,7 +67,13 @@ public:
 
 		if (flock(deletion_fd_protection, LOCK_EX | LOCK_NB) == 0)
 		{
-			std::cout << "CTOR: UNLINKING OLD LOCKS" << std::endl;
+			//we have the only and only lock now so this below should generrally NOT be able to fail
+			flock(deletion_fd_protection, LOCK_UN);
+			if (flock(deletion_fd_protection, LOCK_SH | LOCK_NB) != 0)
+			{
+				throw std::exception(/*"Cannot access critical lock file"*/);
+			}
+
 			creator = true;
 
 			shm_unlink(queue_name.c_str());
@@ -76,7 +82,10 @@ public:
 		}
 		else
 		{
-			std::cout << "CTOR: USING OLD LOCKS: " << errno << std::endl;
+			if (flock(deletion_fd_protection, LOCK_SH | LOCK_NB) != 0)
+			{
+				throw std::exception(/*"Cannot access critical lock file"*/);
+			}
 		}
 
 		PrepSem("SHM_PROT_" + queue_name, &memory_prepare_semaphore, 1);
@@ -140,10 +149,9 @@ public:
 
 		if (deletion_fd_protection != -1)
 		{
-			if (!creator && flock(deletion_fd_protection, LOCK_EX | LOCK_NB) == 0)
+			flock(deletion_fd_protection, LOCK_UN);//release shared lock
+			if (!creator && flock(deletion_fd_protection, LOCK_EX | LOCK_NB) == 0)//if we are the last process we cleanup because we can gain exclusive lock
 			{
-				std::cout << "DTOR: UNLINKING OLD LOCKS" << std::endl;
-
 				shm_unlink(queue_name.c_str());
 				sem_unlink(queue_name.c_str());
 				sem_unlink(("SHM_PROT_" + queue_name).c_str());

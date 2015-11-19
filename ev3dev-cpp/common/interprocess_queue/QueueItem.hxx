@@ -83,8 +83,14 @@ public:
 		return (T)(&_data[begin]);
 	}
 
-	template <size_t max_data_size_bytes_2>
-	friend std::ostream& operator<<(std::ostream& os, const QueueItem<max_data_size_bytes_2>& dt);
+	template <typename T> void* Assign(T data, size_t size)
+	{
+		SetUsedDataSize(size);
+		return memcpy(this->template Convert<T>(), data, size);
+	}
+
+	template <size_t s>
+	friend std::ostream& operator<<(std::ostream& os, const QueueItem<s>& dt);
 };
 
 template <size_t max_data_size_bytes>
