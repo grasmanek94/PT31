@@ -59,7 +59,7 @@ GLM: $(GLM_SOURCES)
 	@$(CHOSEN_GPP) $(CFLAGS_COMMON) $(CFLAGS_STATIC_LIBRARY) $(GLM_INCLUDE_DIRS) $(GLM_SOURCES) -o $(GLM_LIBRARY)
 
 #######################################################################################################
-PROJECT_NAME=				project
+PROJECT_NAME=				main_ev3_application
 
 COMMON_INCLUDE_DIRS=		$(GLM_INCLUDE_DIRS) \
 							-I./common \
@@ -91,7 +91,7 @@ COMMON_LIBRARIES=			$(GLM_LIBRARY) \
 							-l$(LIBCOMMON_LIBRARY_NAME)
 	
 #######################################################################################################
-EV3M_NAME=					project
+EV3M_NAME=					main_ev3_application
 
 INCLUDE_DIRS_EV3M=			-I./$(EV3M_NAME) \
 							-I./$(EV3M_NAME)/lib \
@@ -115,7 +115,7 @@ EV3M_OBJ_DIR=				$(MAIN_BASE_DIR)obj/$(EV3M_NAME)/
 EV3M_OBJECTS=				$(addprefix $(EV3M_OBJ_DIR),$(EV3M_SOURCES))
 EV3M_EXECUTABLE=			$(MAIN_BASE_DIR)$(LIBEV3M_NAME).bin
 EV3M_DEFINES=				$(COMMON_DEFINITIONS) \
-							-DEV3M \
+							-D$(EV3M_NAME) \
 							-DNO_LINUX_HEADERS
 
 C_LIBEV3M: DEFAULT_CLEARER=$(LIBEV3M_OBJ_DIR)
@@ -201,7 +201,7 @@ C_PIX: $(PIX_OBJECTS)
 	@$(CHOSEN_GPP) $(CFLAGS_COMMON) $(CFLAGS_INCLUDE_DIRS) $(PIX_INCLUDE_DIRS) $(addsuffix $(SUFFIX_SELECTED).o,$(addprefix ./,$^)) $(PIX_LIBRARIES) -o $(PIX_EXECUTABLE)
 
 #######################################################################################################
-SRVR_NAME=					server
+SRVR_NAME=					main_server_application
 
 INCLUDE_DIRS_SRVR=			-I./$(SRVR_NAME) \
 							-I./$(SRVR_NAME)/lib \
@@ -226,7 +226,7 @@ SRVR_OBJ_DIR=				$(MAIN_BASE_DIR)obj/$(SRVR_NAME)/
 SRVR_OBJECTS=				$(addprefix $(SRVR_OBJ_DIR),$(SRVR_SOURCES))
 SRVR_EXECUTABLE=			$(MAIN_BASE_DIR)$(LIBSRVR_NAME).bin
 SRVR_DEFINES=				$(COMMON_DEFINITIONS) \
-							-DSRVR
+							-D$(SRVR_NAME)
 
 C_LIBSRVR: DEFAULT_CLEARER=$(LIBSRVR_OBJ_DIR)
 C_LIBSRVR: COMMON_INCLUDES=$(LIBSRVR_INCLUDE_DIRS)
@@ -262,7 +262,7 @@ PPR_OBJ_DIR=				$(MAIN_BASE_DIR)obj/$(PPR_NAME)/
 PPR_OBJECTS=				$(addprefix $(PPR_OBJ_DIR),$(PPR_SOURCES))
 PPR_EXECUTABLE=				$(MAIN_BASE_DIR)$(LIBPPR_NAME).bin
 PPR_DEFINES=				$(COMMON_DEFINITIONS) \
-							-DPPR
+							-D$(PPR_NAME)
 
 C_LIBPPR: DEFAULT_CLEARER=$(LIBPPR_OBJ_DIR)
 C_LIBPPR: COMMON_INCLUDES=$(LIBPPR_INCLUDE_DIRS)

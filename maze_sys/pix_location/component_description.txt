@@ -1,0 +1,10 @@
+Name: pix_location
+
+Authors: 
+	- Rafal Grasman
+
+Owner/Copyright holder:
+	- T31C
+
+Description: 
+	- ILocation provider by using the pixy camera

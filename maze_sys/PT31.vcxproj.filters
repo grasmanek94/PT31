@@ -85,28 +85,28 @@
     <Filter Include="path_processor\lib\PathProcessor">
       <UniqueIdentifier>{678b4a91-efc9-4921-948f-b10349e384d4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="robot_main">
+    <Filter Include="main_ev3_application">
       <UniqueIdentifier>{3fbd4fb0-adc7-4bbc-9e3b-64c0b996c176}</UniqueIdentifier>
     </Filter>
-    <Filter Include="robot_main\lib">
+    <Filter Include="main_ev3_application\lib">
       <UniqueIdentifier>{90868445-4bb3-41db-8022-74b701efece5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="robot_main\lib\ev3dev">
+    <Filter Include="main_ev3_application\lib\ev3dev">
       <UniqueIdentifier>{934a5541-d997-4bc8-8c26-7aa197b05343}</UniqueIdentifier>
     </Filter>
-    <Filter Include="robot_main\lib\ev3">
+    <Filter Include="main_ev3_application\lib\ev3">
       <UniqueIdentifier>{ff7bfbd7-822f-40ad-90a0-b229dd1edc65}</UniqueIdentifier>
     </Filter>
-    <Filter Include="robot_main\lib\configuration">
+    <Filter Include="main_ev3_application\lib\configuration">
       <UniqueIdentifier>{d9632f36-23fd-41c0-8220-1b69239a4892}</UniqueIdentifier>
     </Filter>
-    <Filter Include="server_main">
+    <Filter Include="main_server_application">
       <UniqueIdentifier>{bdbece5f-99cc-4197-b9e4-4810a5b61da4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="server_main\lib">
+    <Filter Include="main_server_application\lib">
       <UniqueIdentifier>{2ea56e3a-29d7-4621-8314-05cbf1e63579}</UniqueIdentifier>
     </Filter>
-    <Filter Include="server_main\lib\somelib">
+    <Filter Include="main_server_application\lib\somelib">
       <UniqueIdentifier>{2dbcf7c3-3f0a-4337-9334-593a22cca021}</UniqueIdentifier>
     </Filter>
     <Filter Include="common\DynamicGrid">
@@ -123,11 +123,11 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="project\main.cxx">
-      <Filter>robot_main</Filter>
+    <ClCompile Include="main_ev3_application\main.cxx">
+      <Filter>main_ev3_application</Filter>
     </ClCompile>
-    <ClCompile Include="project\lib\ev3dev\ev3dev.cxx">
-      <Filter>robot_main\lib\ev3dev</Filter>
+    <ClCompile Include="main_ev3_application\lib\ev3dev\ev3dev.cxx">
+      <Filter>main_ev3_application\lib\ev3dev</Filter>
     </ClCompile>
     <ClCompile Include="test\TestMain.cxx">
       <Filter>test</Filter>
@@ -189,23 +189,23 @@
     <ClCompile Include="libraries\googletest\src\gtest-death-test.cc">
       <Filter>libraries\googletest\src</Filter>
     </ClCompile>
-    <ClCompile Include="project\lib\ev3\EV3Robot.cxx">
-      <Filter>robot_main\lib\ev3</Filter>
+    <ClCompile Include="main_ev3_application\lib\ev3\EV3Robot.cxx">
+      <Filter>main_ev3_application\lib\ev3</Filter>
     </ClCompile>
-    <ClCompile Include="project\lib\ev3\EV3Sensing.cxx">
-      <Filter>robot_main\lib\ev3</Filter>
+    <ClCompile Include="main_ev3_application\lib\ev3\EV3Sensing.cxx">
+      <Filter>main_ev3_application\lib\ev3</Filter>
     </ClCompile>
-    <ClCompile Include="project\lib\ev3\EV3DriveControl.cxx">
-      <Filter>robot_main\lib\ev3</Filter>
+    <ClCompile Include="main_ev3_application\lib\ev3\EV3DriveControl.cxx">
+      <Filter>main_ev3_application\lib\ev3</Filter>
     </ClCompile>
-    <ClCompile Include="project\lib\ev3\EV3GripControl.cxx">
-      <Filter>robot_main\lib\ev3</Filter>
+    <ClCompile Include="main_ev3_application\lib\ev3\EV3GripControl.cxx">
+      <Filter>main_ev3_application\lib\ev3</Filter>
     </ClCompile>
-    <ClCompile Include="project\lib\ev3\EV3Calibration.cxx">
-      <Filter>robot_main\lib\ev3</Filter>
+    <ClCompile Include="main_ev3_application\lib\ev3\EV3Calibration.cxx">
+      <Filter>main_ev3_application\lib\ev3</Filter>
     </ClCompile>
-    <ClCompile Include="project\lib\configuration\CalibrationLoader.cxx">
-      <Filter>robot_main\lib\configuration</Filter>
+    <ClCompile Include="main_ev3_application\lib\configuration\CalibrationLoader.cxx">
+      <Filter>main_ev3_application\lib\configuration</Filter>
     </ClCompile>
     <ClCompile Include="uwb_location\main.cxx">
       <Filter>uwb_location</Filter>
@@ -222,11 +222,11 @@
     <ClCompile Include="pix_location\lib\somelib\somelib.cxx">
       <Filter>pix_location\lib\somelib</Filter>
     </ClCompile>
-    <ClCompile Include="server\main.cxx">
-      <Filter>server_main</Filter>
+    <ClCompile Include="main_server_application\main.cxx">
+      <Filter>main_server_application</Filter>
     </ClCompile>
-    <ClCompile Include="server\lib\somelib\somelib.cxx">
-      <Filter>server_main\lib\somelib</Filter>
+    <ClCompile Include="main_server_application\lib\somelib\somelib.cxx">
+      <Filter>main_server_application\lib\somelib</Filter>
     </ClCompile>
     <ClCompile Include="path_processor\main.cxx">
       <Filter>path_processor</Filter>
@@ -240,13 +240,13 @@
     <ClCompile Include="common\StringSplitter\StringSplitter.cxx">
       <Filter>common\StringSplitter</Filter>
     </ClCompile>
-    <ClCompile Include="server\queue_push_pop_example.cxx">
-      <Filter>server_main</Filter>
+    <ClCompile Include="main_server_application\queue_push_pop_example.cxx">
+      <Filter>main_server_application</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="project\lib\ev3dev\ev3dev.hxx">
-      <Filter>robot_main\lib\ev3dev</Filter>
+    <ClInclude Include="main_ev3_application\lib\ev3dev\ev3dev.hxx">
+      <Filter>main_ev3_application\lib\ev3dev</Filter>
     </ClInclude>
     <ClInclude Include="libraries\glm\glm\vec3.hpp">
       <Filter>libraries\glm</Filter>
@@ -674,23 +674,23 @@
     <ClInclude Include="libraries\googletest\src\gtest-internal-inl.h">
       <Filter>libraries\googletest\src</Filter>
     </ClInclude>
-    <ClInclude Include="project\lib\ev3\EV3GripControl.hxx">
-      <Filter>robot_main\lib\ev3</Filter>
+    <ClInclude Include="main_ev3_application\lib\ev3\EV3GripControl.hxx">
+      <Filter>main_ev3_application\lib\ev3</Filter>
     </ClInclude>
-    <ClInclude Include="project\lib\ev3\EV3Robot.hxx">
-      <Filter>robot_main\lib\ev3</Filter>
+    <ClInclude Include="main_ev3_application\lib\ev3\EV3Robot.hxx">
+      <Filter>main_ev3_application\lib\ev3</Filter>
     </ClInclude>
-    <ClInclude Include="project\lib\ev3\EV3Sensing.hxx">
-      <Filter>robot_main\lib\ev3</Filter>
+    <ClInclude Include="main_ev3_application\lib\ev3\EV3Sensing.hxx">
+      <Filter>main_ev3_application\lib\ev3</Filter>
     </ClInclude>
-    <ClInclude Include="project\lib\ev3\EV3DriveControl.hxx">
-      <Filter>robot_main\lib\ev3</Filter>
+    <ClInclude Include="main_ev3_application\lib\ev3\EV3DriveControl.hxx">
+      <Filter>main_ev3_application\lib\ev3</Filter>
     </ClInclude>
-    <ClInclude Include="project\lib\ev3\EV3Calibration.hxx">
-      <Filter>robot_main\lib\ev3</Filter>
+    <ClInclude Include="main_ev3_application\lib\ev3\EV3Calibration.hxx">
+      <Filter>main_ev3_application\lib\ev3</Filter>
     </ClInclude>
-    <ClInclude Include="project\lib\configuration\CalibrationLoader.hxx">
-      <Filter>robot_main\lib\configuration</Filter>
+    <ClInclude Include="main_ev3_application\lib\configuration\CalibrationLoader.hxx">
+      <Filter>main_ev3_application\lib\configuration</Filter>
     </ClInclude>
     <ClInclude Include="common\interfaces\IGripControl.hxx">
       <Filter>common\interfaces</Filter>
