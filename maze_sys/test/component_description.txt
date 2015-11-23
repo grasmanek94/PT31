@@ -1,0 +1,10 @@
+Name: test
+
+Authors: 
+	- Rafal Grasman
+
+Owner/Copyright holder:
+	- T31C
+
+Description: 
+	- Contains test for all the components
