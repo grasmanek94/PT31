@@ -15,22 +15,22 @@
 #include <JumpPointSearch/JPS.hxx>
 #include <shm/SharedMemoryHelper.hxx>
 
-//template <size_t robots = 2, typename pos_type = JPS::Position>
+template <size_t robots = 2, typename pos_type = JPS::Position>
 class IPCPos
 {
 private:
-	pos_type pos_shared_memory[robots];
+	pos_type* pos_shared_memory;
 	sem_t* memory_prepare_semaphore;
 	int shm_fd;
 	std::string queue_name;
 	int deletion_fd_protection;
 
 public:
-	IPCPos(const std::string& queue_name)
+	IPCPos(/*const std::string& queue_name*/)
 		:	pos_shared_memory(NULL),
 			memory_prepare_semaphore(SEM_FAILED),
 			shm_fd(-1),
-			queue_name(queue_name),
+			queue_name(/*queue_name*/"InterProcessPositioning"),
 			deletion_fd_protection(-1)
 	{
 		deletion_fd_protection = open(("/tmp/deletion_fd_protection.ipc_lockcheck." + queue_name).c_str(), O_CREAT | O_RDWR);
@@ -50,8 +50,6 @@ public:
 
 			shm_unlink(queue_name.c_str());
 			sem_unlink(queue_name.c_str());
-			sem_unlink(("SHM_PROT_" + queue_name).c_str());
-			sem_unlink(("ITEM_COUNTER_" + queue_name).c_str());
 		}
 		else
 		{
@@ -61,88 +59,51 @@ public:
 			}
 		}
 
-		my_PrepSem("ITEM_COUNTER_" + queue_name, &elem_count_semaphore, 0);
-		my_PrepSem("SHM_PROT_" + queue_name, &memory_prepare_semaphore, 1);
-		my_PrepSem(queue_name, &queue_operation_semaphore, 1);
+		my_PrepSem(queue_name, &memory_prepare_semaphore, 1);
 
 		sem_wait(memory_prepare_semaphore);
 
-		queue_shared_memory = my_shm_create<_RawQueue*>(queue_name, _RawQueue::GetSizeBytes(), shm_fd);
-		if (queue_shared_memory)
+		pos_shared_memory = my_shm_create<pos_type*>(queue_name, robots * sizeof(pos_type), shm_fd);
+		if (!pos_shared_memory)
 		{
-			// use C++98 placement new to call constructor when new shared memory region has been created
-			new (queue_shared_memory) _RawQueue();
-		}
-		else
-		{
-			queue_shared_memory = my_shm_open<_RawQueue*>(queue_name, shm_fd);
-			if (!queue_shared_memory)
+			pos_shared_memory = my_shm_open<pos_type*>(queue_name, shm_fd);
+			if (!pos_shared_memory)
 			{
 				throw std::exception(/*"Cannot access shared memory"*/);
 			}
+		}
+		else
+		{
+			memset(pos_shared_memory, 0, robots * sizeof(pos_type));
 		}
 
 		sem_post(memory_prepare_semaphore);
 	}
 
-	bool Push(_Item* item)
+	bool Get(size_t robot_id, pos_type& pos) const
 	{
-		Wait();
-		bool ret_val = queue_shared_memory->Push(item);
-		Post();
-		sem_post(elem_count_semaphore);
-		return ret_val;
-	}
-
-	bool Pop(_Item* item)
-	{
-		sem_wait(elem_count_semaphore);
-		Wait();
-		bool ret_val = queue_shared_memory->Pop(item);
-		Post();
-		return ret_val;
-	}
-
-	bool TryPush(_Item* item, bool only_try = false)
-	{
-		if (!TryWait())
+		if (robot_id >= robots)
 		{
 			return false;
 		}
-		bool ret_val = queue_shared_memory->Push(item);
-		Post();
-		sem_post(elem_count_semaphore);
-		return ret_val;
+		 
+		pos = pos_shared_memory[robot_id];
+		return true;
 	}
 
-	bool TryPop(_Item* item)
+	bool Set(size_t robot_id, const pos_type& pos)
 	{
-		if (sem_trywait(queue_operation_semaphore) != 0)
+		if (robot_id >= robots)
 		{
 			return false;
 		}
-		sem_wait(elem_count_semaphore);
-		if (!TryWait())
-		{
-			sem_post(elem_count_semaphore);
-			return false;
-		}
-		bool ret_val = queue_shared_memory->Pop(item);
-		Post();
-		return ret_val;
+
+		pos_shared_memory[robot_id] = pos;
+		return true;
 	}
 
-	size_t Count()
+	~IPCPos()
 	{
-		int count = 0;
-		sem_getvalue(elem_count_semaphore, &count);
-		return (size_t)count;
-		//return queue_shared_memory->Count();
-	}
-
-	~IPCQueue()
-	{
-		sem_close(queue_operation_semaphore);
 		sem_close(memory_prepare_semaphore);
 		close(shm_fd);
 
