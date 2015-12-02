@@ -39,10 +39,9 @@ public:
 
 	void FromASCII(const std::string& map_data, char wall = '#');
 
-	std::string ToASCII(JPS::PathVector& path
-		//, char wall = '#'/*-79 178*/, char solution = '×'/*-98 158*/
-		) const;
-	std::string ToASCII(JPS::Position* path, size_t size) const;
+	std::string ToASCII(JPS::PathVector& path, char wall = '#', char solution = 'O') const;
+	//, char wall = '#'/*-79 178*/, char solution = '×'/*-98 158*/
+	std::string ToASCII(JPS::Position* path, size_t size, char wall = '#', char solution = 'O') const;
 };
 
 #endif

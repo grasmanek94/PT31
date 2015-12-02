@@ -13,6 +13,17 @@ class QueueItem
 	char _data[max_data_size_bytes];
 
 	typedef QueueItem<max_data_size_bytes> CurrentQueueItem;
+
+	bool UpdateSize(size_t size)
+	{
+		_used_data_size = size;
+		if (_used_data_size > max_data_size_bytes)
+		{
+			_used_data_size = max_data_size_bytes;
+			return false;
+		}
+		return true;
+	}
 public:
 	
 	QueueItem()
@@ -32,12 +43,7 @@ public:
 	{
 		_operation_identifier = operation_identifier;
 		_action_identifier = action_identifier;
-		_used_data_size = data_size;
-		if (_used_data_size > max_data_size_bytes)
-		{
-			_used_data_size = max_data_size_bytes;
-			// should really throw here....?
-		}
+		UpdateSize(data_size);
 
 		memcpy(_data, data, _used_data_size);
 		if (max_data_size_bytes - _used_data_size > 0)
@@ -71,22 +77,22 @@ public:
 		_action_identifier = identifier;
 	}
 
-	void SetUsedDataSize(size_t size)
+	bool SetUsedDataSize(size_t size, size_t begin = 0)
 	{
-		_used_data_size = size;
+		return UpdateSize(begin + size);
 	}
 
 	template <typename T> T Convert(size_t begin = 0)
 	{
 		// e.g. int* = Convert<int*>() // array of integers
 		// or Convert<int*>()[0] = 5;
-		return (T)(&_data[begin]);
+		return (T)(_data + begin);
 	}
 
-	template <typename T> void* Assign(T data, size_t size)
+	template <typename T> void* Assign(T data, size_t size, size_t begin = 0)
 	{
-		SetUsedDataSize(size);
-		return memcpy(this->template Convert<T>(), data, size);
+		SetUsedDataSize(size, begin);
+		return memcpy(_data + begin, data, size);
 	}
 
 	template <size_t s>

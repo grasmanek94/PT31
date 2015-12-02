@@ -18,7 +18,7 @@ int main()
 	JPS::Position* arr = item.template Convert<JPS::Position*>();
 
 	arr[0] = JPS::Pos(2, 2);
-	arr[1] = JPS::Pos(30, 30);
+	arr[1] = JPS::Pos(30, 20);
 
 	item.SetUsedDataSize(sizeof(JPS::Position) * 2);
 

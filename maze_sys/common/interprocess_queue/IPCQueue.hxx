@@ -6,6 +6,7 @@
 #include <string>
 #include <new>
 #include <semaphore.h>
+#include <pthread.h>
 
 #include <sys/stat.h>
 #include <sys/file.h>
@@ -28,7 +29,15 @@ private:
 	int shm_fd;
 	std::string queue_name;
 	int deletion_fd_protection;
-	bool creator;
+
+	/* Why geen mutex? [maar wel memory_prepare_semaphore] :
+		For inter-process synchronization, a mutex needs to be allo-
+		cated   in  memory shared between these processes. Since the
+		memory for such a mutex must be allocated dynamically,   the
+		mutex needs to be explicitly initialized using mutex_init().
+
+		We zijn shared memory aan t maken en zorgen ervoor dat er maar 1 creator is, dus nutteloos eh? Jup!
+	*/
 
 	void PrepSem(const std::string& name, sem_t** semaphore, int initial)
 	{
@@ -43,11 +52,6 @@ private:
 			}
 		}
 	}
-
-	_RawQueue* Queue()
-	{
-		return queue_shared_memory;
-	}
 public:
 	IPCQueue(const std::string& queue_name)
 		:	queue_shared_memory(NULL),
@@ -55,10 +59,8 @@ public:
 			memory_prepare_semaphore(SEM_FAILED),
 			shm_fd(-1),
 			queue_name(queue_name),
-			deletion_fd_protection(-1),
-			creator(false)
+			deletion_fd_protection(-1)
 	{
-
 		deletion_fd_protection = open(("/tmp/deletion_fd_protection.ipc_lockcheck." + queue_name).c_str(), O_CREAT | O_RDWR);
 		if (deletion_fd_protection == -1)
 		{
@@ -73,8 +75,6 @@ public:
 			{
 				throw std::exception(/*"Cannot access critical lock file"*/);
 			}
-
-			creator = true;
 
 			shm_unlink(queue_name.c_str());
 			sem_unlink((queue_name).c_str());
@@ -128,17 +128,17 @@ public:
 
 	bool Push(_Item* item)
 	{
-		return Queue()->Push(item);
+		return queue_shared_memory->Push(item);
 	}
 
 	bool Pop(_Item* item)
 	{
-		return Queue()->Pop(item);
+		return queue_shared_memory->Pop(item);
 	}
 
 	size_t Count()
 	{
-		return Queue()->Count();
+		return queue_shared_memory->Count();
 	}
 
 	~IPCQueue()
@@ -149,14 +149,7 @@ public:
 
 		if (deletion_fd_protection != -1)
 		{
-			flock(deletion_fd_protection, LOCK_UN);//release shared lock
-			if (!creator && flock(deletion_fd_protection, LOCK_EX | LOCK_NB) == 0)//if we are the last process we cleanup because we can gain exclusive lock
-			{
-				shm_unlink(queue_name.c_str());
-				sem_unlink(queue_name.c_str());
-				sem_unlink(("SHM_PROT_" + queue_name).c_str());
-			}
-
+			flock(deletion_fd_protection, LOCK_UN); // release shared lock
 			close(deletion_fd_protection);
 		}
 	}
