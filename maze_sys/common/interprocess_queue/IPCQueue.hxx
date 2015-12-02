@@ -131,17 +131,9 @@ public:
 		sem_post(memory_prepare_semaphore);
 	}
 
-	bool Push(_Item* item, bool only_try = false)
+	bool Push(_Item* item)
 	{
-		if (!only_try)
-		{
-			Wait();
-		}
-		else if (!TryWait())
-		{
-			return false;
-		}
-
+		Wait();
 		bool ret_val = queue_shared_memory->Push(item);
 		Post();
 		sem_post(elem_count_semaphore);
@@ -152,6 +144,35 @@ public:
 	{
 		sem_wait(elem_count_semaphore);
 		Wait();
+		bool ret_val = queue_shared_memory->Pop(item);
+		Post();
+		return ret_val;
+	}
+
+	bool TryPush(_Item* item, bool only_try = false)
+	{
+		if (!TryWait())
+		{
+			return false;
+		}
+		bool ret_val = queue_shared_memory->Push(item);
+		Post();
+		sem_post(elem_count_semaphore);
+		return ret_val;
+	}
+
+	bool TryPop(_Item* item)
+	{
+		if (sem_trywait(queue_operation_semaphore) != 0)
+		{
+			return false;
+		}
+		sem_wait(elem_count_semaphore);
+		if (!TryWait())
+		{
+			sem_post(elem_count_semaphore);
+			return false;
+		}
 		bool ret_val = queue_shared_memory->Pop(item);
 		Post();
 		return ret_val;
