@@ -243,6 +243,9 @@
     <ClCompile Include="main_server_application\queue_push_pop_example.cxx">
       <Filter>main_server_application</Filter>
     </ClCompile>
+    <ClCompile Include="main_ev3_application\lib\ev3\EV3Movements.cxx">
+      <Filter>main_ev3_application\lib\ev3</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main_ev3_application\lib\ev3dev\ev3dev.hxx">
@@ -748,6 +751,9 @@
     </ClInclude>
     <ClInclude Include="common\interprocess_queue\IPCShmQueue.hxx">
       <Filter>common\interprocess_queue</Filter>
+    </ClInclude>
+    <ClInclude Include="main_ev3_application\lib\ev3\EV3Movements.hxx">
+      <Filter>main_ev3_application\lib\ev3</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
