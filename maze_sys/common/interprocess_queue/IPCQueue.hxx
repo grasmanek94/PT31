@@ -26,6 +26,7 @@ private:
 	_RawQueue* queue_shared_memory;
 	sem_t* queue_operation_semaphore;
 	sem_t* memory_prepare_semaphore;
+	sem_t* elem_count_semaphore;
 	int shm_fd;
 	std::string queue_name;
 	int deletion_fd_protection;
@@ -52,11 +53,28 @@ private:
 			}
 		}
 	}
+
+	bool Wait()
+	{
+		return sem_wait(queue_operation_semaphore) == 0;
+	}
+
+	bool Post()
+	{
+		return sem_post(queue_operation_semaphore) == 0;
+	}
+
+	bool TryWait()
+	{
+		return sem_trywait(queue_operation_semaphore) == 0;
+	}
+
 public:
 	IPCQueue(const std::string& queue_name)
 		:	queue_shared_memory(NULL),
 			queue_operation_semaphore(SEM_FAILED),
 			memory_prepare_semaphore(SEM_FAILED),
+			elem_count_semaphore(SEM_FAILED),
 			shm_fd(-1),
 			queue_name(queue_name),
 			deletion_fd_protection(-1)
@@ -77,8 +95,9 @@ public:
 			}
 
 			shm_unlink(queue_name.c_str());
-			sem_unlink((queue_name).c_str());
+			sem_unlink(queue_name.c_str());
 			sem_unlink(("SHM_PROT_" + queue_name).c_str());
+			sem_unlink(("ITEM_COUNTER_" + queue_name).c_str());
 		}
 		else
 		{
@@ -88,6 +107,7 @@ public:
 			}
 		}
 
+		PrepSem("ITEM_COUNTER_" + queue_name, &elem_count_semaphore, 0);
 		PrepSem("SHM_PROT_" + queue_name, &memory_prepare_semaphore, 1);
 		PrepSem(queue_name, &queue_operation_semaphore, 1);
 
@@ -111,34 +131,38 @@ public:
 		sem_post(memory_prepare_semaphore);
 	}
 
-	bool Wait()
+	bool Push(_Item* item, bool only_try = false)
 	{
-		return sem_wait(queue_operation_semaphore) == 0;
-	}
+		if (!only_try)
+		{
+			Wait();
+		}
+		else if (!TryWait())
+		{
+			return false;
+		}
 
-	bool Post()
-	{
-		return sem_post(queue_operation_semaphore) == 0;
-	}
-
-	bool TryWait()
-	{
-		return sem_trywait(queue_operation_semaphore) == 0;
-	}
-
-	bool Push(_Item* item)
-	{
-		return queue_shared_memory->Push(item);
+		bool ret_val = queue_shared_memory->Push(item);
+		Post();
+		sem_post(elem_count_semaphore);
+		return ret_val;
 	}
 
 	bool Pop(_Item* item)
 	{
-		return queue_shared_memory->Pop(item);
+		sem_wait(elem_count_semaphore);
+		Wait();
+		bool ret_val = queue_shared_memory->Pop(item);
+		Post();
+		return ret_val;
 	}
 
 	size_t Count()
 	{
-		return queue_shared_memory->Count();
+		int count = 0;
+		sem_getvalue(elem_count_semaphore, &count);
+		return (size_t)count;
+		//return queue_shared_memory->Count();
 	}
 
 	~IPCQueue()

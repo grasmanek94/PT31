@@ -22,19 +22,11 @@ int main()
 
 	item.SetUsedDataSize(sizeof(JPS::Position) * 2);
 
-	request_queue->Wait();
-	bool push_result = request_queue->Push(&item);
-	request_queue->Post();
-
-	if (push_result)
+	if (request_queue->Push(&item))
 	{
 		while (true)
 		{
-			calculated_queue->Wait();
-			bool pop_result = calculated_queue->Pop(&item);
-			calculated_queue->Post();
-
-			if (pop_result)
+			if (calculated_queue->Pop(&item))
 			{
 				size_t elems = (item.GetUsedDataSize() / sizeof(JPS::Position));
 				JPS::Position* calculated_positions = item.template Convert<JPS::Position*>();

@@ -56,11 +56,7 @@ public:
 
 		while (running)
 		{
-			request_queue->Wait();
-			bool pop_result = request_queue->Pop(temp_item);
-			request_queue->Post();
-
-			if (pop_result && temp_item->GetUsedDataSize() >= (sizeof(JPS::Position) * 2))
+			if (request_queue->Pop(temp_item) && temp_item->GetUsedDataSize() >= (sizeof(JPS::Position) * 2))
 			{
 				JPS::Position* pos_array = temp_item->template Convert<JPS::Position*>();
 				JPS::Position start(pos_array[0]);
@@ -76,9 +72,7 @@ public:
 				size_t data_size = temp_path->size() * sizeof(JPS::Position);
 				temp_item->Assign(temp_path->data(), data_size);
 
-				calculated_queue->Wait();
 				calculated_queue->Push(temp_item);
-				calculated_queue->Post();
 
 				if (found)
 				{
@@ -98,7 +92,7 @@ public:
 		running = false;
 		while (wait && !donerunning)
 		{
-			usleep(100);
+			sleep(1);
 		}
 	}
 };
