@@ -1,7 +1,13 @@
+
 #include "MainWindow.h"
 
-MainWindow::MainWindow(QObject *parent) : QObject(parent) {
-}
+/*MainWindow::MainWindow(QObject* parent) : QObject(parent)\
+{
 
-QString MainWindow::gimmeText() {
+}*/
+
+void MainWindow::mouseSlot(const QMouseEvent &arg)
+{
+    qDebug() << "Mouse click! ";
+    qDebug() << arg.x() << " " << arg.y();
 }

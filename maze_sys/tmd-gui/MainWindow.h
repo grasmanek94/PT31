@@ -8,11 +8,10 @@ class MainWindow : public QObject
 {
     Q_OBJECT
 public:
-    explicit MainWindow(QObject *parent = 0);
-    Q_INVOKABLE QString gimmeText();
-signals:
+    //MainWindow(QObject* parent);
 
 public slots:
+    void mouseSlot(const QMouseEvent &arg);
 };
 
 #endif // MAINWINDOW_H

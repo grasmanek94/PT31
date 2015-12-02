@@ -1,13 +1,13 @@
 import QtQuick 2.3
 import QtQuick.Controls 1.2
 
-
-
 ApplicationWindow {
     id: mainWindow
     visible: true
     width: 600
     height: 500
+
+    signal mapClick(var e)
 
     Item {
         id: topColumn
@@ -51,22 +51,24 @@ ApplicationWindow {
     }
 
 
+    MouseArea {
+        onClicked: mainWindow.mapClick()
+        Image {
+            id: mapImage
 
-    Image {
-        id: mapImage
+            fillMode: Image.PreserveAspectFit
 
-        fillMode: Image.PreserveAspectFit
+            anchors.top: topColumn.bottom
+            anchors.right: parent.right
+            anchors.left: parent.left
+            anchors.bottom: bottomColumn.top
+            anchors.topMargin: 10
+            anchors.leftMargin: 10
+            anchors.rightMargin: 10
+            anchors.bottomMargin: 10
 
-        anchors.top: topColumn.bottom
-        anchors.right: parent.right
-        anchors.left: parent.left
-        anchors.bottom: bottomColumn.top
-        anchors.topMargin: 10
-        anchors.leftMargin: 10
-        anchors.rightMargin: 10
-        anchors.bottomMargin: 10
-
-        source: "qrc:/qtquickplugin/images/template_image.png"
+            source: "qrc:/qtquickplugin/images/template_image.png"
+        }
     }
 
     Item {
