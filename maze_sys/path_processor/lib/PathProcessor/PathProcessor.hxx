@@ -74,14 +74,14 @@ public:
 
 				calculated_queue->Push(temp_item);
 
-				if (found)
-				{
-					std::cout << grid->ToASCII(temp_item->template Convert<JPS::Position*>(), data_size / sizeof(JPS::Position)) << std::endl;
-				}
-				else
-				{
-					std::cout << "NOT FOUND" << std::endl;
-				}
+				//if (found)
+				//{
+				//	std::cout << grid->ToASCII(temp_item->template Convert<JPS::Position*>(), data_size / sizeof(JPS::Position)) << std::endl;
+				//}
+				//else
+				//{
+				//	std::cout << "NOT FOUND" << std::endl;
+				//}
 			}
 		}
 		donerunning = true;
