@@ -47,33 +47,12 @@ void PixyLocationProvider::removeSignature(int id)
 
 void PixyLocationProvider::start()
 {
-    if (!running)
-    {
-        int status = pthread_create(&receiveThread, NULL, receiveLocations, this);
-        if (status)
-        {
-            throw std::runtime_error(
-                        "Error creating receive thread");
-        }
 
-        running = true;
-    }
 }
 
 void PixyLocationProvider::stop()
 {
-    if (running)
-    {
-        stopReceiving = true;
-        int status = pthread_join(receiveThread, NULL);
-        if (status)
-        {
-            throw std::runtime_error(
-                        "Error joining receive thread");
-        }
-        stopReceiving = false;
-        running = false;
-    }
+
 }
 
 bool PixyLocationProvider::mustStop()
@@ -93,7 +72,7 @@ int dec2oct (int num)
     return total;
 }
 
-void* receiveLocations(void* instance)
+/*void* receiveLocations(void* instance)
 {
     PixyLocationProvider* pixy = (PixyLocationProvider*)instance;
 
@@ -134,4 +113,4 @@ void* receiveLocations(void* instance)
     pixy_close();
 
     return NULL;
-}
+}*/

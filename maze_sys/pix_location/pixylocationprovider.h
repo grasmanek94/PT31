@@ -11,12 +11,6 @@
 
 #define BLOCK_BUFFER_SIZE 25
 
-struct Location
-{
-    int x;
-    int y;
-};
-
 struct CCSignature
 {
     int sig1;

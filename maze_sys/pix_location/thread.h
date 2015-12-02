@@ -1,0 +1,30 @@
+#ifndef THREAD_H
+#define THREAD_H
+
+#include <pthread.h>
+
+enum ThreadState
+{
+    Stopped,
+    Running
+};
+
+class Thread
+{
+private:
+    ThreadState threadState;
+    pthread_t threadHandle;
+    void* (*threadMethod)(void*);
+
+public:
+    Thread(void* (*method)(void*));
+    ~Thread();
+
+    void Start(void* args);
+    void Abort();
+    void Join();
+
+    ThreadState GetThreadState() { return threadState; }
+};
+
+#endif // THREAD_H

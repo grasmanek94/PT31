@@ -50,10 +50,12 @@ OBJECTS_DIR   = ./
 
 SOURCES       = ../main.cpp \
 		../pixylocationprovider.cpp \
-		../ipcpos.cpp 
+		../ipcpos.cpp \
+		../thread.cpp 
 OBJECTS       = main.o \
 		pixylocationprovider.o \
-		ipcpos.o
+		ipcpos.o \
+		thread.o
 DIST          = /home/thomas/Qt/5.5/gcc_64/mkspecs/features/spec_pre.prf \
 		/home/thomas/Qt/5.5/gcc_64/mkspecs/common/unix.conf \
 		/home/thomas/Qt/5.5/gcc_64/mkspecs/common/linux.conf \
@@ -184,9 +186,11 @@ DIST          = /home/thomas/Qt/5.5/gcc_64/mkspecs/features/spec_pre.prf \
 		/home/thomas/Qt/5.5/gcc_64/mkspecs/features/yacc.prf \
 		/home/thomas/Qt/5.5/gcc_64/mkspecs/features/lex.prf \
 		../../pix_location.pro pixylocationprovider.h \
-		ipcpos.h ../main.cpp \
+		ipcpos.h \
+		thread.h ../main.cpp \
 		../pixylocationprovider.cpp \
-		../ipcpos.cpp
+		../ipcpos.cpp \
+		../thread.cpp
 QMAKE_TARGET  = pix_location
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = pix_location
@@ -521,11 +525,15 @@ compiler_clean:
 main.o: ../main.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../main.cpp
 
-pixylocationprovider.o: ../pixylocationprovider.cpp ../pixylocationprovider.h
+pixylocationprovider.o: ../pixylocationprovider.cpp ../pixylocationprovider.h \
+		../ipcpos.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pixylocationprovider.o ../pixylocationprovider.cpp
 
 ipcpos.o: ../ipcpos.cpp ../ipcpos.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ipcpos.o ../ipcpos.cpp
+
+thread.o: ../thread.cpp ../thread.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o thread.o ../thread.cpp
 
 ####### Install
 
