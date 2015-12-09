@@ -6,10 +6,10 @@ class IDriveControl
 public:
 	enum State
 	{
-		StateUnknown,
+		StateOk,
 		StateError,
-		StateSuccess,
 		StateNotConnected,
+		StateUnknown,
 
 		StateStopped,
 		StateMoving,

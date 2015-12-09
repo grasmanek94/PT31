@@ -106,9 +106,6 @@
     <Filter Include="main_server_application\lib">
       <UniqueIdentifier>{2ea56e3a-29d7-4621-8314-05cbf1e63579}</UniqueIdentifier>
     </Filter>
-    <Filter Include="main_server_application\lib\somelib">
-      <UniqueIdentifier>{2dbcf7c3-3f0a-4337-9334-593a22cca021}</UniqueIdentifier>
-    </Filter>
     <Filter Include="common\DynamicGrid">
       <UniqueIdentifier>{03daf59d-230f-4e62-b11d-d384d575c254}</UniqueIdentifier>
     </Filter>
@@ -120,6 +117,15 @@
     </Filter>
     <Filter Include="common\JumpPointSearch">
       <UniqueIdentifier>{d67c76e9-f555-48dc-a403-78de81e2aa47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="common\interprocess_position">
+      <UniqueIdentifier>{9c0f4d45-fd3a-4a8f-8ab3-eaff9a2d5d61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="common\shm">
+      <UniqueIdentifier>{6eaae2e4-d201-435b-ab74-35886feafdc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="main_server_application\lib\server">
+      <UniqueIdentifier>{2dbcf7c3-3f0a-4337-9334-593a22cca021}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -224,9 +230,6 @@
     </ClCompile>
     <ClCompile Include="main_server_application\main.cxx">
       <Filter>main_server_application</Filter>
-    </ClCompile>
-    <ClCompile Include="main_server_application\lib\somelib\somelib.cxx">
-      <Filter>main_server_application\lib\somelib</Filter>
     </ClCompile>
     <ClCompile Include="path_processor\main.cxx">
       <Filter>path_processor</Filter>
@@ -719,9 +722,6 @@
     <ClInclude Include="common\interprocess_queue\RawQueue.hxx">
       <Filter>common\interprocess_queue</Filter>
     </ClInclude>
-    <ClInclude Include="common\interprocess_queue\SharedMemoryHelper.hxx">
-      <Filter>common\interprocess_queue</Filter>
-    </ClInclude>
     <ClInclude Include="common\interprocess_queue\IPCQueue.hxx">
       <Filter>common\interprocess_queue</Filter>
     </ClInclude>
@@ -743,11 +743,20 @@
     <ClInclude Include="common\StringSplitter\StringSplitter.hxx">
       <Filter>common\StringSplitter</Filter>
     </ClInclude>
-    <ClInclude Include="common\interprocess_queue\RawShmQueue.hxx">
-      <Filter>common\interprocess_queue</Filter>
+    <ClInclude Include="common\interprocess_position\IPCPos.hxx">
+      <Filter>common\interprocess_position</Filter>
     </ClInclude>
-    <ClInclude Include="common\interprocess_queue\IPCShmQueue.hxx">
-      <Filter>common\interprocess_queue</Filter>
+    <ClInclude Include="common\shm\SharedMemoryHelper.hxx">
+      <Filter>common\shm</Filter>
+    </ClInclude>
+    <ClInclude Include="main_server_application\lib\server\RobotTaskQueue.hxx">
+      <Filter>main_server_application\lib\server</Filter>
+    </ClInclude>
+    <ClInclude Include="main_server_application\lib\server\ServBot.hxx">
+      <Filter>main_server_application\lib\server</Filter>
+    </ClInclude>
+    <ClInclude Include="main_server_application\lib\server\Server.hxx">
+      <Filter>main_server_application\lib\server</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

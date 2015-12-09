@@ -48,6 +48,14 @@ GLM_INCLUDE_DIRS=			-I./libraries/glm
 GLM_SOURCES=				./libraries/__linux__/glm.cpp
 GLM_LIBRARY=				$(MAIN_BASE_DIR)obj/glm$(SUFFIX_SELECTED).o
 
+NETWORKING_DEFINES=			-DHAS_SOCKLEN_T
+NETWORKING_INCLUDE_DIRS=	-I./libraries/networking -I./libraries/networking/include
+NETWORKING_SOURCES=			./libraries/networking/all_linux.c
+NETWORKING_LIBRARY=			$(MAIN_BASE_DIR)obj/networking$(SUFFIX_SELECTED).o
+
+NETWORKINGPP_SOURCES=			./libraries/networking/enetpp.cxx
+NETWORKINGPP_LIBRARY=			$(MAIN_BASE_DIR)obj/networkingpp$(SUFFIX_SELECTED).o
+
 GoogleTest: $(GOOGLE_TEST_SOURCES)
 	@$(CHOSEN_GPP) $(CFLAGS_COMMON) $(CFLAGS_STATIC_LIBRARY) $(GOOGLE_TEST_INCLUDE_DIRS) $(GOOGLE_TEST_SOURCES) -o $(GOOGLE_TEST_LIBRARY)
 	
@@ -58,17 +66,27 @@ GLM: $(GLM_SOURCES)
 	@mkdir -p $(MAIN_BASE_DIR)obj
 	@$(CHOSEN_GPP) $(CFLAGS_COMMON) $(CFLAGS_STATIC_LIBRARY) $(GLM_INCLUDE_DIRS) $(GLM_SOURCES) -o $(GLM_LIBRARY)
 
+#ugh, C
+Net: $(NETWORKING_SOURCES)
+	@mkdir -p $(MAIN_BASE_DIR)obj/networking
+	@$(subst ++,cc,$(CHOSEN_GPP)) $(CFLAGS_INCLUDE_DIRS) $(CFLAGS_SELECTED) $(CFLAGS_STATIC_LIBRARY) $(NETWORKING_DEFINES) $(NETWORKING_INCLUDE_DIRS) $(NETWORKING_SOURCES) -o $(NETWORKING_LIBRARY)
+
+NetPP: $(NETWORKINGPP_SOURCES)
+	@mkdir -p $(MAIN_BASE_DIR)obj/networking
+	@$(CHOSEN_GPP) $(CFLAGS_COMMON) $(CFLAGS_STATIC_LIBRARY) $(NETWORKING_INCLUDE_DIRS) $(NETWORKING_DEFINES) $(NETWORKINGPP_SOURCES) -o $(NETWORKINGPP_LIBRARY)
+
 #######################################################################################################
 PROJECT_NAME=				main_ev3_application
 
 COMMON_INCLUDE_DIRS=		$(GLM_INCLUDE_DIRS) \
 							-I./common \
-							-L$(MAIN_BASE_DIR) 
+							-L$(MAIN_BASE_DIR) \
+							$(NETWORKING_INCLUDE_DIRS)
 							
 INCLUDE_DIRS_PROJECT=		-I./$(PROJECT_NAME) \
 							-I./$(PROJECT_NAME)/lib \
 							$(COMMON_INCLUDE_DIRS)
-							
+
 #######################################################################################################
 LIBCOMMON_INCLUDE_DIRS=		$(INCLUDE_DIRS_PROJECT)
 LIBCOMMON_SOURCES=			$(shell find ./common/ -name '*.c*')
@@ -82,14 +100,14 @@ C_LIBCOMMON: DEFAULT_CLEARER=$(LIBCOMMON_OBJ_DIR)
 C_LIBCOMMON: COMMON_INCLUDES=$(LIBCOMMON_INCLUDE_DIRS)
 C_LIBCOMMON: $(LIBCOMMON_OBJECTS)
 	@$(ARCHIVE) $(LIBCOMMON_LIBRARY) $(addsuffix $(SUFFIX_SELECTED).o,$(addprefix ./,$^)) > /dev/null
-	
+
 #######################################################################################################
 COMMON_LIBRARIES=			$(GLM_LIBRARY) \
 							-lpthread \
 							-ldl \
 							-lrt \
 							-l$(LIBCOMMON_LIBRARY_NAME)
-	
+
 #######################################################################################################
 EV3M_NAME=					main_ev3_application
 
@@ -108,7 +126,9 @@ LIBEV3M_DEFINES=			$(COMMON_DEFINITIONS) \
 							-DNO_LINUX_HEADERS
 
 EV3M_LIBRARIES=				$(COMMON_LIBRARIES) \
-							-l $(LIBEV3M_NAME)
+							-l $(LIBEV3M_NAME) \
+							$(NETWORKING_LIBRARY) \
+							$(NETWORKINGPP_LIBRARY)
 EV3M_INCLUDE_DIRS=			$(INCLUDE_DIRS_EV3M)
 EV3M_SOURCES=				$(shell find ./$(EV3M_NAME)/ ! -path "./$(EV3M_NAME)/lib/*" -name '*.c*')
 EV3M_OBJ_DIR=				$(MAIN_BASE_DIR)obj/$(EV3M_NAME)/
@@ -218,7 +238,9 @@ LIBSRVR_DEFINES=			$(COMMON_DEFINITIONS)
 
 SRVR_LIBRARIES=				$(COMMON_LIBRARIES) \
 							-l$(LIBSRVR_NAME) \
-							-l$(LIBPPR_NAME)
+							-l$(LIBPPR_NAME) \
+							$(NETWORKING_LIBRARY) \
+							$(NETWORKINGPP_LIBRARY)
 							
 SRVR_INCLUDE_DIRS=			$(INCLUDE_DIRS_SRVR)
 SRVR_SOURCES=				$(shell find ./$(SRVR_NAME)/ ! -path "./$(SRVR_NAME)/lib/*" -name '*.c*')
@@ -226,7 +248,8 @@ SRVR_OBJ_DIR=				$(MAIN_BASE_DIR)obj/$(SRVR_NAME)/
 SRVR_OBJECTS=				$(addprefix $(SRVR_OBJ_DIR),$(SRVR_SOURCES))
 SRVR_EXECUTABLE=			$(MAIN_BASE_DIR)$(LIBSRVR_NAME).bin
 SRVR_DEFINES=				$(COMMON_DEFINITIONS) \
-							-D$(SRVR_NAME)
+							-D$(SRVR_NAME) \
+							$(NETWORKING_DEFINES)
 
 C_LIBSRVR: DEFAULT_CLEARER=$(LIBSRVR_OBJ_DIR)
 C_LIBSRVR: COMMON_INCLUDES=$(LIBSRVR_INCLUDE_DIRS)
@@ -293,6 +316,8 @@ TEST_LIBRARIES=				$(COMMON_LIBRARIES) \
 							-l$(LIBPPR_NAME) \
 							-l$(LIBSRVR_NAME) \
 							-l$(LIBPIX_NAME) \
+							$(NETWORKING_LIBRARY) \
+							$(NETWORKINGPP_LIBRARY) \
 							$(GOOGLE_TEST_LIBRARY) \
 							$(GOOGLE_MOCK_LIBRARY)
 
@@ -326,7 +351,7 @@ ev3_d ev3_td rsp_d rsp_td d td: CFLAGS_SELECTED=$(CFLAGS_COMBINED_DEBUG)
 ev3_r ev3_tr rsp_r rsp_tr r tr: SUFFIX_SELECTED=$(SUFFIX_RELEASE)$(CHOSEN_NAM)
 ev3_r ev3_tr rsp_r rsp_tr r tr: CFLAGS_SELECTED=$(CFLAGS_COMBINED_RELEASE)
 
-ev3_d ev3_r rsp_d rsp_r d r: GLM C_LIBCOMMON C_LIBEV3M C_LIBUWB C_LIBPIX C_LIBSRVR C_LIBPPR C_UWB C_PIX C_SRVR C_PPR C_EV3M
+ev3_d ev3_r rsp_d rsp_r d r: Net NetPP GLM C_LIBCOMMON C_LIBEV3M C_LIBUWB C_LIBPIX C_LIBSRVR C_LIBPPR C_UWB C_PIX C_SRVR C_PPR C_EV3M
 
-ev3_td ev3_tr rsp_tr rsp_td td tr: GoogleTest GoogleMock GLM C_LIBCOMMON C_LIBEV3M C_LIBUWB C_LIBPIX C_LIBSRVR C_LIBPPR C_TEST
+ev3_td ev3_tr rsp_tr rsp_td td tr: GoogleTest GoogleMock Net NetPP GLM C_LIBCOMMON C_LIBEV3M C_LIBUWB C_LIBPIX C_LIBSRVR C_LIBPPR C_TEST
 #	valgrind $(TEST_EXECUTABLE)

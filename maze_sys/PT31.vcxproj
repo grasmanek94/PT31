@@ -45,7 +45,6 @@
     <ClCompile Include="main_ev3_application\lib\ev3\EV3Robot.cxx" />
     <ClCompile Include="main_ev3_application\lib\ev3\EV3Sensing.cxx" />
     <ClCompile Include="main_ev3_application\main.cxx" />
-    <ClCompile Include="main_server_application\lib\somelib\somelib.cxx" />
     <ClCompile Include="main_server_application\main.cxx" />
     <ClCompile Include="main_server_application\queue_push_pop_example.cxx" />
     <ClCompile Include="test\TestMain.cxx" />
@@ -62,13 +61,12 @@
     <ClInclude Include="common\interfaces\IMecanumControl.hxx" />
     <ClInclude Include="common\interfaces\IRobot.hxx" />
     <ClInclude Include="common\interfaces\ISensing.hxx" />
+    <ClInclude Include="common\interprocess_position\IPCPos.hxx" />
     <ClInclude Include="common\interprocess_queue\IPCQueue.hxx" />
-    <ClInclude Include="common\interprocess_queue\IPCShmQueue.hxx" />
     <ClInclude Include="common\interprocess_queue\QueueItem.hxx" />
     <ClInclude Include="common\interprocess_queue\RawQueue.hxx" />
-    <ClInclude Include="common\interprocess_queue\RawShmQueue.hxx" />
-    <ClInclude Include="common\interprocess_queue\SharedMemoryHelper.hxx" />
     <ClInclude Include="common\JumpPointSearch\JPS.hxx" />
+    <ClInclude Include="common\shm\SharedMemoryHelper.hxx" />
     <ClInclude Include="common\StringSplitter\StringSplitter.hxx" />
     <ClInclude Include="libraries\glm\glm\common.hpp" />
     <ClInclude Include="libraries\glm\glm\exponential.hpp" />
@@ -212,6 +210,9 @@
     <ClInclude Include="libraries\googletest\include\gtest\internal\gtest-tuple.h" />
     <ClInclude Include="libraries\googletest\include\gtest\internal\gtest-type-util.h" />
     <ClInclude Include="libraries\googletest\src\gtest-internal-inl.h" />
+    <ClInclude Include="main_server_application\lib\server\RobotTaskQueue.hxx" />
+    <ClInclude Include="main_server_application\lib\server\ServBot.hxx" />
+    <ClInclude Include="main_server_application\lib\server\Server.hxx" />
     <ClInclude Include="path_processor\lib\PathProcessor\PathProcessor.hxx" />
     <ClInclude Include="path_processor\lib\PathProcessor\PathProcessorQueue.hxx" />
     <ClInclude Include="main_ev3_application\lib\configuration\CalibrationLoader.hxx" />

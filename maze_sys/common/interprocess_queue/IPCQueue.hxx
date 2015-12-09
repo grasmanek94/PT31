@@ -6,12 +6,13 @@
 #include <string>
 #include <new>
 #include <semaphore.h>
+#include <pthread.h>
 
 #include <sys/stat.h>
 #include <sys/file.h>
 #include <fcntl.h>
 
-#include "SharedMemoryHelper.hxx"
+#include <shm/SharedMemoryHelper.hxx>
 #include "QueueItem.hxx"
 #include "RawQueue.hxx"
 
@@ -25,40 +26,45 @@ private:
 	_RawQueue* queue_shared_memory;
 	sem_t* queue_operation_semaphore;
 	sem_t* memory_prepare_semaphore;
+	sem_t* elem_count_semaphore;
 	int shm_fd;
 	std::string queue_name;
 	int deletion_fd_protection;
-	bool creator;
 
-	void PrepSem(const std::string& name, sem_t** semaphore, int initial)
+	/* Why geen mutex? [maar wel memory_prepare_semaphore] :
+		For inter-process synchronization, a mutex needs to be allo-
+		cated   in  memory shared between these processes. Since the
+		memory for such a mutex must be allocated dynamically,   the
+		mutex needs to be explicitly initialized using mutex_init().
+
+		We zijn shared memory aan t maken en zorgen ervoor dat er maar 1 creator is, dus nutteloos eh? Jup!
+	*/
+
+	bool Wait()
 	{
-		*semaphore = sem_open(name.c_str(), O_CREAT | O_EXCL, 0777, initial);
-
-		if (*semaphore == SEM_FAILED)
-		{
-			*semaphore = sem_open(name.c_str(), 0);
-			if (*semaphore == SEM_FAILED)
-			{
-				throw std::exception(/*"Cannot access semaphore"*/);
-			}
-		}
+		return sem_wait(queue_operation_semaphore) == 0;
 	}
 
-	_RawQueue* Queue()
+	bool Post()
 	{
-		return queue_shared_memory;
+		return sem_post(queue_operation_semaphore) == 0;
 	}
+
+	bool TryWait()
+	{
+		return sem_trywait(queue_operation_semaphore) == 0;
+	}
+
 public:
 	IPCQueue(const std::string& queue_name)
 		:	queue_shared_memory(NULL),
 			queue_operation_semaphore(SEM_FAILED),
 			memory_prepare_semaphore(SEM_FAILED),
+			elem_count_semaphore(SEM_FAILED),
 			shm_fd(-1),
 			queue_name(queue_name),
-			deletion_fd_protection(-1),
-			creator(false)
+			deletion_fd_protection(-1)
 	{
-
 		deletion_fd_protection = open(("/tmp/deletion_fd_protection.ipc_lockcheck." + queue_name).c_str(), O_CREAT | O_RDWR);
 		if (deletion_fd_protection == -1)
 		{
@@ -74,11 +80,10 @@ public:
 				throw std::exception(/*"Cannot access critical lock file"*/);
 			}
 
-			creator = true;
-
 			shm_unlink(queue_name.c_str());
-			sem_unlink((queue_name).c_str());
+			sem_unlink(queue_name.c_str());
 			sem_unlink(("SHM_PROT_" + queue_name).c_str());
+			sem_unlink(("ITEM_COUNTER_" + queue_name).c_str());
 		}
 		else
 		{
@@ -88,8 +93,9 @@ public:
 			}
 		}
 
-		PrepSem("SHM_PROT_" + queue_name, &memory_prepare_semaphore, 1);
-		PrepSem(queue_name, &queue_operation_semaphore, 1);
+		my_PrepSem("ITEM_COUNTER_" + queue_name, &elem_count_semaphore, 0);
+		my_PrepSem("SHM_PROT_" + queue_name, &memory_prepare_semaphore, 1);
+		my_PrepSem(queue_name, &queue_operation_semaphore, 1);
 
 		sem_wait(memory_prepare_semaphore);
 
@@ -111,34 +117,59 @@ public:
 		sem_post(memory_prepare_semaphore);
 	}
 
-	bool Wait()
-	{
-		return sem_wait(queue_operation_semaphore) == 0;
-	}
-
-	bool Post()
-	{
-		return sem_post(queue_operation_semaphore) == 0;
-	}
-
-	bool TryWait()
-	{
-		return sem_trywait(queue_operation_semaphore) == 0;
-	}
-
 	bool Push(_Item* item)
 	{
-		return Queue()->Push(item);
+		Wait();
+		bool ret_val = queue_shared_memory->Push(item);
+		Post();
+		sem_post(elem_count_semaphore);
+		return ret_val;
 	}
 
 	bool Pop(_Item* item)
 	{
-		return Queue()->Pop(item);
+		sem_wait(elem_count_semaphore);
+		Wait();
+		bool ret_val = queue_shared_memory->Pop(item);
+		Post();
+		return ret_val;
+	}
+
+	bool TryPush(_Item* item, bool only_try = false)
+	{
+		if (!TryWait())
+		{
+			return false;
+		}
+		bool ret_val = queue_shared_memory->Push(item);
+		Post();
+		sem_post(elem_count_semaphore);
+		return ret_val;
+	}
+
+	bool TryPop(_Item* item)
+	{
+		if (sem_trywait(queue_operation_semaphore) != 0)
+		{
+			return false;
+		}
+		sem_wait(elem_count_semaphore);
+		if (!TryWait())
+		{
+			sem_post(elem_count_semaphore);
+			return false;
+		}
+		bool ret_val = queue_shared_memory->Pop(item);
+		Post();
+		return ret_val;
 	}
 
 	size_t Count()
 	{
-		return Queue()->Count();
+		int count = 0;
+		sem_getvalue(elem_count_semaphore, &count);
+		return (size_t)count;
+		//return queue_shared_memory->Count();
 	}
 
 	~IPCQueue()
@@ -149,14 +180,7 @@ public:
 
 		if (deletion_fd_protection != -1)
 		{
-			flock(deletion_fd_protection, LOCK_UN);//release shared lock
-			if (!creator && flock(deletion_fd_protection, LOCK_EX | LOCK_NB) == 0)//if we are the last process we cleanup because we can gain exclusive lock
-			{
-				shm_unlink(queue_name.c_str());
-				sem_unlink(queue_name.c_str());
-				sem_unlink(("SHM_PROT_" + queue_name).c_str());
-			}
-
+			flock(deletion_fd_protection, LOCK_UN); // release shared lock
 			close(deletion_fd_protection);
 		}
 	}
