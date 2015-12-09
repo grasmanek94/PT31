@@ -127,6 +127,12 @@
     <Filter Include="main_server_application\lib\server">
       <UniqueIdentifier>{2dbcf7c3-3f0a-4337-9334-593a22cca021}</UniqueIdentifier>
     </Filter>
+    <Filter Include="libraries\networking">
+      <UniqueIdentifier>{b04a03ed-3fa4-47d6-bdc0-b1c1b46d1585}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="common\networking">
+      <UniqueIdentifier>{0c0f0bdf-9854-4833-93a5-d12d15249476}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main_ev3_application\main.cxx">
@@ -245,6 +251,66 @@
     </ClCompile>
     <ClCompile Include="main_server_application\queue_push_pop_example.cxx">
       <Filter>main_server_application</Filter>
+    </ClCompile>
+    <ClCompile Include="libraries\networking\enetpp.cxx">
+      <Filter>libraries\networking</Filter>
+    </ClCompile>
+    <ClCompile Include="libraries\networking\host.c">
+      <Filter>libraries\networking</Filter>
+    </ClCompile>
+    <ClCompile Include="libraries\networking\list.c">
+      <Filter>libraries\networking</Filter>
+    </ClCompile>
+    <ClCompile Include="libraries\networking\packet.c">
+      <Filter>libraries\networking</Filter>
+    </ClCompile>
+    <ClCompile Include="libraries\networking\peer.c">
+      <Filter>libraries\networking</Filter>
+    </ClCompile>
+    <ClCompile Include="libraries\networking\protocol.c">
+      <Filter>libraries\networking</Filter>
+    </ClCompile>
+    <ClCompile Include="libraries\networking\unix.c">
+      <Filter>libraries\networking</Filter>
+    </ClCompile>
+    <ClCompile Include="libraries\networking\win32.c">
+      <Filter>libraries\networking</Filter>
+    </ClCompile>
+    <ClCompile Include="libraries\networking\all_linux.c">
+      <Filter>libraries\networking</Filter>
+    </ClCompile>
+    <ClCompile Include="libraries\networking\callbacks.c">
+      <Filter>libraries\networking</Filter>
+    </ClCompile>
+    <ClCompile Include="libraries\networking\compress.c">
+      <Filter>libraries\networking</Filter>
+    </ClCompile>
+    <ClCompile Include="common\interprocess_queue\IPCQueue.cxx">
+      <Filter>common\interprocess_queue</Filter>
+    </ClCompile>
+    <ClCompile Include="common\interprocess_queue\QueueItem.cxx">
+      <Filter>common\interprocess_queue</Filter>
+    </ClCompile>
+    <ClCompile Include="common\interprocess_queue\RawQueue.cxx">
+      <Filter>common\interprocess_queue</Filter>
+    </ClCompile>
+    <ClCompile Include="path_processor\lib\PathProcessor\PathProcessor.cxx">
+      <Filter>path_processor\lib\PathProcessor</Filter>
+    </ClCompile>
+    <ClCompile Include="path_processor\lib\PathProcessor\PathProcessorQueue.cxx">
+      <Filter>path_processor\lib\PathProcessor</Filter>
+    </ClCompile>
+    <ClCompile Include="main_server_application\lib\server\RobotTaskQueue.cxx">
+      <Filter>main_server_application\lib\server</Filter>
+    </ClCompile>
+    <ClCompile Include="main_server_application\lib\server\ServBot.cxx">
+      <Filter>main_server_application\lib\server</Filter>
+    </ClCompile>
+    <ClCompile Include="main_server_application\lib\server\Server.cxx">
+      <Filter>main_server_application\lib\server</Filter>
+    </ClCompile>
+    <ClCompile Include="common\shm\SharedMemoryHelper.cxx">
+      <Filter>common\shm</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -757,6 +823,39 @@
     </ClInclude>
     <ClInclude Include="main_server_application\lib\server\Server.hxx">
       <Filter>main_server_application\lib\server</Filter>
+    </ClInclude>
+    <ClInclude Include="libraries\networking\include\enet\utility.h">
+      <Filter>libraries\networking</Filter>
+    </ClInclude>
+    <ClInclude Include="libraries\networking\include\enet\win32.h">
+      <Filter>libraries\networking</Filter>
+    </ClInclude>
+    <ClInclude Include="libraries\networking\include\enet\callbacks.h">
+      <Filter>libraries\networking</Filter>
+    </ClInclude>
+    <ClInclude Include="libraries\networking\include\enet\enet.h">
+      <Filter>libraries\networking</Filter>
+    </ClInclude>
+    <ClInclude Include="libraries\networking\include\enet\enetpp.hxx">
+      <Filter>libraries\networking</Filter>
+    </ClInclude>
+    <ClInclude Include="libraries\networking\include\enet\list.h">
+      <Filter>libraries\networking</Filter>
+    </ClInclude>
+    <ClInclude Include="libraries\networking\include\enet\protocol.h">
+      <Filter>libraries\networking</Filter>
+    </ClInclude>
+    <ClInclude Include="libraries\networking\include\enet\time.h">
+      <Filter>libraries\networking</Filter>
+    </ClInclude>
+    <ClInclude Include="libraries\networking\include\enet\types.h">
+      <Filter>libraries\networking</Filter>
+    </ClInclude>
+    <ClInclude Include="libraries\networking\include\enet\unix.h">
+      <Filter>libraries\networking</Filter>
+    </ClInclude>
+    <ClInclude Include="common\networking\PacketInfo.hxx">
+      <Filter>common\networking</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

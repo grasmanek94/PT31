@@ -14,6 +14,10 @@
     <ClCompile Include="common\dummy.cxx" />
     <ClCompile Include="common\DynamicGrid\DynamicGrid.cxx" />
     <ClCompile Include="common\Environment\Environment.cxx" />
+    <ClCompile Include="common\interprocess_queue\IPCQueue.cxx" />
+    <ClCompile Include="common\interprocess_queue\QueueItem.cxx" />
+    <ClCompile Include="common\interprocess_queue\RawQueue.cxx" />
+    <ClCompile Include="common\shm\SharedMemoryHelper.cxx" />
     <ClCompile Include="common\StringSplitter\StringSplitter.cxx" />
     <ClCompile Include="libraries\googlemock\src\gmock-all.cc" />
     <ClCompile Include="libraries\googlemock\src\gmock-cardinalities.cc" />
@@ -31,9 +35,25 @@
     <ClCompile Include="libraries\googletest\src\gtest-typed-test.cc" />
     <ClCompile Include="libraries\googletest\src\gtest.cc" />
     <ClCompile Include="libraries\googletest\src\gtest_main.cc" />
+    <ClCompile Include="libraries\networking\all_linux.c" />
+    <ClCompile Include="libraries\networking\callbacks.c" />
+    <ClCompile Include="libraries\networking\compress.c" />
+    <ClCompile Include="libraries\networking\enetpp.cxx" />
+    <ClCompile Include="libraries\networking\host.c" />
+    <ClCompile Include="libraries\networking\list.c" />
+    <ClCompile Include="libraries\networking\packet.c" />
+    <ClCompile Include="libraries\networking\peer.c" />
+    <ClCompile Include="libraries\networking\protocol.c" />
+    <ClCompile Include="libraries\networking\unix.c" />
+    <ClCompile Include="libraries\networking\win32.c" />
     <ClCompile Include="libraries\__linux__\glm.cpp" />
     <ClCompile Include="libraries\__linux__\google_mock.cc" />
     <ClCompile Include="libraries\__linux__\google_test.cc" />
+    <ClCompile Include="main_server_application\lib\server\RobotTaskQueue.cxx" />
+    <ClCompile Include="main_server_application\lib\server\ServBot.cxx" />
+    <ClCompile Include="main_server_application\lib\server\Server.cxx" />
+    <ClCompile Include="path_processor\lib\PathProcessor\PathProcessor.cxx" />
+    <ClCompile Include="path_processor\lib\PathProcessor\PathProcessorQueue.cxx" />
     <ClCompile Include="path_processor\main.cxx" />
     <ClCompile Include="pix_location\lib\somelib\somelib.cxx" />
     <ClCompile Include="pix_location\main.cxx" />
@@ -66,6 +86,7 @@
     <ClInclude Include="common\interprocess_queue\QueueItem.hxx" />
     <ClInclude Include="common\interprocess_queue\RawQueue.hxx" />
     <ClInclude Include="common\JumpPointSearch\JPS.hxx" />
+    <ClInclude Include="common\networking\PacketInfo.hxx" />
     <ClInclude Include="common\shm\SharedMemoryHelper.hxx" />
     <ClInclude Include="common\StringSplitter\StringSplitter.hxx" />
     <ClInclude Include="libraries\glm\glm\common.hpp" />
@@ -210,6 +231,16 @@
     <ClInclude Include="libraries\googletest\include\gtest\internal\gtest-tuple.h" />
     <ClInclude Include="libraries\googletest\include\gtest\internal\gtest-type-util.h" />
     <ClInclude Include="libraries\googletest\src\gtest-internal-inl.h" />
+    <ClInclude Include="libraries\networking\include\enet\callbacks.h" />
+    <ClInclude Include="libraries\networking\include\enet\enet.h" />
+    <ClInclude Include="libraries\networking\include\enet\enetpp.hxx" />
+    <ClInclude Include="libraries\networking\include\enet\list.h" />
+    <ClInclude Include="libraries\networking\include\enet\protocol.h" />
+    <ClInclude Include="libraries\networking\include\enet\time.h" />
+    <ClInclude Include="libraries\networking\include\enet\types.h" />
+    <ClInclude Include="libraries\networking\include\enet\unix.h" />
+    <ClInclude Include="libraries\networking\include\enet\utility.h" />
+    <ClInclude Include="libraries\networking\include\enet\win32.h" />
     <ClInclude Include="main_server_application\lib\server\RobotTaskQueue.hxx" />
     <ClInclude Include="main_server_application\lib\server\ServBot.hxx" />
     <ClInclude Include="main_server_application\lib\server\Server.hxx" />
@@ -345,7 +376,7 @@
     <NMakeOutput>ev3dev</NMakeOutput>
     <NMakeCleanCommandLine>CLEAN.BAT</NMakeCleanCommandLine>
     <NMakeReBuildCommandLine>REBUILD.BAT</NMakeReBuildCommandLine>
-    <IncludePath>%(AdditionalIncludeDirectories);.\;.\common;.\libraries;.\libraries\glm;.\main_ev3_application;.\main_ev3_application\lib;.\uwb_location\;.\uwb_location\lib;$(VC_IncludePath);$(PROFTAAK_T31_CROSS_COMPILE)\arm-none-linux-gnueabi\include\c++\4.8.3;$(PROFTAAK_T31_CROSS_COMPILE)\arm-none-linux-gnueabi\libc\usr\include\;$(PROFTAAK_T31_CROSS_COMPILE)\i686-mingw32\arm-none-linux-gnueabi\include;$(PROFTAAK_T31_CROSS_COMPILE)\usr\include;.\libraries\pixy\include;.\libraries\googlemock\include;.\libraries\googletest\include;.\pix_location;.\pix_location\lib;.\main_server_application;.\main_server_application\lib;.\path_processor;.\path_processor\lib</IncludePath>
+    <IncludePath>%(AdditionalIncludeDirectories);.\;.\common;.\libraries;.\libraries\glm;.\main_ev3_application;.\main_ev3_application\lib;.\uwb_location\;.\uwb_location\lib;$(VC_IncludePath);$(PROFTAAK_T31_CROSS_COMPILE)\arm-none-linux-gnueabi\include\c++\4.8.3;$(PROFTAAK_T31_CROSS_COMPILE)\arm-none-linux-gnueabi\libc\usr\include\;$(PROFTAAK_T31_CROSS_COMPILE)\i686-mingw32\arm-none-linux-gnueabi\include;$(PROFTAAK_T31_CROSS_COMPILE)\usr\include;.\libraries\pixy\include;.\libraries\googlemock\include;.\libraries\googletest\include;.\libraries\networking\include;.\pix_location;.\pix_location\lib;.\main_server_application;.\main_server_application\lib;.\path_processor;.\path_processor\lib</IncludePath>
     <NMakePreprocessorDefinitions>WIN32</NMakePreprocessorDefinitions>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -353,7 +384,7 @@
     <NMakeOutput>ev3dev</NMakeOutput>
     <NMakeCleanCommandLine>CLEAN.BAT</NMakeCleanCommandLine>
     <NMakeReBuildCommandLine>REBUILD.BAT</NMakeReBuildCommandLine>
-    <IncludePath>%(AdditionalIncludeDirectories);.\;.\common;.\libraries;.\libraries\glm;.\main_ev3_application;.\main_ev3_application\lib;.\uwb_location\;.\uwb_location\lib;$(VC_IncludePath);$(PROFTAAK_T31_CROSS_COMPILE)\arm-none-linux-gnueabi\include\c++\4.8.3;$(PROFTAAK_T31_CROSS_COMPILE)\arm-none-linux-gnueabi\libc\usr\include\;$(PROFTAAK_T31_CROSS_COMPILE)\i686-mingw32\arm-none-linux-gnueabi\include;$(PROFTAAK_T31_CROSS_COMPILE)\usr\include;.\libraries\pixy\include;.\libraries\googlemock\include;.\libraries\googletest\include;.\pix_location;.\pix_location\lib;.\main_server_application;.\main_server_application\lib;.\path_processor;.\path_processor\lib</IncludePath>
+    <IncludePath>%(AdditionalIncludeDirectories);.\;.\common;.\libraries;.\libraries\glm;.\main_ev3_application;.\main_ev3_application\lib;.\uwb_location\;.\uwb_location\lib;$(VC_IncludePath);$(PROFTAAK_T31_CROSS_COMPILE)\arm-none-linux-gnueabi\include\c++\4.8.3;$(PROFTAAK_T31_CROSS_COMPILE)\arm-none-linux-gnueabi\libc\usr\include\;$(PROFTAAK_T31_CROSS_COMPILE)\i686-mingw32\arm-none-linux-gnueabi\include;$(PROFTAAK_T31_CROSS_COMPILE)\usr\include;.\libraries\pixy\include;.\libraries\googlemock\include;.\libraries\googletest\include;.\libraries\networking\include;.\pix_location;.\pix_location\lib;.\main_server_application;.\main_server_application\lib;.\path_processor;.\path_processor\lib</IncludePath>
     <NMakePreprocessorDefinitions>WIN32</NMakePreprocessorDefinitions>
   </PropertyGroup>
   <ItemDefinitionGroup>
