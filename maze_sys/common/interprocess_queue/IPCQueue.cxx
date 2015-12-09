@@ -47,7 +47,7 @@ IPCQueue::IPCQueue(const std::string& queue_name)
 	if (flock(deletion_fd_protection, LOCK_EX | LOCK_NB) == 0)
 	{
 		//we have the only and only lock now so this below should generrally NOT be able to fail
-		flock(deletion_fd_protection, LOCK_UN);
+		//flock(deletion_fd_protection, LOCK_UN);//door dit te uncommenten is de race conditie weg en zou de code alsnog moeten werken |>> TESTED schijnt te werken
 		if (flock(deletion_fd_protection, LOCK_SH | LOCK_NB) != 0)
 		{
 			throw std::exception(/*"Cannot access critical lock file"*/);

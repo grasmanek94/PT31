@@ -25,3 +25,13 @@ size_t ServBot::ID() const
 {
 	return _id;
 }
+
+ENetPeer* ServBot::GetPeer() const
+{
+	return peer;
+}
+
+void ServBot::SetPeer(ENetPeer* peer)
+{
+	this->peer = peer;
+}

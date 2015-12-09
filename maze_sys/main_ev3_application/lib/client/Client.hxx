@@ -3,11 +3,6 @@
 
 #include <enet/enetpp.hxx>
 
-struct Packet {
-	uint8_t type;
-	std::string data;
-} ;
-
 class NetClient
 {
 	private:
@@ -77,9 +72,9 @@ class NetClient
 			RunNetworking();
 		}
 		
-		int Send(Packet data)
+		int Send(const std::string& data)
 		{
-			return client->Send(&data, sizeof(data));
+			return client->Send(data.c_str(), data.size());
 		}
 
 		~NetClient()

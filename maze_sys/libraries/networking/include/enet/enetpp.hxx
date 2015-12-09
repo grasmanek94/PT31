@@ -9,6 +9,7 @@ class NetworkBase;
 class NetworkServer;
 class NetworkClient;
 
+typedef std::vector<uint8_t> packet_vec;
 class NetworkBase
 {
 	friend class NetworkServer;
@@ -30,6 +31,7 @@ public:
 	bool Good();
 	int Pull(enet_uint32 timeout = 0);
 	int Send(ENetPeer* peer, const void* data, size_t bytes, _ENetPacketFlag flags = ENET_PACKET_FLAG_RELIABLE);
+	int Send(ENetPeer* peer, const packet_vec& data, _ENetPacketFlag flags = ENET_PACKET_FLAG_RELIABLE);
 
 	std::vector<uint8_t> GetPacketData(ENetPacket* p) const;
 };
@@ -40,6 +42,7 @@ public:
 	NetworkServer(enet_uint16 port = 0xBEEF);
 	bool Create(size_t max_connections = 2);
 	void Broadcast(const void* data, size_t bytes, _ENetPacketFlag flags = ENET_PACKET_FLAG_RELIABLE);
+	void Broadcast(const packet_vec& data, _ENetPacketFlag flags = ENET_PACKET_FLAG_RELIABLE);
 };
 
 class NetworkClient : public NetworkBase
@@ -52,5 +55,6 @@ public:
 	ENetPeer * Connect(std::string hostname, unsigned short port);
 	bool Create();
 	int Send(const void* data, size_t bytes, _ENetPacketFlag flags = ENET_PACKET_FLAG_RELIABLE);
+	int Send(const packet_vec& data, _ENetPacketFlag flags = ENET_PACKET_FLAG_RELIABLE);
 };
 #endif

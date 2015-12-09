@@ -17,15 +17,6 @@ private:
 	std::string queue_name;
 	int deletion_fd_protection;
 
-	/* Why geen mutex? [maar wel memory_prepare_semaphore] :
-		For inter-process synchronization, a mutex needs to be allo-
-		cated   in  memory shared between these processes. Since the
-		memory for such a mutex must be allocated dynamically,   the
-		mutex needs to be explicitly initialized using mutex_init().
-
-		We zijn shared memory aan t maken en zorgen ervoor dat er maar 1 creator is, dus nutteloos eh? Jup!
-	*/
-
 	bool Wait();
 	bool Post();
 	bool TryWait();
