@@ -4,13 +4,19 @@
 #include <fstream>
 #include <sstream>
 
-#include "NetworkServer.h"
+#include "NetworkServer.hxx"
 #include "enet/enetpp.hxx"
 
 
 int main(int argc, char** argv)
 {
-	NetworkServer server = new NetworkServer( serverAddress);
-	
+	NetServer server = new NetServer();
+	while (server)
+	{
+		switch (server->Receive())
+		{
+			
+		}
+	}
 	return 0;
 }

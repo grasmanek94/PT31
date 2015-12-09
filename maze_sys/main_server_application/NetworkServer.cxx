@@ -1,7 +1,7 @@
 NetServer::NetServer()
 {
 	NetworkServer* server;
-	robotList 
+	robotList = new vector<Robot>();
 	server = new NetworkServer();
 	if ( server->GetInitCode() || !server->Create(1024) || !server->Good())
 	{
@@ -23,6 +23,8 @@ ENetEvent NetServer::Receive()
 					event.peer->address.port);
 				/* Store any relevant client information here. */
 				event.peer->data = "Client information";
+				Robot robot = new Robot(event.peer);
+				robotList.push_back(robot);
 				break;
 			case ENET_EVENT_TYPE_RECEIVE:
 				printf("%s\n", event.packet->data);
