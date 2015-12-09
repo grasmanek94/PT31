@@ -17,30 +17,36 @@ struct CCSignature
     int sig2;
 };
 
-void* receiveLocations(void*);
-int dec2oct(int);
+int dec2oct (int num)
+{
+    int total = 0,power=1;
+    while(num > 0)
+    {
+        total += power * (num % 8) ; // 2 if decimal to binary
+        num /= 8; // 2 if decimal to binary
+        power *= 10;
+    }
+    return total;
+}
 
 class PixyLocationProvider
 {
 private:
     std::map<int, CCSignature> registeredIds;
-
-    bool running;
-    volatile bool stopReceiving;
-    pthread_t receiveThread;
-
-public:
     IPCPos ipcPos;
 
+    bool running;
+    bool stop;
+
+    void Run();
+
+public:
     PixyLocationProvider();
     ~PixyLocationProvider();
-    bool registerSignature(int id, int sig1, int sig2);
-    void removeSignature(int id);
-    void start();
-    void stop();
-    bool mustStop();
-
-    std::map<int, CCSignature>* getRegisteredIds();
+    bool RegisterSignature(int id, int sig1, int sig2);
+    void RemoveSignature(int id);
+    void Start();
+    void Stop();
 };
 
 #endif // PIXYLOCATIONPROVIDER_H

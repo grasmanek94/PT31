@@ -2,23 +2,14 @@
 
 PixyLocationProvider::PixyLocationProvider()
 {
-    int status = pixy_init();
-
-    if (status != 0)
-    {
-        throw std::runtime_error("Error initializing pixy");
-    }
 }
 
 PixyLocationProvider::~PixyLocationProvider()
 {
-    if (running)
-    {
-        stop();
-    }
+    Stop();
 }
 
-bool PixyLocationProvider::registerSignature(int id, int sig1, int sig2)
+bool PixyLocationProvider::RegisterSignature(int id, int sig1, int sig2)
 {
     std::map<int, CCSignature>::iterator it;
 
@@ -37,7 +28,7 @@ bool PixyLocationProvider::registerSignature(int id, int sig1, int sig2)
     return true;
 }
 
-void PixyLocationProvider::removeSignature(int id)
+void PixyLocationProvider::RemoveSignature(int id)
 {
     std::map<int, CCSignature>::iterator it;
 
@@ -45,31 +36,39 @@ void PixyLocationProvider::removeSignature(int id)
     registeredIds.erase(it);
 }
 
-void PixyLocationProvider::start()
+void PixyLocationProvider::Start()
 {
-
-}
-
-void PixyLocationProvider::stop()
-{
-
-}
-
-bool PixyLocationProvider::mustStop()
-{
-    return stopReceiving;
-}
-
-int dec2oct (int num)
-{
-    int total = 0,power=1;
-    while(num > 0)
+    if (!running)
     {
-        total += power * (num % 8) ; // 2 if decimal to binary
-        num /= 8; // 2 if decimal to binary
-        power *= 10;
+        running = true;
+        stop = false;
+
+        int status = pixy_init();
+
+        if (status != 0)
+        {
+            throw std::runtime_error("Error initializing pixy");
+        }
+
+        Run();
     }
-    return total;
+}
+
+void PixyLocationProvider::Stop()
+{
+    if (running)
+    {
+        stop = true;
+        running = false;
+        pixy_close();
+    }
+}
+
+void PixyLocationProvider::Run()
+{
+    while (!stop)
+    {
+    }
 }
 
 /*void* receiveLocations(void* instance)
