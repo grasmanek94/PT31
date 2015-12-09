@@ -8,7 +8,7 @@ int main(int argc, char** argv) {
 	
 	
 	Packet data;
-	if (!argc)
+	if (argc <= 1)
 	{
 		data.type = 0;
 		data.data = "Hoi!";
@@ -27,7 +27,7 @@ int main(int argc, char** argv) {
 		std::cout << "Nope!" << std::endl;
 	}
 	
-	std::cout << "Start receiving: " << data.data << std::endl;
+	std::cout << "Start receiving..." << std::endl;
 	while(true) {
 		client->Run();
 	}
