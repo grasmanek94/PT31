@@ -49,7 +49,7 @@ GLM_SOURCES=				./libraries/__linux__/glm.cpp
 GLM_LIBRARY=				$(MAIN_BASE_DIR)obj/glm$(SUFFIX_SELECTED).o
 
 NETWORKING_DEFINES=			-DHAS_SOCKLEN_T
-NETWORKING_INCLUDE_DIRS=	-I./libraries/networking -I./libraries/networking/include -I./libraries/networking/include/enet
+NETWORKING_INCLUDE_DIRS=	-I./libraries/networking -I./libraries/networking/include
 NETWORKING_SOURCES=			./libraries/networking/all_linux.c
 NETWORKING_LIBRARY=			$(MAIN_BASE_DIR)obj/networking$(SUFFIX_SELECTED).o
 
@@ -69,7 +69,7 @@ GLM: $(GLM_SOURCES)
 #ugh, C
 Net: $(NETWORKING_SOURCES)
 	@mkdir -p $(MAIN_BASE_DIR)obj/networking
-	$(subst ++,cc,$(CHOSEN_GPP)) $(CFLAGS_INCLUDE_DIRS) $(CFLAGS_SELECTED) $(CFLAGS_STATIC_LIBRARY) $(NETWORKING_DEFINES) $(NETWORKING_INCLUDE_DIRS) $(NETWORKING_SOURCES) -o $(NETWORKING_LIBRARY)
+	@$(subst ++,cc,$(CHOSEN_GPP)) $(CFLAGS_INCLUDE_DIRS) $(CFLAGS_SELECTED) $(CFLAGS_STATIC_LIBRARY) $(NETWORKING_DEFINES) $(NETWORKING_INCLUDE_DIRS) $(NETWORKING_SOURCES) -o $(NETWORKING_LIBRARY)
 
 NetPP: $(NETWORKINGPP_SOURCES)
 	@mkdir -p $(MAIN_BASE_DIR)obj/networking
@@ -102,7 +102,7 @@ C_LIBCOMMON: $(LIBCOMMON_OBJECTS)
 	@$(ARCHIVE) $(LIBCOMMON_LIBRARY) $(addsuffix $(SUFFIX_SELECTED).o,$(addprefix ./,$^)) > /dev/null
 
 #######################################################################################################
-COMMON_LIBRARIES=			-l$(GLM_LIBRARY) \
+COMMON_LIBRARIES=			$(GLM_LIBRARY) \
 							-lpthread \
 							-ldl \
 							-lrt \
