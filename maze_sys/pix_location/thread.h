@@ -17,7 +17,7 @@ private:
     void* (*threadMethod)(void*);
 
 public:
-    Thread(void* (*method)(void*));
+    Thread();
     ~Thread();
 
     void Start(void* args);

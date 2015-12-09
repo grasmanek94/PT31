@@ -5,7 +5,7 @@ IPCPos::IPCPos()
 
 }
 
-IPCPos::set(int robot_id, Location pos)
+void IPCPos::set(int robot_id, Location pos)
 {\
     std::cout << robot_id
               << " is now at "

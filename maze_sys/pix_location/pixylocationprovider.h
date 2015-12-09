@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdexcept>
 #include <map>
+#include <vector>
 #include <pthread.h>
 #include <pixy.h>
 
@@ -11,28 +12,26 @@
 
 #define BLOCK_BUFFER_SIZE 25
 
-struct CCSignature
+inline int dec2oct (int num)
 {
-    int sig1;
-    int sig2;
-};
+    int total = 0;
+    int power = 1;
 
-int dec2oct (int num)
-{
-    int total = 0,power=1;
     while(num > 0)
     {
-        total += power * (num % 8) ; // 2 if decimal to binary
-        num /= 8; // 2 if decimal to binary
+        total += power * (num % 8);
+        num /= 8;
         power *= 10;
     }
+
     return total;
 }
 
 class PixyLocationProvider
 {
 private:
-    std::map<int, CCSignature> registeredIds;
+    std::map<int, int> registeredIds;
+    std::map<int, int> reverseIds;
     IPCPos ipcPos;
 
     bool running;
@@ -43,7 +42,7 @@ private:
 public:
     PixyLocationProvider();
     ~PixyLocationProvider();
-    bool RegisterSignature(int id, int sig1, int sig2);
+    bool RegisterSignature(int id, int sig);
     void RemoveSignature(int id);
     void Start();
     void Stop();
