@@ -6,6 +6,9 @@ int main()
 {
     PixyLocationProvider pix;
 
+    pix.RegisterSignature(1, 12);
+    pix.RegisterSignature(2, 34);
+
     pix.Start();
 }
 

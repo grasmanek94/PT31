@@ -84,18 +84,19 @@ void PixyLocationProvider::Run()
         std::vector<int> processed;
         // loop backwards as the most recent
         // signature is at the end
-        for (int i = newcount - 1; i > 0; i--)
+        for (int i = newcount - 1; i >= 0; i--)
         {
             Block current = blocks[i];
+            int currentsig = dec2oct(current.signature);
             if (current.type != PIXY_BLOCKTYPE_COLOR_CODE)
             {
                 continue;
             }
 
             bool isprocessed = false;
-            for (int j = 0; j < processed.size(); j++)
+            for (unsigned int j = 0; j < processed.size(); j++)
             {
-                if (current.signature == processed.at(j))
+                if (currentsig == processed.at(j))
                 {
                     isprocessed = true;
                     break;
@@ -107,7 +108,7 @@ void PixyLocationProvider::Run()
                 continue;
             }
 
-            it = reverseIds.find(current.signature);
+            it = reverseIds.find(currentsig);
             if (it != reverseIds.end())
             {
                 Location loc;
