@@ -11,6 +11,7 @@
 #include <sys/mman.h>
 #include <sys/stat.h>
 #include <sys/fcntl.h>
+#include <semaphore.h>
 
 template <typename T>
 T my_shm_create(const std::string& shm_name, size_t size, int& shm_fd)
@@ -56,18 +57,5 @@ T my_shm_open(const std::string& shm_name, int& shm_fd)
 	return (shm_addr);
 }
 
-
-void my_PrepSem(const std::string& name, sem_t** semaphore, int initial)
-{
-	*semaphore = sem_open(name.c_str(), O_CREAT | O_EXCL, 0777, initial);
-
-	if (*semaphore == SEM_FAILED)
-	{
-		*semaphore = sem_open(name.c_str(), 0);
-		if (*semaphore == SEM_FAILED)
-		{
-			throw std::exception(/*"Cannot access semaphore"*/);
-		}
-	}
-}
+void my_PrepSem(const std::string& name, sem_t** semaphore, int initial);
 #endif

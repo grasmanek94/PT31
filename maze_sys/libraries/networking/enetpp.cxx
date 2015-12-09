@@ -53,9 +53,9 @@ int NetworkBase::Send(ENetPeer* peer, const void* data, size_t bytes, _ENetPacke
 	return enet_peer_send(peer, 0, enet_packet_create(data, bytes, flags));
 }
 
-std::vector<uint8_t> NetworkBase::GetPacketData(ENetPacket* p)
+std::vector<uint8_t> NetworkBase::GetPacketData(ENetPacket* p) const
 {
-	std::vector<uint8_t> vec(p->data, p->data + p->dataLength);
+	std::vector<uint8_t> vec((uint8_t*)p->data, (uint8_t*)(p->data + p->dataLength));
 	enet_packet_destroy(p);
 	return vec;
 }

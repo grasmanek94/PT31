@@ -6,15 +6,14 @@
 #include <DynamicGrid/DynamicGrid.hxx>
 #include <Environment/Environment.hxx>
 
-typedef PathProcessorQueue<> PPQ;
-PPQ queues;
+PathProcessorQueue queues;
 
-int main()
+int __main()
 {
-	PPQ::MyIPCQueue* request_queue = queues.Request();
-	PPQ::MyIPCQueue* calculated_queue = queues.Calculated();
+	IPCQueue* request_queue = queues.Request();
+	IPCQueue* calculated_queue = queues.Calculated();
 
-	PPQ::MyQueueItem item;
+	QueueItem item;
 	JPS::Position* arr = item.template Convert<JPS::Position*>();
 
 	arr[0] = JPS::Pos(2, 2);

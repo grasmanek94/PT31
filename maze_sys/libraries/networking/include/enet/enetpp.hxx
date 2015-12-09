@@ -31,7 +31,7 @@ public:
 	int Pull(enet_uint32 timeout = 0);
 	int Send(ENetPeer* peer, const void* data, size_t bytes, _ENetPacketFlag flags = ENET_PACKET_FLAG_RELIABLE);
 
-	std::vector<uint8_t> GetPacketData(ENetPacket* p);
+	std::vector<uint8_t> GetPacketData(ENetPacket* p) const;
 };
 
 class NetworkServer : public NetworkBase

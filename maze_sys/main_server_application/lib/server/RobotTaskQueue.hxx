@@ -3,31 +3,16 @@
 
 #include <interprocess_queue/RawQueue.hxx>
 
-template <size_t item_max_bytes = 2048, size_t per_queue_max_items = 128>
 class RobotTaskQueue
 {
-	typedef RawQueue<item_max_bytes, per_queue_max_items> RTQ;
 private:
 
-	RTQ _ToDo;
-	RTQ _Done;
+	RawQueue _ToDo;
+	RawQueue _Done;
 
 public:
 
-	RobotTaskQueue()
-	{ }
-
-	~RobotTaskQueue()
-	{ }
-
-	RTQ* ToDo()
-	{
-		return &_ToDo;
-	}
-
-	RTQ* Done()
-	{
-		return &_Done;
-	}
+	RawQueue* ToDo();
+	RawQueue* Done();
 };
 #endif
