@@ -10,3 +10,13 @@ RawQueue* RobotTaskQueue::Done()
 {
 	return &_Done;
 }
+
+RobotTaskQueue::RobotTaskQueue()
+{
+
+}
+
+RobotTaskQueue::~RobotTaskQueue()
+{
+
+}

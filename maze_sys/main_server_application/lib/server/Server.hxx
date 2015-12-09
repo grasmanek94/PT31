@@ -17,7 +17,7 @@ public:
 private:
 	PosArray* positions;
 	PathProcessorQueue* pathprocessorqueues;
-	std::vector<ServBot> robots;
+	std::vector<ServBot*> robots;
 
 	IPCQueue* pCalculated;
 	IPCQueue* pRequested;

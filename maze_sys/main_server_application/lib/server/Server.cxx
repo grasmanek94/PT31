@@ -1,3 +1,4 @@
+#include <iostream>
 #include <vector>
 #include <interprocess_position/IPCPos.hxx>
 #include <PathProcessor/PathProcessorQueue.hxx>
@@ -11,11 +12,15 @@ void Server::TickNetworking()
 {
 	if (ns->Pull())
 	{
+		std::cout << "ns->Event()" << std::endl;
 		ENetEvent event = ns->Event();
 		std::vector<uint8_t> data_vec;
+
+		std::cout << "switch()" << std::endl;
 		switch (event.type)
 		{
 		case ENET_EVENT_TYPE_CONNECT:
+			std::cout << "ENET_EVENT_TYPE_CONNECT" << std::endl;
 			printf("A new client connected from %x:%u.\n",
 				event.peer->address.host,
 				event.peer->address.port);
@@ -23,18 +28,21 @@ void Server::TickNetworking()
 			//event.peer->data = (void*)"Client information";
 			break;
 		case ENET_EVENT_TYPE_RECEIVE:
+			std::cout << "ENET_EVENT_TYPE_RECEIVE" << std::endl;
 			data_vec = ns->GetPacketData(event.packet);
 			data_vec.push_back(0);
 			printf("%s", data_vec.data());
 			break;
 
 		case ENET_EVENT_TYPE_DISCONNECT:
+			std::cout << "ENET_EVENT_TYPE_DISCONNECT" << std::endl;
 			//printf("%s disconnected.\n", event.peer->data);
 			/* Reset the peer's client information. */
 			//event.peer->data = NULL;
 			break;
 
 		case ENET_EVENT_TYPE_NONE:
+			std::cout << "ENET_EVENT_TYPE_NONE" << std::endl;
 			//well this shouldn't happen
 			break;
 		}
@@ -48,7 +56,7 @@ Server::Server()
 {
 	for (size_t i = 0; i < max_bots_for_Server; ++i)
 	{
-		robots.push_back(ServBot(i));
+		robots.push_back(new ServBot(i));
 	}
 
 	pCalculated = pathprocessorqueues->Calculated();
@@ -72,7 +80,7 @@ void Server::Tick()
 		QueueItem item;
 		if (pCalculated->Pop(&item))
 		{
-			robots[item.GetOperationIdentifier()].ToDo()->Push(&item);
+			robots[item.GetOperationIdentifier()]->ToDo()->Push(&item);
 		}
 	}
 
@@ -81,6 +89,12 @@ void Server::Tick()
 
 Server::~Server()
 {
+	for (size_t i = 0; i < robots.size(); ++i)
+	{
+		delete robots[i];
+		robots[i] = NULL;
+	}
+
 	delete positions;
 	delete pathprocessorqueues;
 	delete ns;

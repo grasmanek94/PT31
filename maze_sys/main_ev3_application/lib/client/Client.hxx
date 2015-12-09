@@ -8,12 +8,8 @@ struct Packet {
 	std::string data;
 } ;
 
-//template < std::string serverAddress = "10.0.0.1", uint32_t serverPort = 0x666 >
 class NetClient
 {
-	public:
-		
-	
 	private:
 		NetworkClient* client;
 		void RunNetworking()
@@ -22,6 +18,7 @@ class NetClient
 			if (client->Pull())
 			{
 				ENetEvent event = client->Event();
+				std::vector<uint8_t> data_vec;
 				switch (event.type)
 				{
 				case ENET_EVENT_TYPE_CONNECT:
@@ -32,16 +29,19 @@ class NetClient
 					//event.peer->data = "Client information";
 					break;
 				case ENET_EVENT_TYPE_RECEIVE:
-					printf("%s\n", event.packet->data);
-					/* Clean up the packet now that we're done using it. */
-					enet_packet_destroy(event.packet);
+					data_vec = client->GetPacketData(event.packet);
+					data_vec.push_back(0);
+					printf("%s", data_vec.data());
 
 					break;
 
 				case ENET_EVENT_TYPE_DISCONNECT:
-					printf("%s disconnected.\n", event.peer->data);
+					//printf("%s disconnected.\n", event.peer->data);
 					/* Reset the peer's client information. */
-					event.peer->data = NULL;
+					//event.peer->data = NULL;
+					break;
+
+				case ENET_EVENT_TYPE_NONE:
 					break;
 				}
 			}

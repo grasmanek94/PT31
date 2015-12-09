@@ -3,7 +3,7 @@
 
 int main(int argc, char** argv) {
 	std::cout << "Starting" << std::endl;
-	NetClient* client = new NetClient("10.0.0.1", 0x666);
+	NetClient* client = new NetClient("127.0.0.1", 0x666);
 	std::cout << "Created client" << std::endl;
 	
 	

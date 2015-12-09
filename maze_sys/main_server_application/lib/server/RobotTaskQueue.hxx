@@ -12,6 +12,9 @@ private:
 
 public:
 
+	RobotTaskQueue();
+	~RobotTaskQueue();
+
 	RawQueue* ToDo();
 	RawQueue* Done();
 };
