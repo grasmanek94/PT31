@@ -1,12 +1,12 @@
 #include <enet/enetpp.hxx>
 
-NetworkBase::NetworkBase()
+NetworkBase::NetworkBase(enet_uint16 port)
 	: member(nullptr)
 {
 	initialisation_code = enet_initialize();
 	atexit(enet_deinitialize);
 
-	address.port = 0xBEEF;
+	address.port = port;
 }
 
 NetworkBase::~NetworkBase()
@@ -53,7 +53,15 @@ int NetworkBase::Send(ENetPeer* peer, const void* data, size_t bytes, _ENetPacke
 	return enet_peer_send(peer, 0, enet_packet_create(data, bytes, flags));
 }
 
-NetworkServer::NetworkServer()
+std::vector<uint8_t> NetworkBase::GetPacketData(ENetPacket* p)
+{
+	std::vector<uint8_t> vec(p->data, p->data + p->dataLength);
+	enet_packet_destroy(p);
+	return vec;
+}
+
+NetworkServer::NetworkServer(enet_uint16 port)
+	: NetworkBase(port)
 {
 	address.host = ENET_HOST_ANY;
 }
@@ -77,8 +85,9 @@ void NetworkServer::Broadcast(const void* data, size_t bytes, _ENetPacketFlag fl
 	enet_host_broadcast(member, 0, enet_packet_create(data, bytes, flags));
 }
 
-NetworkClient::NetworkClient()
-	: peer(nullptr)
+NetworkClient::NetworkClient(enet_uint16 port)
+	:	NetworkBase(port),
+		peer(nullptr)
 {
 	enet_address_set_host(&address, "127.0.0.1");
 }

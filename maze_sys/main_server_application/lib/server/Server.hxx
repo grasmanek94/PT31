@@ -25,7 +25,7 @@ private:
 
 	NetworkServer* ns;
 
-	void RunNetworking()
+	void TickNetworking()
 	{
 		if (ns->Pull())
 		{
@@ -40,10 +40,7 @@ private:
 				event.peer->data = "Client information";
 				break;
 			case ENET_EVENT_TYPE_RECEIVE:
-				printf("%s\n", event.packet->data);
-				/* Clean up the packet now that we're done using it. */
-				enet_packet_destroy(event.packet);
-
+				GetPacketData(event.packet);
 				break;
 
 			case ENET_EVENT_TYPE_DISCONNECT:
@@ -58,7 +55,7 @@ public:
 	Server()
 		:	positions(new PosArray()),
 			pathprocessorqueues(new PPQ()),
-			ns(new NetworkServer())
+			ns(new NetworkServer(0x666))
 	{
 		for (size_t i = 0; i < max_bots; ++i)
 		{
@@ -78,7 +75,7 @@ public:
 	}
 
 
-	void Run()
+	void Tick()
 	{
 		// OperationIdentifier == BotID
 		if (pCalculated->Count())
@@ -90,7 +87,7 @@ public:
 			}
 		}
 
-		RunNetworking();
+		TickNetworking();
 	}
 
 	~Server()

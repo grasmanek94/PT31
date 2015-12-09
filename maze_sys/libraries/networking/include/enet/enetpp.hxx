@@ -2,6 +2,7 @@
 #define ENETPP_HEADER
 
 #include <string>
+#include <vector>
 #include <enet/enet.h>
 
 class NetworkBase;
@@ -19,7 +20,7 @@ private:
 
 	int initialisation_code;
 
-	NetworkBase();
+	NetworkBase(enet_uint16 port);
 	~NetworkBase();
 public:
 	void SetHost(std::string hostname, unsigned short port);
@@ -29,12 +30,14 @@ public:
 	bool Good();
 	int Pull(enet_uint32 timeout = 0);
 	int Send(ENetPeer* peer, const void* data, size_t bytes, _ENetPacketFlag flags = ENET_PACKET_FLAG_RELIABLE);
+
+	std::vector<uint8_t> GetPacketData(ENetPacket* p);
 };
 
 class NetworkServer : public NetworkBase
 {
 public:
-	NetworkServer();
+	NetworkServer(enet_uint16 port = 0xBEEF);
 	bool Create(size_t max_connections = 2);
 	void Broadcast(const void* data, size_t bytes, _ENetPacketFlag flags = ENET_PACKET_FLAG_RELIABLE);
 };
@@ -44,7 +47,7 @@ class NetworkClient : public NetworkBase
 private:
 	ENetPeer * peer;
 public:
-	NetworkClient();
+	NetworkClient(enet_uint16 port = 0xBEEF);
 	~NetworkClient();
 	ENetPeer * Connect(std::string hostname, unsigned short port);
 	bool Create();
