@@ -107,7 +107,15 @@ void PixyLocationProvider::Run()
                 continue;
             }
 
-
+            it = reverseIds.find(current.signature);
+            if (it != reverseIds.end())
+            {
+                Location loc;
+                loc.x = current.x;
+                loc.y = current.y;
+                ipcPos.set(it->second, loc);
+                processed.push_back(it->first);
+            }
         }
     }
 }
