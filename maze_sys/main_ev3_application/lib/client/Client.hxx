@@ -18,6 +18,7 @@ class NetClient
 		NetworkClient* client;
 		void RunNetworking()
 		{
+			//std::cout << "pls gief data" << std::endl;
 			if (client->Pull())
 			{
 				ENetEvent event = client->Event();
@@ -76,9 +77,9 @@ class NetClient
 			RunNetworking();
 		}
 		
-		void Send(Packet data)
+		int Send(Packet data)
 		{
-			client->Send(&data, sizeof(data));
+			return client->Send(&data, sizeof(data));
 		}
 
 		~NetClient()
