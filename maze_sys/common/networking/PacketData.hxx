@@ -20,7 +20,7 @@ class PacketDataT
 {
 public:
 	template <typename T>
-	friend PacketDataT& operator<<(PacketDataT& stream, T &data);
+	friend PacketDataT& operator<<(PacketDataT& stream, const T &data);
 	template <typename T>
 	friend PacketDataT& operator>>(PacketDataT& stream, T &data);
 
@@ -35,7 +35,7 @@ private:
 		size_t data_size = data.size();
 		(*this) << data_size;
 
-		_data.insert(_data.end(), reinterpret_cast<const uint8_t*>(data.data()), reinterpret_cast<const uint8_t*>(data.data()) + data_size);
+		_data.insert(_data.end(), data.data(), data.data() + data_size);
 
 		return *this;
 	}
@@ -68,7 +68,7 @@ private:
 		size_t data_size = data.size();
 		(*this) << data_size;
 
-		_data.insert(_data.end(), reinterpret_cast<const uint8_t*>(data.data()), reinterpret_cast<const uint8_t*>(data.data()) + (data_size * sizeof(T)));
+		_data.insert(_data.end(), data.data(), data.data() + (data_size * sizeof(T)));
 
 		return *this;
 	}
@@ -98,7 +98,7 @@ private:
 	PacketDataT& in_stream_impl(SpecifySize &data)
 	{
 		(*this) << data.size;
-		_data.insert(_data.end(), reinterpret_cast<uint8_t*>(data.data), reinterpret_cast<uint8_t*>(data.data) + data.size);
+		_data.insert(_data.end(), data.data, data.data + data.size);
 		return *this;
 	}
 
@@ -121,7 +121,7 @@ private:
 	template <typename T>
 	PacketDataT& in_stream_impl(T &data)
 	{
-		_data.insert(_data.end(), reinterpret_cast<uint8_t*>(&data), reinterpret_cast<uint8_t*>(&data) + sizeof(data));
+		_data.insert(_data.end(), (uint8_t*)&data, ((uint8_t*)&data) + sizeof(data));
 		return *this;
 	}
 	
@@ -200,7 +200,7 @@ public:
 typedef PacketDataT<> PacketData;
 
 template <typename T>
-PacketData& operator<<(PacketData& stream, T &data)
+PacketData& operator<<(PacketData& stream, const T &data)
 {
 	return stream.in_stream_impl(data);
 }

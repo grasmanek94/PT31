@@ -312,9 +312,6 @@
     <ClCompile Include="common\shm\SharedMemoryHelper.cxx">
       <Filter>common\shm</Filter>
     </ClCompile>
-    <ClCompile Include="common\networking\PacketData.cxx">
-      <Filter>common\networking</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main_ev3_application\lib\ev3dev\ev3dev.hxx">

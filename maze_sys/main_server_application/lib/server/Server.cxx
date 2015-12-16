@@ -62,11 +62,11 @@ void Server::HandleGotUnknownPacketResponse(ENetPeer* peer, PacketData& data)
 void Server::HandleUnknownPacket(ENetPeer* peer, PacketData& data)
 {
 	PacketData sendback;
-	uint8_t type = SPT_Unknown;
-	SpecifySize senddata({ (uint8_t*)data.Serialize(), data.size() });
+
 	sendback
-		<< type
-		<< senddata;
+		<< SPT_Unknown
+		<< SpecifySize{ (uint8_t*)data.Serialize(), data.size() };
+
 	connection->Send(peer, sendback.Serialize(), sendback.size());
 }
 

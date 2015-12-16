@@ -17,7 +17,6 @@
     <ClCompile Include="common\interprocess_queue\IPCQueue.cxx" />
     <ClCompile Include="common\interprocess_queue\QueueItem.cxx" />
     <ClCompile Include="common\interprocess_queue\RawQueue.cxx" />
-    <ClCompile Include="common\networking\PacketData.cxx" />
     <ClCompile Include="common\shm\SharedMemoryHelper.cxx" />
     <ClCompile Include="common\StringSplitter\StringSplitter.cxx" />
     <ClCompile Include="libraries\googlemock\src\gmock-all.cc" />
