@@ -1,8 +1,6 @@
 #ifndef HEADER_ILocation_hxx
 #define HEADER_ILocation_hxx
 
-#include <glm/glm.hpp>
-
 struct xyza
 {
 	float x;
