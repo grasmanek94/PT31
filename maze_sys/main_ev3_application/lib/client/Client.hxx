@@ -8,17 +8,12 @@ struct Packet {
 	std::string data;
 } ;
 
-//template < std::string serverAddress = "10.0.0.1", uint32_t serverPort = 0x666 >
 class NetClient
 {
-	public:
-		
-	
 	private:
 		NetworkClient* client;
 		void RunNetworking()
 		{
-			//std::cout << "pls gief data" << std::endl;
 			if (client->Pull())
 			{
 				ENetEvent event = client->Event();
@@ -62,24 +57,18 @@ class NetClient
 			}
 		}
 		
-		/* AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH! */
 		void Run()
 		{
-			/*if (pCalculated->Count())
-			{
-				PPQ::MyQueueItem item;
-				if (pCalculated->Pop(&item))
-				{
-					robots[item.GetOperationIdentifier()].ToDo()->Push(&item);
-				}
-			}*/
-
 			RunNetworking();
 		}
 		
 		int Send(Packet data)
 		{
 			return client->Send(&data, sizeof(data));
+		}
+		
+		bool Connected() {
+			return client->Good();
 		}
 
 		~NetClient()
