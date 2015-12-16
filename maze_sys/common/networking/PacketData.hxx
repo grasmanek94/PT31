@@ -5,6 +5,8 @@
 #include <string>
 #include <cstring>
 
+#include "PacketInfo.hxx"
+
 struct SpecifySize
 {
 	uint8_t* data;
@@ -112,7 +114,7 @@ private:
 
 		return *this;
 	}
-
+	
 	//Please keep this ones as LAST, else any specialization/overrides will be overriden by these below
 	template <typename T>
 	PacketData& in_stream_impl(T &data)

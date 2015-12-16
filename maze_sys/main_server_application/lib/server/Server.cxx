@@ -30,9 +30,10 @@ void Server::HandleDisonnect(ENetPeer* peer)
 
 void Server::HandleIdentify(ENetPeer* peer, PacketData& data)
 {
-	if (data.size())
+	if (data.remaining_size())
 	{
-		uint8_t id = data[0];
+		uint8_t id;
+		data >> id;
 		if (id < robots.size())
 		{
 			//this is a bot
@@ -61,9 +62,11 @@ void Server::HandleGotUnknownPacketResponse(ENetPeer* peer, PacketData& data)
 void Server::HandleUnknownPacket(ENetPeer* peer, PacketData& data)
 {
 	PacketData sendback;
-	sendback 
-		<< (unsigned char)SPT_Unknown
-		<< SpecifySize{ data.Serialize(), data.size() };
+	uint8_t type = SPT_Unknown;
+	SpecifySize senddata({ (uint8_t*)data.Serialize(), data.size() });
+	sendback
+		<< type
+		<< senddata;
 	connection->Send(peer, sendback.Serialize(), sendback.size());
 }
 
