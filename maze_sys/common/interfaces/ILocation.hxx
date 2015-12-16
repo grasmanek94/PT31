@@ -3,11 +3,19 @@
 
 #include <glm/glm.hpp>
 
+struct xyza
+{
+	float x;
+	float y;
+	float z;
+	float a;
+};
+
 class ILocation
 {
 public:
 	//return x y z angle
-	virtual glm::vec4 GetLocation() = 0;
+	virtual xyza GetLocation() = 0;
 	virtual bool Available() const = 0;
 };
 
