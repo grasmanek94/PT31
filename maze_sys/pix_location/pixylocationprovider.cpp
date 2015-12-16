@@ -1,165 +1,93 @@
 #include "pixylocationprovider.h"
 
-PixyLocationProvider::PixyLocationProvider()
-{
-}
+PixyLocationProvider::PixyLocationProvider() {}
 
 PixyLocationProvider::~PixyLocationProvider()
 {
     Stop();
 }
 
-bool PixyLocationProvider::RegisterSignature(int id, int sig)
+int PixyLocationProvider::dec2oct(int num)
 {
-    std::map<int, int>::iterator it;
+    int total = 0;
+    int power = 1;
 
-    it = registeredIds.find(id);
-    if (it != registeredIds.end())
+    while(num > 0)
     {
-        return false;
+        total += power * (num % 8);
+        num /= 8;
+        power *= 10;
     }
 
-    registeredIds.insert(std::pair<int, int>(id, sig));
-    reverseIds.insert(std::pair<int, int>(sig, id));
-
-    return true;
+    return total;
 }
 
-void PixyLocationProvider::RemoveSignature(int id)
+void PixyLocationProvider::OnStart()
 {
-    std::map<int, int>::iterator it;
-
-    it = registeredIds.find(id);
-    registeredIds.erase(it);
-    it = reverseIds.find(id);
-    reverseIds.erase(it);
-}
-
-void PixyLocationProvider::Start()
-{
-    if (!running)
-    {
-        running = true;
-        stop = false;
-
-        int status = pixy_init();
-
-        if (status != 0)
-        {
-            throw std::runtime_error("Error initializing pixy");
-        }
-
-        Run();
-    }
-}
-
-void PixyLocationProvider::Stop()
-{
-    if (running)
-    {
-        stop = true;
-        running = false;
-        pixy_close();
-    }
-}
-
-void PixyLocationProvider::Run()
-{
-    while (!stop)
-    {
-        if (!pixy_blocks_are_new())
-        {
-            continue;
-        }
-
-        struct Block blocks[BLOCK_BUFFER_SIZE];
-        int newcount = pixy_get_blocks(BLOCK_BUFFER_SIZE, &blocks[0]);
-
-        if (newcount < 0)
-        {
-            continue;
-        }
-
-        std::map<int, int>::iterator it;
-        std::vector<int> processed;
-        // loop backwards as the most recent
-        // signature is at the end
-        for (int i = newcount - 1; i >= 0; i--)
-        {
-            Block current = blocks[i];
-            int currentsig = dec2oct(current.signature);
-            if (current.type != PIXY_BLOCKTYPE_COLOR_CODE)
-            {
-                continue;
-            }
-
-            bool isprocessed = false;
-            for (unsigned int j = 0; j < processed.size(); j++)
-            {
-                if (currentsig == processed.at(j))
-                {
-                    isprocessed = true;
-                    break;
-                }
-            }
-
-            if (isprocessed)
-            {
-                continue;
-            }
-
-            it = reverseIds.find(currentsig);
-            if (it != reverseIds.end())
-            {
-                Location loc;
-                loc.x = current.x;
-                loc.y = current.y;
-                ipcPos.set(it->second, loc);
-                processed.push_back(it->first);
-            }
-        }
-    }
-}
-
-/*void* receiveLocations(void* instance)
-{
-    PixyLocationProvider* pixy = (PixyLocationProvider*)instance;
-
     int status = pixy_init();
 
     if (status != 0)
     {
-        throw std::runtime_error(
-                    "error initialising pixy");
+        throw std::runtime_error("Error initializing pixy");
     }
+}
 
-    while (!pixy->mustStop())
-    {
-        std::map<int, CCSignature>* registeredIds =
-                pixy->getRegisteredIds();
-
-        if (!pixy_blocks_are_new())
-        {
-            // nothing to report
-            continue;
-        }
-
-        struct Block blocks[BLOCK_BUFFER_SIZE];
-        int new_blocks = pixy_get_blocks(BLOCK_BUFFER_SIZE, &blocks[0]);
-
-        if (new_blocks < 0)
-        {
-            // error or no blocks?
-            continue;
-        }
-
-        for (int i = new_blocks; i > 0; i--)
-        {
-
-        }
-    }
-
+void PixyLocationProvider::OnStop()
+{
     pixy_close();
+}
 
-    return NULL;
-}*/
+void PixyLocationProvider::DoStep()
+{
+    if (!pixy_blocks_are_new())
+    {
+        return;
+    }
+
+    struct Block blocks[BLOCK_BUFFER_SIZE];
+    int newcount = pixy_get_blocks(BLOCK_BUFFER_SIZE, &blocks[0]);
+
+    if (newcount < 0)
+    {
+        return;
+    }
+
+    std::map<int, int>::iterator it;
+    std::vector<int> processed;
+    // loop backwards as the most recent
+    // signature is at the end
+    for (int i = newcount - 1; i >= 0; i--)
+    {
+        Block current = blocks[i];
+        int currentsig = dec2oct(current.signature);
+        if (current.type != PIXY_BLOCKTYPE_COLOR_CODE)
+        {
+            continue;
+        }
+
+        bool isprocessed = false;
+        for (unsigned int j = 0; j < processed.size(); j++)
+        {
+            if (currentsig == processed.at(j))
+            {
+                isprocessed = true;
+                break;
+            }
+        }
+
+        if (isprocessed)
+        {
+            continue;
+        }
+
+        it = reverseIds.find(currentsig);
+        if (it != reverseIds.end())
+        {
+            Location loc;
+            loc.x = current.x;
+            loc.y = current.y;
+            ipcPos.set(it->second, loc);
+            processed.push_back(it->first);
+        }
+    }
+}

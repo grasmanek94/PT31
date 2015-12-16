@@ -8,9 +8,12 @@ LIBS +=-lusb-1.0 -lpixyusb -lboost_thread -lboost_system -lboost_chrono -lpthrea
 
 SOURCES += main.cpp \
     pixylocationprovider.cpp \
-    thread.cpp
+    thread.cpp \
+    ../common/LocationProvider/LocationProvider.cpp
 
 HEADERS += \
     pixylocationprovider.h \
-    thread.h
+    thread.h \
+    ../common/LocationProvider/ipcpos.h \
+    ../common/LocationProvider/LocationProvider.h
 
