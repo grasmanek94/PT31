@@ -133,6 +133,9 @@
     <Filter Include="common\networking">
       <UniqueIdentifier>{0c0f0bdf-9854-4833-93a5-d12d15249476}</UniqueIdentifier>
     </Filter>
+    <Filter Include="main_ev3_application\lib\client">
+      <UniqueIdentifier>{0c11d44b-6689-41a8-a97e-b3b5ad584bb7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main_ev3_application\main.cxx">
@@ -311,6 +314,9 @@
     </ClCompile>
     <ClCompile Include="common\shm\SharedMemoryHelper.cxx">
       <Filter>common\shm</Filter>
+    </ClCompile>
+    <ClCompile Include="main_ev3_application\lib\client\Client.cxx">
+      <Filter>main_ev3_application\lib\client</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -859,6 +865,9 @@
     </ClInclude>
     <ClInclude Include="common\networking\PacketData.hxx">
       <Filter>common\networking</Filter>
+    </ClInclude>
+    <ClInclude Include="main_ev3_application\lib\client\Client.hxx">
+      <Filter>main_ev3_application\lib\client</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

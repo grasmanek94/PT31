@@ -49,6 +49,7 @@
     <ClCompile Include="libraries\__linux__\glm.cpp" />
     <ClCompile Include="libraries\__linux__\google_mock.cc" />
     <ClCompile Include="libraries\__linux__\google_test.cc" />
+    <ClCompile Include="main_ev3_application\lib\client\Client.cxx" />
     <ClCompile Include="main_server_application\lib\server\RobotTaskQueue.cxx" />
     <ClCompile Include="main_server_application\lib\server\ServBot.cxx" />
     <ClCompile Include="main_server_application\lib\server\Server.cxx" />
@@ -242,6 +243,7 @@
     <ClInclude Include="libraries\networking\include\enet\unix.h" />
     <ClInclude Include="libraries\networking\include\enet\utility.h" />
     <ClInclude Include="libraries\networking\include\enet\win32.h" />
+    <ClInclude Include="main_ev3_application\lib\client\Client.hxx" />
     <ClInclude Include="main_server_application\lib\server\RobotTaskQueue.hxx" />
     <ClInclude Include="main_server_application\lib\server\ServBot.hxx" />
     <ClInclude Include="main_server_application\lib\server\Server.hxx" />
