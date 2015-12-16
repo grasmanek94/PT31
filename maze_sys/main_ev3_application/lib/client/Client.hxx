@@ -9,7 +9,6 @@ class NetClient
 		NetworkClient* client;
 		void RunNetworking()
 		{
-			//std::cout << "pls gief data" << std::endl;
 			if (client->Pull())
 			{
 				ENetEvent event = client->Event();
@@ -27,7 +26,7 @@ class NetClient
 					data_vec = client->GetPacketData(event.packet);
 					data_vec.push_back(0);
 					printf("%s", data_vec.data());
-
+					
 					break;
 
 				case ENET_EVENT_TYPE_DISCONNECT:
@@ -57,18 +56,8 @@ class NetClient
 			}
 		}
 		
-		/* AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH! */
 		void Run()
 		{
-			/*if (pCalculated->Count())
-			{
-				PPQ::MyQueueItem item;
-				if (pCalculated->Pop(&item))
-				{
-					robots[item.GetOperationIdentifier()].ToDo()->Push(&item);
-				}
-			}*/
-
 			RunNetworking();
 		}
 		
