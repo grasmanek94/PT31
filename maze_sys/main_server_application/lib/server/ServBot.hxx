@@ -10,6 +10,7 @@ private:
 	size_t _id;
 	RobotTaskQueue* queues;
 	ENetPeer* peer;
+	bool online;
 public:
 	ServBot(size_t id);
 	~ServBot();
@@ -20,5 +21,8 @@ public:
 
 	ENetPeer* GetPeer() const;
 	void SetPeer(ENetPeer* peer);
+
+	bool IsOnline();
+	void SetOnline(bool isOnline);
 };
 #endif

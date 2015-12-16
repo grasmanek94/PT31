@@ -1,12 +1,13 @@
 #include <iostream>
 #include <vector>
+#include <string>
 #include <interprocess_position/IPCPos.hxx>
 #include <PathProcessor/PathProcessorQueue.hxx>
 #include "ServBot.hxx"
 
 #include <enet/enetpp.hxx>
 #include <networking/PacketInfo.hxx>
-
+#include <networking/PacketData.hxx>
 #include "Server.hxx"
 
 void Server::HandleConnect(ENetPeer* peer)
@@ -27,27 +28,29 @@ void Server::HandleDisonnect(ENetPeer* peer)
 	PeerToID.erase(peer);
 }
 
-void Server::HandleIdentify(ENetPeer* peer, packet_vec& data)
+void Server::HandleIdentify(ENetPeer* peer, PacketData& data)
 {
 	if (data.size())
 	{
 		uint8_t id = data[0];
-		if (id >= robots.size())
+		if (id < robots.size())
 		{
-
+			//this is a bot
+			connection->Send(peer, packet_vec{ SPT_IdentifyAcknowledged });
 		}
 		else
 		{
-
+			//this is not a bot
+			connection->Send(peer, packet_vec{ SPT_IdentifyDenied });
 		}
 	}
 	else
 	{
-		ns->Send(peer, packet_vec{ SPT_GotCorruptPacket, SPT_Identify });
+		connection->Send(peer, packet_vec{ SPT_GotCorruptPacket, SPT_Identify });
 	}
 }
 
-void Server::HandleGotUnknownPacketResponse(ENetPeer* peer, packet_vec& data)
+void Server::HandleGotUnknownPacketResponse(ENetPeer* peer, PacketData& data)
 {
 	// okay so we sent a packet to the client and we received it back with "I don't know what this is". What do we do? Nothing?
 	// Probably logging for debug purposes and fixing this programatic error...
@@ -55,36 +58,44 @@ void Server::HandleGotUnknownPacketResponse(ENetPeer* peer, packet_vec& data)
 	// Maybe corruption?
 }
 
-void Server::HandleUnknownPacket(ENetPeer* peer, packet_vec& data)
+void Server::HandleUnknownPacket(ENetPeer* peer, PacketData& data)
 {
-	data.insert(data.begin(), SPT_Unknown);
-	ns->Send(peer, data);
+	PacketData sendback;
+	sendback 
+		<< (unsigned char)SPT_Unknown
+		<< SpecifySize{ data.Serialize(), data.size() };
+	connection->Send(peer, sendback.Serialize(), sendback.size());
 }
 
 void Server::HandleReceived(ENetEvent& event)
 {
-	std::vector<uint8_t> data_vec;
-	data_vec = ns->GetPacketData(event.packet);
+	PacketData data;
+	data.Deserialize(event.packet->data, event.packet->dataLength);
+	enet_packet_destroy(event.packet);
 
-	if (data_vec.size())
+	if (data.size())
 	{
-		uint8_t action = data_vec[0];
+		uint8_t action;
+		data >> action;
 
+		//... then checking what kind of packet we have got
 		switch (action)
 		{
 
 		case SPT_Identify:
-			data_vec.erase(data_vec.begin());
-			HandleIdentify(event.peer, data_vec);
+			HandleIdentify(event.peer, data);
 			break;
 
 		case SPT_Unknown:
-			data_vec.erase(data_vec.begin());
-			HandleGotUnknownPacketResponse(event.peer, data_vec);
+			HandleGotUnknownPacketResponse(event.peer, data);
+			break;
+
+		case SPT_GotCorruptPacket:
+			//HandleGotCorruptPacket(event.peer, data);
 			break;
 
 		default:
-			HandleUnknownPacket(event.peer, data_vec);
+			HandleUnknownPacket(event.peer, data);
 			break;
 
 		}
@@ -93,9 +104,9 @@ void Server::HandleReceived(ENetEvent& event)
 
 void Server::TickNetworking()
 {
-	if (ns->Pull())
+	if (connection->Pull())
 	{
-		ENetEvent event = ns->Event();
+		ENetEvent event = connection->Event();
 
 		switch (event.type)
 		{
@@ -123,7 +134,7 @@ void Server::TickNetworking()
 Server::Server()
 	:	positions(new PosArray()),
 		pathprocessorqueues(new PathProcessorQueue()),
-		ns(new NetworkServer(0x666))
+		connection(new NetworkServer(0x666))
 {
 	for (size_t i = 0; i < max_bots_for_Server; ++i)
 	{
@@ -133,9 +144,9 @@ Server::Server()
 	pCalculated = pathprocessorqueues->Calculated();
 	pRequested = pathprocessorqueues->Request();
 
-	if (ns->GetInitCode()
-		|| !ns->Create(8)
-		|| !ns->Good())
+	if (connection->GetInitCode()
+		|| !connection->Create(8)
+		|| !connection->Good())
 	{
 		std::cout << "An error occurred while trying to create an ENet object." << std::endl;
 		exit(EXIT_FAILURE);
@@ -167,5 +178,5 @@ Server::~Server()
 
 	delete positions;
 	delete pathprocessorqueues;
-	delete ns;
+	delete connection;
 }

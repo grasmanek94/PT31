@@ -5,9 +5,9 @@
 #include <map>
 #include <interprocess_position/IPCPos.hxx>
 #include <PathProcessor/PathProcessorQueue.hxx>
-#include "ServBot.hxx"
-
+#include <networking/PacketData.hxx>
 #include <enet/enetpp.hxx>
+#include "ServBot.hxx"
 
 static const size_t max_bots_for_Server = 2;
 
@@ -23,7 +23,7 @@ private:
 	IPCQueue* pCalculated;
 	IPCQueue* pRequested;
 
-	NetworkServer* ns;
+	NetworkServer* connection;
 
 	std::map<ENetPeer*, size_t> PeerToID;
 
@@ -32,9 +32,9 @@ private:
 	void HandleConnect(ENetPeer* peer);
 	void HandleDisonnect(ENetPeer* peer);
 	void HandleReceived(ENetEvent& event);
-	void HandleIdentify(ENetPeer* peer, packet_vec& data);
-	void HandleGotUnknownPacketResponse(ENetPeer* peer, packet_vec& data);
-	void HandleUnknownPacket(ENetPeer* peer, packet_vec& data);
+	void HandleIdentify(ENetPeer* peer, PacketData& data);
+	void HandleGotUnknownPacketResponse(ENetPeer* peer, PacketData& data);
+	void HandleUnknownPacket(ENetPeer* peer, PacketData& data);
 
 public:
 	Server();

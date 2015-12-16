@@ -3,7 +3,8 @@
 
 ServBot::ServBot(size_t id)
 	:	_id(id),
-		queues(new RobotTaskQueue())
+		queues(new RobotTaskQueue()),
+		online(false)
 { }
 
 ServBot::~ServBot()
@@ -34,4 +35,14 @@ ENetPeer* ServBot::GetPeer() const
 void ServBot::SetPeer(ENetPeer* peer)
 {
 	this->peer = peer;
+}
+
+bool ServBot::IsOnline()
+{
+	return online;
+}
+
+void ServBot::SetOnline(bool isOnline)
+{
+	online = isOnline;
 }

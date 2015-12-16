@@ -17,6 +17,7 @@
     <ClCompile Include="common\interprocess_queue\IPCQueue.cxx" />
     <ClCompile Include="common\interprocess_queue\QueueItem.cxx" />
     <ClCompile Include="common\interprocess_queue\RawQueue.cxx" />
+    <ClCompile Include="common\networking\PacketData.cxx" />
     <ClCompile Include="common\shm\SharedMemoryHelper.cxx" />
     <ClCompile Include="common\StringSplitter\StringSplitter.cxx" />
     <ClCompile Include="libraries\googlemock\src\gmock-all.cc" />
@@ -86,6 +87,7 @@
     <ClInclude Include="common\interprocess_queue\QueueItem.hxx" />
     <ClInclude Include="common\interprocess_queue\RawQueue.hxx" />
     <ClInclude Include="common\JumpPointSearch\JPS.hxx" />
+    <ClInclude Include="common\networking\PacketData.hxx" />
     <ClInclude Include="common\networking\PacketInfo.hxx" />
     <ClInclude Include="common\shm\SharedMemoryHelper.hxx" />
     <ClInclude Include="common\StringSplitter\StringSplitter.hxx" />
