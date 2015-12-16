@@ -14,13 +14,15 @@ struct SpecifySize
 	size_t size;
 };
 
-class PacketData
+//well, link errors because gcc linker sucks ofc because order matters and if you try to link some sections you get double links and you then get even more errors, so yeah, template.
+template <size_t nothing = 0>
+class PacketDataT
 {
 public:
 	template <typename T>
-	friend PacketData& operator<<(PacketData& stream, T &data);
+	friend PacketDataT& operator<<(PacketDataT& stream, T &data);
 	template <typename T>
-	friend PacketData& operator>>(PacketData& stream, T &data);
+	friend PacketDataT& operator>>(PacketDataT& stream, T &data);
 
 private:
 	std::vector<uint8_t> _data;
@@ -28,7 +30,7 @@ private:
 
 	//for std::string
 	template <typename T = std::string>
-	PacketData& in_stream_impl(std::string &data)
+	PacketDataT& in_stream_impl(std::string &data)
 	{
 		size_t data_size = data.size();
 		(*this) << data_size;
@@ -39,7 +41,7 @@ private:
 	}
 
 	template <typename T = std::string>
-	PacketData& out_stream_impl(std::string &data)
+	PacketDataT& out_stream_impl(std::string &data)
 	{
 		size_t total_string_size;
 
@@ -61,7 +63,7 @@ private:
 
 	//for std::vector<T>
 	template <typename T>
-	PacketData& in_stream_impl(std::vector<T> &data)
+	PacketDataT& in_stream_impl(std::vector<T> &data)
 	{
 		size_t data_size = data.size();
 		(*this) << data_size;
@@ -72,7 +74,7 @@ private:
 	}
 
 	template <typename T>
-	PacketData& out_stream_impl(std::vector<T> &data)
+	PacketDataT& out_stream_impl(std::vector<T> &data)
 	{
 		size_t total_vector_size;
 
@@ -93,7 +95,7 @@ private:
 
 	//for SpecifySize
 	template <typename T = SpecifySize>
-	PacketData& in_stream_impl(SpecifySize &data)
+	PacketDataT& in_stream_impl(SpecifySize &data)
 	{
 		(*this) << data.size;
 		_data.insert(_data.end(), reinterpret_cast<uint8_t*>(data.data), reinterpret_cast<uint8_t*>(data.data) + data.size);
@@ -101,7 +103,7 @@ private:
 	}
 
 	template <typename T = SpecifySize>
-	PacketData& out_stream_impl(SpecifySize &data)
+	PacketDataT& out_stream_impl(SpecifySize &data)
 	{
 		size_t total_size;
 
@@ -117,14 +119,14 @@ private:
 	
 	//Please keep this ones as LAST, else any specialization/overrides will be overriden by these below
 	template <typename T>
-	PacketData& in_stream_impl(T &data)
+	PacketDataT& in_stream_impl(T &data)
 	{
 		_data.insert(_data.end(), reinterpret_cast<uint8_t*>(&data), reinterpret_cast<uint8_t*>(&data) + sizeof(data));
 		return *this;
 	}
 	
 	template <typename T>
-	PacketData& out_stream_impl(T &data)
+	PacketDataT& out_stream_impl(T &data)
 	{
 		memcpy(&data, _data.data() + currentOffset_r, sizeof(data));
 		currentOffset_r += sizeof(data);
@@ -133,14 +135,37 @@ private:
 
 public:
 
-	PacketData();
-	const uint8_t* Serialize() const;
-	const uint8_t* SerializeFromReadOffset() const;
+	PacketDataT()
+		: currentOffset_r(0)
+	{ }
 
-	void Deserialize(uint8_t* data, size_t size);
-	size_t size();
-	size_t remaining_size();
-	void ResetReader();
+	const uint8_t* Serialize() const
+	{
+		return _data.data();
+	}
+
+	const uint8_t* SerializeFromReadOffset() const
+	{
+		return _data.data() + currentOffset_r;
+	}
+
+	void Deserialize(uint8_t* data, size_t size)
+	{
+		_data.assign(data, data + size);
+		currentOffset_r = 0;
+	}
+	size_t size()
+	{
+		return _data.size();
+	}
+	size_t remaining_size()
+	{
+		return _data.size() - currentOffset_r;
+	}
+	void ResetReader()
+	{
+		currentOffset_r = 0;
+	}
 	/*	Usage example:
 		int main()
 		{
@@ -171,6 +196,8 @@ public:
 		}	
 	*/
 };
+
+typedef PacketDataT<> PacketData;
 
 template <typename T>
 PacketData& operator<<(PacketData& stream, T &data)
