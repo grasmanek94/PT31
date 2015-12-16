@@ -46,27 +46,19 @@ GOOGLE_MOCK_INCLUDE_DIRS=	-I./libraries/googlemock -I./libraries/googlemock/incl
 GOOGLE_MOCK_SOURCES=		./libraries/__linux__/google_mock.cc
 GOOGLE_MOCK_LIBRARY=		$(MAIN_BASE_DIR)obj/google_mock$(SUFFIX_SELECTED).o
 
-GLM_INCLUDE_DIRS=			-I./libraries/glm
-GLM_SOURCES=				./libraries/__linux__/glm.cpp
-GLM_LIBRARY=				$(MAIN_BASE_DIR)obj/glm$(SUFFIX_SELECTED).o
-
 NETWORKING_DEFINES=			-DHAS_SOCKLEN_T
 NETWORKING_INCLUDE_DIRS=	-I./libraries/networking -I./libraries/networking/include
 NETWORKING_SOURCES=			./libraries/networking/all_linux.c
 NETWORKING_LIBRARY=			$(MAIN_BASE_DIR)obj/networking$(SUFFIX_SELECTED).o
 
-NETWORKINGPP_SOURCES=			./libraries/networking/enetpp.cxx
-NETWORKINGPP_LIBRARY=			$(MAIN_BASE_DIR)obj/networkingpp$(SUFFIX_SELECTED).o
+NETWORKINGPP_SOURCES=		./libraries/networking/enetpp.cxx
+NETWORKINGPP_LIBRARY=		$(MAIN_BASE_DIR)obj/networkingpp$(SUFFIX_SELECTED).o
 
 GoogleTest: $(GOOGLE_TEST_SOURCES)
 	$(Q)$(CHOSEN_GPP) $(CFLAGS_COMMON) $(CFLAGS_STATIC_LIBRARY) $(GOOGLE_TEST_INCLUDE_DIRS) $(GOOGLE_TEST_SOURCES) -o $(GOOGLE_TEST_LIBRARY)
 	
 GoogleMock: $(GOOGLE_MOCK_SOURCES)
 	$(Q)$(CHOSEN_GPP) $(CFLAGS_COMMON) $(CFLAGS_STATIC_LIBRARY) $(GOOGLE_MOCK_INCLUDE_DIRS) $(GOOGLE_MOCK_SOURCES) -o $(GOOGLE_MOCK_LIBRARY)
-
-GLM: $(GLM_SOURCES)
-	@mkdir -p $(MAIN_BASE_DIR)obj
-	$(Q)$(CHOSEN_GPP) $(CFLAGS_COMMON) $(CFLAGS_STATIC_LIBRARY) $(GLM_INCLUDE_DIRS) $(GLM_SOURCES) -o $(GLM_LIBRARY)
 
 #ugh, C
 Net: $(NETWORKING_SOURCES)
@@ -80,8 +72,7 @@ NetPP: $(NETWORKINGPP_SOURCES)
 #######################################################################################################
 PROJECT_NAME=				main_ev3_application
 
-COMMON_INCLUDE_DIRS=		$(GLM_INCLUDE_DIRS) \
-							-I./common \
+COMMON_INCLUDE_DIRS=		-I./common \
 							-L$(MAIN_BASE_DIR) \
 							$(NETWORKING_INCLUDE_DIRS)
 							
@@ -104,8 +95,7 @@ C_LIBCOMMON: $(LIBCOMMON_OBJECTS)
 	$(Q)$(ARCHIVE) $(LIBCOMMON_LIBRARY) $(addsuffix $(SUFFIX_SELECTED).o,$(addprefix ./,$^)) $(Q_ARCH)
 
 #######################################################################################################
-COMMON_LIBRARIES=			$(GLM_LIBRARY) \
-							-lpthread \
+COMMON_LIBRARIES=			-lpthread \
 							-ldl \
 							-lrt \
 							-l$(LIBCOMMON_LIBRARY_NAME)
@@ -353,7 +343,7 @@ ev3_d ev3_td rsp_d rsp_td d td: CFLAGS_SELECTED=$(CFLAGS_COMBINED_DEBUG)
 ev3_r ev3_tr rsp_r rsp_tr r tr: SUFFIX_SELECTED=$(SUFFIX_RELEASE)$(CHOSEN_NAM)
 ev3_r ev3_tr rsp_r rsp_tr r tr: CFLAGS_SELECTED=$(CFLAGS_COMBINED_RELEASE)
 
-ev3_d ev3_r rsp_d rsp_r d r: Net NetPP GLM C_LIBCOMMON C_LIBEV3M C_LIBUWB C_LIBPIX C_LIBSRVR C_LIBPPR C_UWB C_PIX C_SRVR C_PPR C_EV3M
+ev3_d ev3_r rsp_d rsp_r d r: Net NetPP C_LIBCOMMON C_LIBEV3M C_LIBUWB C_LIBPIX C_LIBSRVR C_LIBPPR C_UWB C_PIX C_SRVR C_PPR C_EV3M
 
-ev3_td ev3_tr rsp_tr rsp_td td tr: GoogleTest GoogleMock Net NetPP GLM C_LIBCOMMON C_LIBEV3M C_LIBUWB C_LIBPIX C_LIBSRVR C_LIBPPR C_TEST
+ev3_td ev3_tr rsp_tr rsp_td td tr: GoogleTest GoogleMock Net NetPP C_LIBCOMMON C_LIBEV3M C_LIBUWB C_LIBPIX C_LIBSRVR C_LIBPPR C_TEST
 #	valgrind $(TEST_EXECUTABLE)
