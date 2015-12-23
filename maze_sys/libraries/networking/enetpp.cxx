@@ -58,11 +58,27 @@ int NetworkBase::Send(ENetPeer* peer, const packet_vec& data, _ENetPacketFlag fl
 	return enet_peer_send(peer, 0, enet_packet_create(data.data(), data.size(), flags));
 }
 
+int NetworkBase::Send(ENetPeer* peer, const PacketData& data, _ENetPacketFlag flags)
+{
+	return enet_peer_send(peer, 0, enet_packet_create(data.Serialize(), data.size(), flags));
+}
+
 std::vector<uint8_t> NetworkBase::GetPacketData(ENetPacket* p) const
 {
 	std::vector<uint8_t> vec((uint8_t*)p->data, (uint8_t*)(p->data + p->dataLength));
 	enet_packet_destroy(p);
 	return vec;
+}
+
+bool NetworkBase::GetPacketData(ENetPacket* p, PacketData& data) const
+{
+	if (p && p->data)
+	{
+		data.Deserialize(p->data, p->dataLength);
+		enet_packet_destroy(p);
+		return true;
+	}
+	return false;
 }
 
 NetworkServer::NetworkServer(enet_uint16 port)
@@ -93,6 +109,11 @@ void NetworkServer::Broadcast(const void* data, size_t bytes, _ENetPacketFlag fl
 void NetworkServer::Broadcast(const packet_vec& data, _ENetPacketFlag flags)
 {
 	enet_host_broadcast(member, 0, enet_packet_create(data.data(), data.size(), flags));
+}
+
+void NetworkServer::Broadcast(const PacketData& data, _ENetPacketFlag flags)
+{
+	enet_host_broadcast(member, 0, enet_packet_create(data.Serialize(), data.size(), flags));
 }
 
 NetworkClient::NetworkClient(enet_uint16 port)
@@ -143,4 +164,9 @@ int NetworkClient::Send(const void* data, size_t bytes, _ENetPacketFlag flags)
 int NetworkClient::Send(const packet_vec& data, _ENetPacketFlag flags)
 {
 	return NetworkBase::Send(peer, data.data(), data.size(), flags);
+}
+
+int NetworkClient::Send(const PacketData& data, _ENetPacketFlag flags)
+{
+	return NetworkBase::Send(peer, data.Serialize(), data.size(), flags);
 }

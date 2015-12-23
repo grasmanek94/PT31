@@ -50,10 +50,7 @@ void Client::HandleUnknownPacket(PacketData& data)
 void Client::HandleReceived(ENetEvent& event)
 {
 	PacketData data;
-	data.Deserialize(event.packet->data, event.packet->dataLength);
-	enet_packet_destroy(event.packet);
-
-	if (data.size())
+	if (connection->GetPacketData(event.packet, data) && data.size())
 	{
 		uint8_t action;
 		data >> action;
