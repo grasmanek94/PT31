@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <networking/PacketData.hxx>
+#include <networking/NetConfig.hxx>
 #include <enet/enetpp.hxx>
 
 class Client

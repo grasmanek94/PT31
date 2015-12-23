@@ -6,6 +6,7 @@
 #include <interprocess_position/IPCPos.hxx>
 #include <PathProcessor/PathProcessorQueue.hxx>
 #include <networking/PacketData.hxx>
+#include <networking/NetConfig.hxx>
 #include <enet/enetpp.hxx>
 #include "ServBot.hxx"
 

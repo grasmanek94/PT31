@@ -14,7 +14,7 @@ struct SpecifySize
 	size_t size;
 };
 
-//well, link errors because gcc linker sucks ofc because order matters and if you try to link some sections you get double links and you then get even more errors, so yeah, template.
+//well, link errors because gcc linker sucks ofc. because order matters and if you try to link some sections you get double links and you then get even more errors, so yeah, template.
 template <size_t nothing = 0>
 class PacketDataT
 {
@@ -197,6 +197,7 @@ public:
 	*/
 };
 
+//now untemplate
 typedef PacketDataT<> PacketData;
 
 template <typename T>

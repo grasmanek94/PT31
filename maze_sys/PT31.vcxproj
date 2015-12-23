@@ -87,6 +87,7 @@
     <ClInclude Include="common\interprocess_queue\QueueItem.hxx" />
     <ClInclude Include="common\interprocess_queue\RawQueue.hxx" />
     <ClInclude Include="common\JumpPointSearch\JPS.hxx" />
+    <ClInclude Include="common\networking\NetConfig.hxx" />
     <ClInclude Include="common\networking\PacketData.hxx" />
     <ClInclude Include="common\networking\PacketInfo.hxx" />
     <ClInclude Include="common\shm\SharedMemoryHelper.hxx" />

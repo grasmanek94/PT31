@@ -24,7 +24,7 @@ private:
 	NetworkBase(enet_uint16 port);
 	~NetworkBase();
 public:
-	void SetHost(std::string hostname, unsigned short port);
+	void SetHost(const std::string& hostname, unsigned short port);
 	const ENetAddress Address();
 	const ENetEvent Event();
 	int GetInitCode();
@@ -55,7 +55,7 @@ private:
 public:
 	NetworkClient(enet_uint16 port = 0xBEEF);
 	~NetworkClient();
-	ENetPeer * Connect(std::string hostname, unsigned short port);
+	ENetPeer * Connect(const std::string& hostname, unsigned short port);
 	bool Create();
 	int Send(const void* data, size_t bytes, _ENetPacketFlag flags = ENET_PACKET_FLAG_RELIABLE);
 	int Send(const packet_vec& data, _ENetPacketFlag flags = ENET_PACKET_FLAG_RELIABLE);

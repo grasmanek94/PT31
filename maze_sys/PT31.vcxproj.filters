@@ -869,6 +869,9 @@
     <ClInclude Include="main_ev3_application\lib\client\Client.hxx">
       <Filter>main_ev3_application\lib\client</Filter>
     </ClInclude>
+    <ClInclude Include="common\networking\NetConfig.hxx">
+      <Filter>common\networking</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="libraries\glm\glm\gtx\closest_point.inl">

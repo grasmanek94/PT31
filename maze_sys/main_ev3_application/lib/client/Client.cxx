@@ -119,7 +119,7 @@ Client::Client()
 		exit(EXIT_FAILURE);
 	}
 
-	connection->Connect("10.0.0.42", 0x666);
+	connection->Connect(SERVER_HOST, SERVER_PORT);
 }
 
 void Client::Tick()

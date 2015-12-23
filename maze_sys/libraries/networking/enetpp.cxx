@@ -17,7 +17,7 @@ NetworkBase::~NetworkBase()
 	}
 }
 
-void NetworkBase::SetHost(std::string hostname, unsigned short port)
+void NetworkBase::SetHost(const std::string& hostname, unsigned short port)
 {
 	enet_address_set_host(&address, hostname.c_str());
 	address.port = port;
@@ -131,7 +131,7 @@ NetworkClient::~NetworkClient()
 	}
 }
 
-ENetPeer * NetworkClient::Connect(std::string hostname, unsigned short port)
+ENetPeer * NetworkClient::Connect(const std::string& hostname, unsigned short port)
 {
 	if (peer != nullptr)
 	{
