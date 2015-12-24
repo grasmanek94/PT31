@@ -9,9 +9,7 @@
 
 void Client::HandleConnect()
 {
-	//printf("A new client connected from %x:%u.\n",
-	//	event.peer->address.host,
-	//	event.peer->address.port);
+	printf("connected\n");
 	/* Store any relevant client information here. */
 	//event.peer->data = (void*)"Client information";
 }
@@ -124,7 +122,6 @@ Client::Client()
 
 void Client::Tick()
 {
-
 	TickNetworking();
 }
 
