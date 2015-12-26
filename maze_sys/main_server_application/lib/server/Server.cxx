@@ -142,8 +142,8 @@ Server::Server()
 		robots.push_back(new ServBot(i));
 	}
 
-	pCalculated = pathprocessorqueues->Calculated();
-	pRequested = pathprocessorqueues->Request();
+	pathCalculated = pathprocessorqueues->Calculated();
+	pathRequested = pathprocessorqueues->Request();
 
 	if (connection->GetInitCode()
 		|| !connection->Create(8)
@@ -157,10 +157,10 @@ Server::Server()
 void Server::Tick()
 {
 	// OperationIdentifier == BotID
-	if (pCalculated->Count())
+	if (pathCalculated->Count())
 	{
 		QueueItem item;
-		if (pCalculated->Pop(&item))
+		if (pathCalculated->Pop(&item))
 		{
 			robots[item.GetOperationIdentifier()]->ToDo()->Push(&item);
 		}

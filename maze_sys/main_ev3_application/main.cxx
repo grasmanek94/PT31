@@ -1,16 +1,13 @@
-#include <iostream>
+#include <unistd.h>
 #include <client/Client.hxx>
 
-int main(int argc, char** argv) {
-	std::cout << "Starting" << std::endl;
-	Client* client = new Client();
-	std::cout << "Created client" << std::endl;
-		
-	std::cout << "Start receiving..." << std::endl;
+int main(int argc, char** argv) 
+{
+	Client* network_entity = new Client();
 	while(true) 
 	{
-		client->Tick();
-		//client->Send("Hoi! 1234567890");
+		network_entity->Tick();
+		usleep(5000);
 	}
 	
 	return 0;

@@ -3,10 +3,10 @@
 
 int main()
 {
-	Server* svr = new Server();
+	Server* network_entity = new Server();
 	while (true)
 	{
-		svr->Tick();
+		network_entity->Tick();
 		usleep(5000);
 	}
 	return 0;

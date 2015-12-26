@@ -75,6 +75,7 @@
   <ItemGroup>
     <ClInclude Include="common\DynamicGrid\DynamicGrid.hxx" />
     <ClInclude Include="common\Environment\Environment.hxx" />
+    <ClInclude Include="common\ini\INI.h" />
     <ClInclude Include="common\interfaces\ICalibration.hxx" />
     <ClInclude Include="common\interfaces\IDriveControl.hxx" />
     <ClInclude Include="common\interfaces\IGripControl.hxx" />

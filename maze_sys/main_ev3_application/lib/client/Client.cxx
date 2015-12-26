@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 
+#include <ini/INI.h>
 #include <enet/enetpp.hxx>
 #include <networking/PacketInfo.hxx>
 #include <networking/PacketData.hxx>
@@ -116,6 +117,12 @@ Client::Client()
 		std::cout << "An error occurred while trying to create an ENet object." << std::endl;
 		exit(EXIT_FAILURE);
 	}
+
+	INI<> config_file("config.ini", true);
+	//get section key default_value
+	SERVER_HOST = config_file.get("network", "host", "127.0.0.1");
+	SERVER_PORT = config_file.get("network", "port", 0x666);
+	id = config_file.get("robot", "id", 0);
 
 	connection->Connect(SERVER_HOST, SERVER_PORT);
 }

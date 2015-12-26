@@ -21,8 +21,8 @@ private:
 	PathProcessorQueue* pathprocessorqueues;
 	std::vector<ServBot*> robots;
 
-	IPCQueue* pCalculated;
-	IPCQueue* pRequested;
+	IPCQueue* pathCalculated;
+	IPCQueue* pathRequested;
 
 	NetworkServer* connection;
 

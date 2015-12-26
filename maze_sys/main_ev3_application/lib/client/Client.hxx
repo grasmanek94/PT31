@@ -1,7 +1,6 @@
-#ifndef SERVER_H
-#define SERVER_H
+#ifndef CLIENT_H
+#define CLIENT_H
 
-#include <vector>
 #include <networking/PacketData.hxx>
 #include <networking/NetConfig.hxx>
 #include <enet/enetpp.hxx>
@@ -20,9 +19,12 @@ private:
 	void HandleGotUnknownPacketResponse(PacketData& data);
 	void HandleUnknownPacket(PacketData& data);
 
+	bool connected;
+	size_t id;
 public:
 	Client();
 	void Tick();
 	~Client();
+
 };
 #endif

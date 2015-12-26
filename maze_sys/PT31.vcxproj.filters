@@ -136,6 +136,9 @@
     <Filter Include="main_ev3_application\lib\client">
       <UniqueIdentifier>{0c11d44b-6689-41a8-a97e-b3b5ad584bb7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="common\ini">
+      <UniqueIdentifier>{c3e66f6d-0bde-4c85-8d78-52d05cbca5df}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main_ev3_application\main.cxx">
@@ -871,6 +874,9 @@
     </ClInclude>
     <ClInclude Include="common\networking\NetConfig.hxx">
       <Filter>common\networking</Filter>
+    </ClInclude>
+    <ClInclude Include="common\ini\INI.h">
+      <Filter>common\ini</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
