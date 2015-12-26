@@ -60,9 +60,9 @@ void Client::HandleUnknownPacket(PacketData& data)
 
 	sendback
 		<< SPT_Unknown
-		<< SpecifySize{ (uint8_t*)data.Serialize(), data.size() };
+		<< data;
 
-	connection->Send(sendback.Serialize(), sendback.size());
+	connection->Send(sendback);
 }
 
 void Client::HandleReceived(ENetEvent& event)

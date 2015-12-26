@@ -20,7 +20,7 @@ private:
 	void HandleUnknownPacket(PacketData& data);
 
 	bool connected;
-	uint8_t id;
+	uint8_t serial;
 public:
 	Client();
 	void Tick();

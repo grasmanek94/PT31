@@ -34,7 +34,7 @@ private:
 	{
 		(*this) << data.size();
 
-		_data.insert(_data.end(), data.data(), data.data() + data_size);
+		_data.insert(_data.end(), data.data(), data.data() + data.size());
 
 		return *this;
 	}
@@ -66,7 +66,7 @@ private:
 	{
 		(*this) << data.size();
 
-		_data.insert(_data.end(), data.data(), data.data() + (data_size * sizeof(T)));
+		_data.insert(_data.end(), data.data(), data.data() + (data.size() * sizeof(T)));
 
 		return *this;
 	}

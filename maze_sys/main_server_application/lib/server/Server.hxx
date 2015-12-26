@@ -11,6 +11,7 @@
 #include "ServBot.hxx"
 
 static const size_t max_bots_for_Server = 2;
+static const size_t INVALID_ROBOT_ID = 0xFFFFFFFF;
 
 class Server
 {

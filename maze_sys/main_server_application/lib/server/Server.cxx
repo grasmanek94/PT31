@@ -20,7 +20,7 @@ void Server::HandleConnect(ENetPeer* peer)
 		<< std::endl;
 	/* Store any relevant client information here. */
 	//event.peer->data = (void*)"Client information";
-	PeerToID[peer] = -1;
+	PeerToID[peer] = INVALID_ROBOT_ID;
 }
 
 void Server::HandleDisonnect(ENetPeer* peer)
@@ -34,7 +34,7 @@ void Server::HandleDisonnect(ENetPeer* peer)
 	/* Reset the peer's client information. */
 	//event.peer->data = NULL;
 	P2IDIt it = PeerToID.find(peer);
-	if (it->second != -1)
+	if (it->second != INVALID_ROBOT_ID)
 	{
 		robots[it->second]->SetOnline(false);
 		robots[it->second]->SetPeer(NULL);
@@ -61,7 +61,7 @@ void Server::HandleIdentify(ENetPeer* peer, PacketData& data)
 			
 		if (serial < robots.size())
 		{
-			if (!robots[serial]->IsOnline() && it->second == -1)
+			if (!robots[serial]->IsOnline() && it->second == INVALID_ROBOT_ID)
 			{
 				robots[serial]->SetOnline(true);
 				robots[serial]->SetPeer(peer);
@@ -100,9 +100,9 @@ void Server::HandleUnknownPacket(ENetPeer* peer, PacketData& data)
 
 	sendback
 		<< SPT_Unknown
-		<< SpecifySize{ (uint8_t*)data.Serialize(), data.size() };
+		<< data;
 
-	connection->Send(peer, sendback.Serialize(), sendback.size());
+	connection->Send(peer, sendback);
 }
 
 void Server::HandleReceived(ENetEvent& event)
