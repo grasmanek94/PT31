@@ -8,19 +8,19 @@
 #include <networking/PacketData.hxx>
 #include "Client.hxx"
 
-unsigned short SERVER_PORT = 0x666; // 1638
-std::string SERVER_HOST = "127.0.0.1";
-
 void Client::HandleConnect()
 {
 	connected = true;
-	std::cout << "HandleConnect" << std::endl;
+	
 	/* Store any relevant client information here. */
 	//event.peer->data = (void*)"Client information";
 	PacketData identifyPacket;
 	identifyPacket
 		<< SPT_Identify
 		<< serial;
+
+	std::cout << "HandleConnect with serial " << serial << " len: " << identifyPacket.size() << "/(" << sizeof(SPT_Identify) << "+" << sizeof(size_t) << ")" << std::endl;
+
 	connection->Send(identifyPacket);
 }
 
@@ -39,7 +39,7 @@ void Client::HandleIdentifyResponse(bool acknowledged)
 	std::cout << "HandleIdentifyResponse" << std::endl;
 	if (!acknowledged)
 	{
-		//show error on ev3 LCD?
+		//show error on robot LCD?
 		std::cout << "!acknowledged" << std::endl;
 		exit(EXIT_FAILURE);
 	}
@@ -48,6 +48,7 @@ void Client::HandleIdentifyResponse(bool acknowledged)
 
 void Client::HandleGotUnknownPacketResponse(PacketData& data)
 {
+	std::cout << "HandleGotUnknownPacketResponse" << std::endl;
 	// okay so we sent a packet to the client and we received it back with "I don't know what this is". What do we do? Nothing?
 	// Probably logging for debug purposes and fixing this programatic error...
 	// Maybe Assert?
@@ -56,6 +57,7 @@ void Client::HandleGotUnknownPacketResponse(PacketData& data)
 
 void Client::HandleUnknownPacket(PacketData& data)
 {
+	std::cout << "HandleUnknownPacket" << std::endl;
 	PacketData sendback;
 
 	sendback
@@ -70,7 +72,7 @@ void Client::HandleReceived(ENetEvent& event)
 	PacketData data;
 	if (connection->GetPacketData(event.packet, data) && data.size())
 	{
-		uint8_t action;
+		ServerPacketType action;
 		data >> action;
 
 		//... then checking what kind of packet we have got
@@ -130,7 +132,7 @@ void Client::TickNetworking()
 Client::Client()
 	:	connection(new NetworkClient(0x666)),
 		connected(false),
-		serial(0)
+		serial(INVALID_ROBOT_ID)
 {
 	if (connection->GetInitCode()
 		|| !connection->Create()
@@ -145,7 +147,19 @@ Client::Client()
 	SERVER_HOST = config_file.get("network", "host", std::string("127.0.0.1"));
 	SERVER_PORT = config_file.get("network", "port", 0x666);
 
-	serial = config_file.get("robot", "serial", 0);
+	serial = config_file.get("robot", "serial", INVALID_ROBOT_ID);
+	
+	std::cout << "Read Serial " << serial << std::endl;
+	//if config file doesn't exist then the above already set the default values, so we can save them
+	config_file.clear();
+	config_file.create("network");
+	config_file.select("network");
+	config_file.set("host", SERVER_HOST);
+	config_file.set("port", SERVER_PORT);
+	config_file.create("robot");
+	config_file.select("robot");
+	config_file.set("serial", serial);
+	config_file.save("config.ini");
 
 	connection->Connect(SERVER_HOST, SERVER_PORT);
 }

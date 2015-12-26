@@ -20,7 +20,11 @@ private:
 	void HandleUnknownPacket(PacketData& data);
 
 	bool connected;
-	uint8_t serial;
+	size_t serial;
+
+
+	unsigned short SERVER_PORT;// = 0x666; // 1638
+	std::string SERVER_HOST;// = "127.0.0.1";
 public:
 	Client();
 	void Tick();

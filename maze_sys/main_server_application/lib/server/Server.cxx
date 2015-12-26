@@ -51,16 +51,18 @@ void Server::HandleIdentify(ENetPeer* peer, PacketData& data)
 		<< peer->address.port 
 		<< std::endl;
 
-	if (data.remaining_size())
+	if (data.remaining_size() == sizeof(size_t))
 	{
-		uint8_t serial;
+		size_t serial;
 		data >> serial;
 
+		std::cout << "Using serial id " << serial << std::endl;
 		//guaranteed to be found because in Connect peer is added
 		P2IDIt it = PeerToID.find(peer);
 			
 		if (serial < robots.size())
 		{
+			std::cout << "Serial has valid range" << std::endl;
 			if (!robots[serial]->IsOnline() && it->second == INVALID_ROBOT_ID)
 			{
 				robots[serial]->SetOnline(true);
@@ -68,7 +70,7 @@ void Server::HandleIdentify(ENetPeer* peer, PacketData& data)
 
 				it->second = serial;
 
-				std::cout << "id: " << (size_t)serial << " OK" << std::endl;
+				std::cout << "id: " << serial << " OK" << std::endl;
 				//this is a bot
 				connection->Send(peer, packet_vec{ SPT_IdentifyAcknowledged });
 				return;
@@ -81,13 +83,14 @@ void Server::HandleIdentify(ENetPeer* peer, PacketData& data)
 			}
 		}
 	}
-	std::cout << "FAIL" << std::endl;
+	std::cout << "FAIL " << data.remaining_size() << "/" << data.size() << std::endl;
 	//this is not a bot or correct identification (e.g. someone tries to use existing serial number)
 	connection->Send(peer, packet_vec{ SPT_IdentifyDenied });
 }
 
 void Server::HandleGotUnknownPacketResponse(ENetPeer* peer, PacketData& data)
 {
+	std::cout << "HandleGotUnknownPacketResponse" << std::endl;
 	// okay so we sent a packet to the client and we received it back with "I don't know what this is". What do we do? Nothing?
 	// Probably logging for debug purposes and fixing this programatic error...
 	// Maybe Assert?
@@ -96,6 +99,7 @@ void Server::HandleGotUnknownPacketResponse(ENetPeer* peer, PacketData& data)
 
 void Server::HandleUnknownPacket(ENetPeer* peer, PacketData& data)
 {
+	std::cout << "HandleUnknownPacket" << std::endl;
 	PacketData sendback;
 
 	sendback
@@ -111,7 +115,7 @@ void Server::HandleReceived(ENetEvent& event)
 	
 	if (connection->GetPacketData(event.packet, data) && data.size())
 	{
-		uint8_t action;
+		ServerPacketType action;
 		data >> action;
 
 		//... then checking what kind of packet we have got
