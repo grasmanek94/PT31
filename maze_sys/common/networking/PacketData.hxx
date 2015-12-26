@@ -49,7 +49,6 @@ private:
 		char* tmp_string = new char[total_string_size + 1];
 
 		memcpy(tmp_string, _data.data() + currentOffset_r, total_string_size);
-		//std::copy(_data.data() + currentOffset_r, _data.data() + currentOffset_r + total_string_size, tmp_string);
 		currentOffset_r += total_string_size;
 
 		tmp_string[total_string_size] = 0;
@@ -75,18 +74,14 @@ private:
 	PacketDataT& out_stream_impl(std::vector<T> &data)
 	{
 		size_t total_vector_size;
+		size_t total_data_size = total_vector_size * sizeof(T);
 
 		(*this) >> total_vector_size;
 
-		T* tmp_data = new T[total_vector_size];
-		size_t total_data_size = total_vector_size * sizeof(T);
-
-		memcpy(tmp_data, _data.data() + currentOffset_r, total_data_size);
+		data.resize(total_vector_size);
+		data.assign(_data.data() + currentOffset_r, _data.data() + currentOffset_r + total_vector_size);
+		
 		currentOffset_r += total_data_size;
-
-		data.assign(tmp_data, tmp_data + total_vector_size);
-
-		delete[] tmp_data;
 
 		return *this;
 	}
