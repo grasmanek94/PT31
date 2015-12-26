@@ -1,6 +1,8 @@
 #ifndef HEADER_ILocation_hxx
 #define HEADER_ILocation_hxx
 
+#include "IComponentAvailability.hxx"
+
 struct xyza
 {
 	float x;
@@ -9,12 +11,11 @@ struct xyza
 	float a;
 };
 
-class ILocation
+class ILocation : public virtual IComponentAvailability
 {
 public:
 	//return x y z angle
 	virtual xyza GetLocation() = 0;
-	virtual bool Available() const = 0;
 };
 
 #endif

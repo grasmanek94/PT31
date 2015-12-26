@@ -1,16 +1,16 @@
 #ifndef HEADER_IDriveControl_hxx
 #define HEADER_IDriveControl_hxx
 
-class IDriveControl
+#include "IComponentAvailability.hxx"
+
+class IDriveControl : public virtual IComponentAvailability
 {
 public:
 	enum State
 	{
-		StateOk,
-		StateError,
-		StateNotConnected,
 		StateUnknown,
-
+		StateNotConnected,
+		
 		StateStopped,
 		StateMoving,
 		StateObstacleEncountered,
@@ -29,7 +29,6 @@ public:
 	virtual void Turn(int speed, Direction direction, float bias, float degrees) = 0;
 
 	virtual State GetState() const = 0;
-	virtual bool Available() const = 0;
 
 	virtual void Stop() = 0;
 };
