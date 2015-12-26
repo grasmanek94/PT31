@@ -12,9 +12,12 @@
 
 void Server::HandleConnect(ENetPeer* peer)
 {
-	//printf("A new client connected from %x:%u.\n",
-	//	event.peer->address.host,
-	//	event.peer->address.port);
+	std::cout 
+		<< "A new client connected from "
+		<< std::hex << peer->address.host << std::dec
+		<< ":"
+		<< peer->address.port
+		<< std::endl;
 	/* Store any relevant client information here. */
 	//event.peer->data = (void*)"Client information";
 	PeerToID[peer] = -1;
@@ -22,33 +25,65 @@ void Server::HandleConnect(ENetPeer* peer)
 
 void Server::HandleDisonnect(ENetPeer* peer)
 {
-	//printf("%s disconnected.\n", event.peer->data);
+	std::cout
+		<< "A client diconnected "
+		<< std::hex << peer->address.host << std::dec
+		<< ":"
+		<< peer->address.port
+		<< std::endl;
 	/* Reset the peer's client information. */
 	//event.peer->data = NULL;
-	PeerToID.erase(peer);
+	P2IDIt it = PeerToID.find(peer);
+	if (it->second != -1)
+	{
+		robots[it->second]->SetOnline(false);
+		robots[it->second]->SetPeer(NULL);
+	}
+	PeerToID.erase(it);
 }
 
 void Server::HandleIdentify(ENetPeer* peer, PacketData& data)
 {
+	std::cout 
+		<< "Received Identify request from " 
+		<< std::hex << peer->address.host << std::dec
+		<< ":"
+		<< peer->address.port 
+		<< std::endl;
+
 	if (data.remaining_size())
 	{
-		uint8_t id;
-		data >> id;
-		if (id < robots.size())
+		uint8_t serial;
+		data >> serial;
+
+		//guaranteed to be found because in Connect peer is added
+		P2IDIt it = PeerToID.find(peer);
+			
+		if (serial < robots.size())
 		{
-			//this is a bot
-			connection->Send(peer, packet_vec{ SPT_IdentifyAcknowledged });
-		}
-		else
-		{
-			//this is not a bot
-			connection->Send(peer, packet_vec{ SPT_IdentifyDenied });
+			if (!robots[serial]->IsOnline() && it->second == -1)
+			{
+				robots[serial]->SetOnline(true);
+				robots[serial]->SetPeer(peer);
+
+				it->second = serial;
+
+				std::cout << "id: " << (size_t)serial << " OK" << std::endl;
+				//this is a bot
+				connection->Send(peer, packet_vec{ SPT_IdentifyAcknowledged });
+				return;
+			}
+			//if robot sends Identify again while acknowledged just let it pass
+			else if (it->second == serial)
+			{
+				connection->Send(peer, packet_vec{ SPT_IdentifyAcknowledged });
+				return;
+			}
 		}
 	}
-	else
-	{
-		connection->Send(peer, packet_vec{ SPT_GotCorruptPacket, SPT_Identify });
-	}
+	std::cout << "FAIL" << std::endl;
+	//this is not a bot or correct identification (e.g. someone tries to use existing serial number)
+	connection->Send(peer, packet_vec{ SPT_IdentifyDenied });
 }
 
 void Server::HandleGotUnknownPacketResponse(ENetPeer* peer, PacketData& data)

@@ -8,23 +8,42 @@
 #include <networking/PacketData.hxx>
 #include "Client.hxx"
 
+unsigned short SERVER_PORT = 0x666; // 1638
+std::string SERVER_HOST = "127.0.0.1";
+
 void Client::HandleConnect()
 {
-	printf("connected\n");
+	connected = true;
+	std::cout << "HandleConnect" << std::endl;
 	/* Store any relevant client information here. */
 	//event.peer->data = (void*)"Client information";
+	PacketData identifyPacket;
+	identifyPacket
+		<< SPT_Identify
+		<< serial;
+	connection->Send(identifyPacket);
 }
 
 void Client::HandleDisonnect()
 {
+	connected = false;
+	std::cout << "HandleDisonnect" << std::endl;
 	//printf("%s disconnected.\n", event.peer->data);
 	/* Reset the peer's client information. */
 	//event.peer->data = NULL;
+	connection->Connect(SERVER_HOST, SERVER_PORT);
 }
 
-void Client::HandleIdentify(PacketData& data)
+void Client::HandleIdentifyResponse(bool acknowledged)
 {
-
+	std::cout << "HandleIdentifyResponse" << std::endl;
+	if (!acknowledged)
+	{
+		//show error on ev3 LCD?
+		std::cout << "!acknowledged" << std::endl;
+		exit(EXIT_FAILURE);
+	}
+	std::cout << "I AM ACKNOWLEDGED" << std::endl;
 }
 
 void Client::HandleGotUnknownPacketResponse(PacketData& data)
@@ -58,8 +77,9 @@ void Client::HandleReceived(ENetEvent& event)
 		switch (action)
 		{
 
-		case SPT_Identify:
-			HandleIdentify(data);
+		case SPT_IdentifyAcknowledged:
+		case SPT_IdentifyDenied:
+			HandleIdentifyResponse(action == SPT_IdentifyAcknowledged);
 			break;
 
 		case SPT_Unknown:
@@ -108,7 +128,9 @@ void Client::TickNetworking()
 }
 
 Client::Client()
-	:	connection(new NetworkClient(0x666))
+	:	connection(new NetworkClient(0x666)),
+		connected(false),
+		serial(0)
 {
 	if (connection->GetInitCode()
 		|| !connection->Create()
@@ -120,9 +142,10 @@ Client::Client()
 
 	INI<> config_file("config.ini", true);
 	//get section key default_value
-	SERVER_HOST = config_file.get("network", "host", "127.0.0.1");
+	SERVER_HOST = config_file.get("network", "host", std::string("127.0.0.1"));
 	SERVER_PORT = config_file.get("network", "port", 0x666);
-	id = config_file.get("robot", "id", 0);
+
+	serial = config_file.get("robot", "serial", 0);
 
 	connection->Connect(SERVER_HOST, SERVER_PORT);
 }

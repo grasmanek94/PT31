@@ -15,12 +15,12 @@ private:
 	void HandleConnect();
 	void HandleDisonnect();
 	void HandleReceived(ENetEvent& event);
-	void HandleIdentify(PacketData& data);
+	void HandleIdentifyResponse(bool acknowledged);
 	void HandleGotUnknownPacketResponse(PacketData& data);
 	void HandleUnknownPacket(PacketData& data);
 
 	bool connected;
-	size_t id;
+	uint8_t id;
 public:
 	Client();
 	void Tick();

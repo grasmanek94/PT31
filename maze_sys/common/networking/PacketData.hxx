@@ -32,8 +32,7 @@ private:
 	template <typename T = std::string>
 	PacketDataT& in_stream_impl(std::string &data)
 	{
-		size_t data_size = data.size();
-		(*this) << data_size;
+		(*this) << data.size();
 
 		_data.insert(_data.end(), data.data(), data.data() + data_size);
 
@@ -65,8 +64,7 @@ private:
 	template <typename T>
 	PacketDataT& in_stream_impl(std::vector<T> &data)
 	{
-		size_t data_size = data.size();
-		(*this) << data_size;
+		(*this) << data.size();
 
 		_data.insert(_data.end(), data.data(), data.data() + (data_size * sizeof(T)));
 
@@ -90,6 +88,21 @@ private:
 
 		delete[] tmp_data;
 
+		return *this;
+	}
+
+	//for PacketDataT
+	template <typename T = PacketDataT>
+	PacketDataT& in_stream_impl(PacketDataT &data)
+	{
+		(*this) << data._data;
+		return *this;
+	}
+
+	template <typename T = PacketDataT>
+	PacketDataT& out_stream_impl(PacketDataT &data)
+	{
+		(*this) >> data._data;
 		return *this;
 	}
 

@@ -26,7 +26,11 @@ private:
 
 	NetworkServer* connection;
 
-	std::map<ENetPeer*, size_t> PeerToID;
+	//well no 'auto' allowed so at leas we can typedef std::map<ENetPeer*, size_t>::iterator
+	typedef std::map<ENetPeer*, size_t> P2ID;
+	typedef P2ID::iterator P2IDIt;
+
+	P2ID PeerToID;
 
 	void TickNetworking();
 
