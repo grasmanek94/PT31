@@ -15,7 +15,8 @@ private:
 	ev3dev::large_motor     _right;
 	ev3dev::touch_sensor	_touch_sensor;
 	ev3dev::gyro_sensor		_gyro_sensor;
-	State					_state;
+	volatile State			_state;
+	volatile bool			_stop_requested;
 
 	inline bool _sensor_hit_something() const
 	{

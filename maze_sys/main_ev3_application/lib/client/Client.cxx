@@ -8,6 +8,47 @@
 #include <networking/PacketData.hxx>
 #include "Client.hxx"
 
+Client::Client(IRobot* robot)
+	:	connection(new NetworkClient(0x666)),
+		connected(false),
+		serial(INVALID_ROBOT_ID),
+		robot(robot)
+{
+	if (connection->GetInitCode()
+		|| !connection->Create()
+		|| !connection->Good())
+	{
+		std::cout << "An error occurred while trying to create an ENet object." << std::endl;
+		exit(EXIT_FAILURE);
+	}
+
+	if (!robot)
+	{
+		std::cout << "NOTICE: NO ROBOT SUPPLIED" << std::endl;
+	}
+
+	INI<> config_file("config.ini", true);
+	//get section key default_value
+	SERVER_HOST = config_file.get("network", "host", std::string("127.0.0.1"));
+	SERVER_PORT = config_file.get("network", "port", 0x666);
+
+	serial = config_file.get("robot", "serial", INVALID_ROBOT_ID);
+
+	std::cout << "Read Serial " << serial << std::endl;
+	//if config file doesn't exist then the above already set the default values, so we can save them
+	config_file.clear();
+	config_file.create("network");
+	config_file.select("network");
+	config_file.set("host", SERVER_HOST);
+	config_file.set("port", SERVER_PORT);
+	config_file.create("robot");
+	config_file.select("robot");
+	config_file.set("serial", serial);
+	config_file.save("config.ini");
+
+	connection->Connect(SERVER_HOST, SERVER_PORT);
+}
+
 void Client::HandleConnect()
 {
 	connected = true;
@@ -127,41 +168,6 @@ void Client::TickNetworking()
 
 		}
 	}
-}
-
-Client::Client()
-	:	connection(new NetworkClient(0x666)),
-		connected(false),
-		serial(INVALID_ROBOT_ID)
-{
-	if (connection->GetInitCode()
-		|| !connection->Create()
-		|| !connection->Good())
-	{
-		std::cout << "An error occurred while trying to create an ENet object." << std::endl;
-		exit(EXIT_FAILURE);
-	}
-
-	INI<> config_file("config.ini", true);
-	//get section key default_value
-	SERVER_HOST = config_file.get("network", "host", std::string("127.0.0.1"));
-	SERVER_PORT = config_file.get("network", "port", 0x666);
-
-	serial = config_file.get("robot", "serial", INVALID_ROBOT_ID);
-	
-	std::cout << "Read Serial " << serial << std::endl;
-	//if config file doesn't exist then the above already set the default values, so we can save them
-	config_file.clear();
-	config_file.create("network");
-	config_file.select("network");
-	config_file.set("host", SERVER_HOST);
-	config_file.set("port", SERVER_PORT);
-	config_file.create("robot");
-	config_file.select("robot");
-	config_file.set("serial", serial);
-	config_file.save("config.ini");
-
-	connection->Connect(SERVER_HOST, SERVER_PORT);
 }
 
 void Client::Tick()

@@ -25,6 +25,7 @@ public:
 
 	virtual State GetState() const = 0;
 
+	//Make sure this function is thread-safe when implementing
 	virtual void Stop() = 0;
 };
 

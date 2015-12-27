@@ -4,6 +4,7 @@
 #include <networking/PacketData.hxx>
 #include <networking/NetConfig.hxx>
 #include <enet/enetpp.hxx>
+#include <interfaces/IRobot.hxx>
 
 class Client
 {
@@ -26,7 +27,7 @@ private:
 	unsigned short SERVER_PORT;// = 0x666; // 1638
 	std::string SERVER_HOST;// = "127.0.0.1";
 public:
-	Client();
+	Client(IRobot* robot);
 	void Tick();
 	~Client();
 

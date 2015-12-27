@@ -19,7 +19,8 @@ EV3DriveControl::EV3DriveControl(
 		_right(right_motor),
 		_touch_sensor(obstruction_sensor),
 		_gyro_sensor(gyro_sensor),
-		_state(StateStopped)
+		_state(StateStopped),
+		_stop_requested(false)
 {
 	//duplicate port usage check
 	std::vector<ev3dev::port_type> ports(
@@ -107,7 +108,11 @@ void EV3DriveControl::Move(int speed, float centimeters)
 	int current_case = 0;
 	int diff = 0;
 
-	while (_left.state().count("running") && _right.state().count("running"))
+	while 
+		(	
+			!_stop_requested && 
+			(_left.state().count("running") && _right.state().count("running"))
+		)
 	{
 
 		int current_angle = (int)GetRelativeDegrees();
@@ -211,7 +216,11 @@ void EV3DriveControl::Turn(int speed, Direction direction, float bias, float deg
 
 	float gyro_start = GetRelativeDegrees();
 
-	while (abs(GetRelativeDegrees() - gyro_start) < degrees && (_left.state().count("running") || _right.state().count("running")))
+	while 
+		(
+			!_stop_requested && 
+			(abs(GetRelativeDegrees() - gyro_start) < degrees && (_left.state().count("running") || _right.state().count("running")))
+		)
 	{
 		std::this_thread::sleep_for(std::chrono::milliseconds(5));
 	}
@@ -238,6 +247,16 @@ EV3DriveControl::State EV3DriveControl::GetState() const
 
 void EV3DriveControl::Stop()
 {
+	if (!_state != StateStopped)
+	{
+		_stop_requested = true;
+		while (_state != StateStopped)
+		{
+			std::this_thread::sleep_for(std::chrono::milliseconds(5));//usleep(5000);
+		}
+		_stop_requested = false;
+	}
+
 	_left.stop();
 	_right.stop();
 
