@@ -139,6 +139,9 @@
     <Filter Include="common\ini">
       <UniqueIdentifier>{c3e66f6d-0bde-4c85-8d78-52d05cbca5df}</UniqueIdentifier>
     </Filter>
+    <Filter Include="common\robot_mover">
+      <UniqueIdentifier>{9deff55e-5129-43a0-8f51-e0b91d0b5c12}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main_ev3_application\main.cxx">
@@ -208,9 +211,6 @@
       <Filter>libraries\googletest\src</Filter>
     </ClCompile>
     <ClCompile Include="main_ev3_application\lib\ev3\EV3Robot.cxx">
-      <Filter>main_ev3_application\lib\ev3</Filter>
-    </ClCompile>
-    <ClCompile Include="main_ev3_application\lib\ev3\EV3Sensing.cxx">
       <Filter>main_ev3_application\lib\ev3</Filter>
     </ClCompile>
     <ClCompile Include="main_ev3_application\lib\ev3\EV3DriveControl.cxx">
@@ -320,6 +320,9 @@
     </ClCompile>
     <ClCompile Include="main_ev3_application\lib\client\Client.cxx">
       <Filter>main_ev3_application\lib\client</Filter>
+    </ClCompile>
+    <ClCompile Include="common\robot_mover\RobotMover.cxx">
+      <Filter>common\robot_mover</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -758,9 +761,6 @@
     <ClInclude Include="main_ev3_application\lib\ev3\EV3Robot.hxx">
       <Filter>main_ev3_application\lib\ev3</Filter>
     </ClInclude>
-    <ClInclude Include="main_ev3_application\lib\ev3\EV3Sensing.hxx">
-      <Filter>main_ev3_application\lib\ev3</Filter>
-    </ClInclude>
     <ClInclude Include="main_ev3_application\lib\ev3\EV3DriveControl.hxx">
       <Filter>main_ev3_application\lib\ev3</Filter>
     </ClInclude>
@@ -780,9 +780,6 @@
       <Filter>common\interfaces</Filter>
     </ClInclude>
     <ClInclude Include="common\interfaces\IRobot.hxx">
-      <Filter>common\interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="common\interfaces\ISensing.hxx">
       <Filter>common\interfaces</Filter>
     </ClInclude>
     <ClInclude Include="common\interfaces\ICalibration.hxx">
@@ -877,6 +874,12 @@
     </ClInclude>
     <ClInclude Include="common\ini\INI.h">
       <Filter>common\ini</Filter>
+    </ClInclude>
+    <ClInclude Include="common\interfaces\IComponentAvailability.hxx">
+      <Filter>common\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="common\robot_mover\RobotMover.hxx">
+      <Filter>common\robot_mover</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
