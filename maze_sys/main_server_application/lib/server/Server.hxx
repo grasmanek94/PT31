@@ -32,6 +32,7 @@ private:
 	P2ID PeerToID;
 
 	void TickNetworking();
+	void TickTasking();
 
 	void HandleConnect(ENetPeer* peer);
 	void HandleDisonnect(ENetPeer* peer);

@@ -10,6 +10,28 @@
 #include <networking/PacketData.hxx>
 #include "Server.hxx"
 
+Server::Server()
+	: positions(new PosArray()),
+	pathprocessorqueues(new PathProcessorQueue()),
+	connection(new NetworkServer(0x666))
+{
+	for (size_t i = 0; i < max_bots_for_Server; ++i)
+	{
+		robots.push_back(new ServBot(i));
+	}
+
+	pathCalculated = pathprocessorqueues->Calculated();
+	pathRequested = pathprocessorqueues->Request();
+
+	if (connection->GetInitCode()
+		|| !connection->Create(8)
+		|| !connection->Good())
+	{
+		std::cout << "An error occurred while trying to create an ENet object." << std::endl;
+		exit(EXIT_FAILURE);
+	}
+}
+
 void Server::HandleConnect(ENetPeer* peer)
 {
 	std::cout 
@@ -171,29 +193,7 @@ void Server::TickNetworking()
 	}
 }
 
-Server::Server()
-	:	positions(new PosArray()),
-		pathprocessorqueues(new PathProcessorQueue()),
-		connection(new NetworkServer(0x666))
-{
-	for (size_t i = 0; i < max_bots_for_Server; ++i)
-	{
-		robots.push_back(new ServBot(i));
-	}
-
-	pathCalculated = pathprocessorqueues->Calculated();
-	pathRequested = pathprocessorqueues->Request();
-
-	if (connection->GetInitCode()
-		|| !connection->Create(8)
-		|| !connection->Good())
-	{
-		std::cout << "An error occurred while trying to create an ENet object." << std::endl;
-		exit(EXIT_FAILURE);
-	}
-}
-
-void Server::Tick()
+void Server::TickTasking()
 {
 	// OperationIdentifier == BotID
 	if (pathCalculated->Count())
@@ -204,7 +204,11 @@ void Server::Tick()
 			robots[item.GetOperationIdentifier()]->ToDo()->Push(&item);
 		}
 	}
+}
 
+void Server::Tick()
+{
+	TickTasking();
 	TickNetworking();
 }
 

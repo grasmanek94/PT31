@@ -174,7 +174,7 @@ void EV3DriveControl::Move(int speed, float centimeters)
 
 void EV3DriveControl::Turn(int speed, Direction direction, float bias, float degrees)
 {
-	_state = StateTurning;
+	_state = StateMoving;
 
 	float fspeed = (float)speed;
 

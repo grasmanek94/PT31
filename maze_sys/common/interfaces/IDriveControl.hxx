@@ -8,13 +8,8 @@ class IDriveControl : public virtual IComponentAvailability
 public:
 	enum State
 	{
-		StateUnknown,
-		StateNotConnected,
-		
 		StateStopped,
-		StateMoving,
-		StateObstacleEncountered,
-		StateTurning
+		StateMoving
 	};
 
 	enum Direction

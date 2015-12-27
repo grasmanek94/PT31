@@ -9,8 +9,6 @@ public:
 	enum State
 	{
 		StateUnknown,
-		StateNotConnected,
-
 		StateClosed,
 		StateClosing,
 		StateOpen,
