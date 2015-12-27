@@ -1,5 +1,7 @@
 #ifndef SPLITTER_STRING_SPLITTER_H
 #define SPLITTER_STRING_SPLITTER_H
+#include <vector>
+#include <string>
 
 namespace Splitter
 {

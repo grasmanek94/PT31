@@ -12,13 +12,15 @@ EV3DriveControl::EV3DriveControl(
 		ev3dev::port_type left_motor,
 		ev3dev::port_type right_motor,
 		ev3dev::port_type obstruction_sensor,
-		ev3dev::port_type gyro_sensor)
+		ev3dev::port_type gyro_sensor,
+		ev3dev::port_type distance_sensor)
 
 	:	_Calibration(calibration),
 		_left(left_motor),
 		_right(right_motor),
 		_touch_sensor(obstruction_sensor),
 		_gyro_sensor(gyro_sensor),
+		_ultrasonic_sensor(distance_sensor),
 		_state(StateStopped),
 		_stop_requested(false)
 {
@@ -32,6 +34,7 @@ EV3DriveControl::EV3DriveControl(
 		throw std::invalid_argument("Single port used for multiple devices");
 	}
 
+	//calibration of gyro
 	_gyro_sensor.set_mode("GYRO-ANG");
 	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	_gyro_sensor.set_mode("GYRO-G&A");
@@ -70,7 +73,7 @@ void EV3DriveControl::Reset()
 	_state = StateStopped;
 }
 
-void EV3DriveControl::Move(int speed, float centimeters)
+IDriveControl::ExitCode EV3DriveControl::Move(int speed, float centimeters)
 {
 	_state = StateMoving;
 
@@ -110,7 +113,7 @@ void EV3DriveControl::Move(int speed, float centimeters)
 
 	while 
 		(	
-			!_stop_requested && 
+			!_stop_requested && !IsObstructed() &&
 			(_left.state().count("running") && _right.state().count("running"))
 		)
 	{
@@ -159,6 +162,7 @@ void EV3DriveControl::Move(int speed, float centimeters)
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(5));
 	}
+	ExitCode ec = _stop_requested ? ExitCodeAborted : (IsObstructed() ? ExitCodeObstruction : ExitCodeNormal);
 
 	_left.stop();
 	_right.stop();
@@ -175,9 +179,11 @@ void EV3DriveControl::Move(int speed, float centimeters)
 	}*/
 
 	_state = StateStopped;
+
+	return ec;
 }
 
-void EV3DriveControl::Turn(int speed, Direction direction, float bias, float degrees)
+IDriveControl::ExitCode EV3DriveControl::Turn(int speed, Direction direction, float bias, float degrees)
 {
 	_state = StateMoving;
 
@@ -224,11 +230,14 @@ void EV3DriveControl::Turn(int speed, Direction direction, float bias, float deg
 	{
 		std::this_thread::sleep_for(std::chrono::milliseconds(5));
 	}
+	ExitCode ec = _stop_requested ? ExitCodeAborted : ExitCodeNormal;
 
 	_left.stop();
 	_right.stop();
 
 	_state = StateStopped;
+
+	return ec;
 }
 
 bool EV3DriveControl::Available() const
@@ -237,7 +246,8 @@ bool EV3DriveControl::Available() const
 		_left.connected() &&
 		_right.connected() &&
 		_touch_sensor.connected() &&
-		_gyro_sensor.connected();
+		_gyro_sensor.connected() &&
+		_ultrasonic_sensor.connected();
 }
 
 EV3DriveControl::State EV3DriveControl::GetState() const
@@ -261,4 +271,30 @@ void EV3DriveControl::Stop()
 	_right.stop();
 
 	_state = StateStopped;
+}
+
+bool EV3DriveControl::IsFrontHit() const
+{
+	return _sensor_hit_something();
+}
+
+sPosition EV3DriveControl::GetPos()
+{
+	_position.a = GetRelativeDegrees();
+	return _position;
+}
+
+void EV3DriveControl::SetPos(const sPosition& pos)
+{
+	_position = pos;
+}
+
+float EV3DriveControl::GetFrontDistance() const
+{
+	return _ultrasonic_sensor.float_value();
+}
+
+bool EV3DriveControl::IsObstructed() const
+{
+	return IsFrontHit() || GetFrontDistance() < 7.0;
 }

@@ -12,6 +12,6 @@ int main()
 	}
 
 	delete network_entity;
-
+	network_entity = NULL;
 	return 0;
 }

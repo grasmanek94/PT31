@@ -15,8 +15,10 @@ private:
 	ev3dev::large_motor     _right;
 	ev3dev::touch_sensor	_touch_sensor;
 	ev3dev::gyro_sensor		_gyro_sensor;
+	ev3dev::ultrasonic_sensor _ultrasonic_sensor;
 	volatile State			_state;
 	volatile bool			_stop_requested;
+	sPosition				_position;
 
 	inline bool _sensor_hit_something() const
 	{
@@ -28,18 +30,24 @@ public:
 					ev3dev::port_type left_motor = ev3dev::OUTPUT_A,
 					ev3dev::port_type right_motor = ev3dev::OUTPUT_D,
 					ev3dev::port_type obstruction_sensor = ev3dev::INPUT_2,
-					ev3dev::port_type gyro_sensor = ev3dev::INPUT_3);
+					ev3dev::port_type gyro_sensor = ev3dev::INPUT_3,
+					ev3dev::port_type distance_sensor = ev3dev::INPUT_4);
 
 	~EV3DriveControl();
 	//fwd | right + left -
 	float GetRelativeDegrees();
 	float GetRotationalSpeed();
 	void Reset();
-	void Move(int speed, float centimeters);
-	void Turn(int speed, Direction direction, float bias, float degrees);
+	ExitCode Move(int speed, float centimeters);
+	ExitCode Turn(int speed, Direction direction, float bias, float degrees);
 	State GetState() const;
 	bool Available() const;
+	sPosition GetPos();
+	void SetPos(const sPosition& pos);
+	float GetFrontDistance() const;
+	bool IsFrontHit() const;
 	void Stop();
+	bool IsObstructed() const;
 };
 
 #endif

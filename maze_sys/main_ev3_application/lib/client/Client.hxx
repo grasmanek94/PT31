@@ -5,6 +5,7 @@
 #include <networking/NetConfig.hxx>
 #include <enet/enetpp.hxx>
 #include <interfaces/IRobot.hxx>
+#include <robot_mover/RobotMover.hxx>
 
 class Client
 {
@@ -22,7 +23,8 @@ private:
 
 	bool connected;
 	size_t serial;
-
+	IRobot* robot;
+	RobotMover mover;
 
 	unsigned short SERVER_PORT;// = 0x666; // 1638
 	std::string SERVER_HOST;// = "127.0.0.1";

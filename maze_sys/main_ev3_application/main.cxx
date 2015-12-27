@@ -4,7 +4,8 @@
 
 int main(int argc, char** argv) 
 {
-	IRobot* robot = new EV3Robot();
+	//EV3Robot* robot = new EV3Robot();
+	IRobot* robot = NULL;
 	Client* network_entity = new Client(robot);
 
 	while(true) 
@@ -14,7 +15,9 @@ int main(int argc, char** argv)
 	}
 	
 	delete network_entity;
+	network_entity = NULL;
 	delete robot;
+	robot = NULL;
 
 	return 0;
 }

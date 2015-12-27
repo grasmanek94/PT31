@@ -3,7 +3,7 @@
 
 #include "IComponentAvailability.hxx"
 
-struct xyza
+struct sPosition
 {
 	float x;
 	float y;
@@ -15,7 +15,7 @@ class ILocation : public virtual IComponentAvailability
 {
 public:
 	//return x y z angle
-	virtual xyza GetLocation() = 0;
+	virtual sPosition GetLocation() = 0;
 };
 
 #endif
