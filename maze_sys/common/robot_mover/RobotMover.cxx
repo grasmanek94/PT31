@@ -94,7 +94,7 @@ RobotMover::RobotMover(IRobot* _robot)
 {
 	if (_mover)
 	{
-		throw std::exception();//only one instance of this class is allowed
+		throw std::exception();//only one instance of this class is allowed (because I will not allow a motor to be instructed by two different objects that have no notion of each other)
 	}
 	_mover = this;
 
