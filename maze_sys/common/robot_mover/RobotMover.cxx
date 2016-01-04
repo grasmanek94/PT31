@@ -17,9 +17,9 @@ volatile static bool moveReady;
 
 const static double RAD2DEG = (180.0 / M_PI);
 
-inline static float Distance(float x_1, float y_1, float x_2, float y_2)
+inline float Distance(float x_1, float y_1, float x_2, float y_2)
 {
-	return sqrt(pow(x_2 - x_1, 2.0) + pow(y_2 - y_1, 2.0));
+	return sqrt(pow(x_2 - x_1, 2.0f) + pow(y_2 - y_1, 2.0f));
 }
 
 /*
