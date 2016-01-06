@@ -35,6 +35,12 @@ EV3DriveControl::EV3DriveControl(
 	}
 
 	//calibration of gyro
+	_gyro_sensor.set_mode("GYRO-G&A");
+	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+	_gyro_sensor.set_mode("GYRO-ANG");
+	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+	_gyro_sensor.set_mode("GYRO-G&A");
+	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	_gyro_sensor.set_mode("GYRO-ANG");
 	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	_gyro_sensor.set_mode("GYRO-G&A");

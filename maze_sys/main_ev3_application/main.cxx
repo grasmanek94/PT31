@@ -6,11 +6,11 @@
 
 int main(int argc, char** argv) 
 {
-	//EV3Robot* robot = new EV3Robot();
-	IRobot* robot = NULL;
+	EV3Robot* robot = new EV3Robot();
+	//IRobot* robot = NULL;
 	Client* network_entity = new Client(robot);
 
-	/*JPS::PathVector path({
+	JPS::PathVector path({
 		JPS::Pos(300, 0),
 		JPS::Pos(30, 15),
 		JPS::Pos(30, 30),
@@ -21,10 +21,10 @@ int main(int argc, char** argv)
 	});
 
 	RobotMover::Follow(robot, path);
-	while(RobotMover::IsMoving());
-	*/
+	while(RobotMover::IsMoving())
+	
 
-	while(true)
+	//while(true)
 	{
 		network_entity->Tick();
 		usleep(5000);
