@@ -18,7 +18,7 @@ private:
 	ev3dev::ultrasonic_sensor _ultrasonic_sensor;
 	volatile State			_state;
 	volatile bool			_stop_requested;
-	sPosition				_position;
+	vsPosition				_position;
 
 	inline bool _sensor_hit_something() const
 	{
@@ -33,7 +33,7 @@ public:
 					ev3dev::port_type gyro_sensor = ev3dev::INPUT_3,
 					ev3dev::port_type distance_sensor = ev3dev::INPUT_4);
 
-	~EV3DriveControl();
+	virtual ~EV3DriveControl();
 	//fwd | right + left -
 	float GetRelativeDegrees();
 	float GetRotationalSpeed();

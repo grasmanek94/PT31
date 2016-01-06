@@ -13,6 +13,7 @@ private:
 
 public:
 	EV3Calibration();
+	virtual ~EV3Calibration();
 	void Reload();
 
 	int GetGripCloseAmount() const;

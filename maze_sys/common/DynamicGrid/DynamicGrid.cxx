@@ -73,7 +73,7 @@ JPS::Position DynamicGrid::GetSize() const
 bool DynamicGrid::SetPassable(JPS::Position pos, bool passable)
 {
 	bool size_changed = SetMinimumPos(pos.x, pos.y);
-	environment[pos.x][pos.y] = !passable;
+	environment[pos.x][pos.y] = passable;
 	return size_changed;
 }
 

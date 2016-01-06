@@ -12,8 +12,7 @@ Client::Client(IRobot* robot)
 	:	connection(new NetworkClient(0x666)),
 		connected(false),
 		serial(INVALID_ROBOT_ID),
-		robot(robot),
-		mover(robot)
+		robot(robot)
 {
 	if (connection->GetInitCode()
 		|| !connection->Create()

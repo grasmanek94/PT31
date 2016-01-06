@@ -22,7 +22,7 @@ public:
 	EV3GripControl(	EV3Calibration* calibration,
 					ev3dev::port_type grip_motor = ev3dev::OUTPUT_B,
 					ev3dev::port_type grip_sensor = ev3dev::INPUT_1);
-	~EV3GripControl();
+	virtual ~EV3GripControl();
 
 	void Reset();
 	State GetState() const;

@@ -2,7 +2,7 @@
 #include <chrono>
 #include <vector>
 #include <algorithm>
-
+#include <system_error>
 #include <ev3dev/ev3dev.hxx>
 
 #include "EV3DriveControl.hxx"
@@ -50,7 +50,7 @@ EV3DriveControl::~EV3DriveControl()
 
 float EV3DriveControl::GetRelativeDegrees()
 {
-	return _gyro_sensor.float_value(0);
+	return (float)(((_gyro_sensor.value(0) + 32760) % 360) - 360);
 }
 
 float EV3DriveControl::GetRotationalSpeed()
@@ -117,8 +117,7 @@ IDriveControl::ExitCode EV3DriveControl::Move(int speed, float centimeters)
 			(_left.state().count("running") && _right.state().count("running"))
 		)
 	{
-
-		int current_angle = (int)GetRelativeDegrees();
+		int current_angle = _gyro_sensor.value(0);
 		diff = begin_angle - current_angle;
 
 		if(diff == 0)
@@ -144,29 +143,30 @@ IDriveControl::ExitCode EV3DriveControl::Move(int speed, float centimeters)
 
 			current_case = 2;
 		}
-
 		if (current_case != last_case)
 		{
 			last_case = current_case;
-
-			_right
-				.set_duty_cycle_sp(right_speed)
-				.set_position_sp((right_start_pos - _right.position()) - units)
-				.run_to_rel_pos();
-
-			_left
-				.set_duty_cycle_sp(left_speed)
-				.set_position_sp(units - (_left.position() - left_start_pos))
-				.run_to_rel_pos();
+			try
+			{
+				_right
+					.set_duty_cycle_sp(right_speed)
+					.set_position_sp((right_start_pos - _right.position()) - units)
+					.run_to_rel_pos();
+				_left
+					.set_duty_cycle_sp(left_speed)
+					.set_position_sp(units - (_left.position() - left_start_pos))
+					.run_to_rel_pos();
+			}
+			catch (const std::system_error&)
+			{
+				//It works this way, trust me, I'm an engineer
+			}
 		}
-
 		std::this_thread::sleep_for(std::chrono::milliseconds(5));
 	}
 	ExitCode ec = _stop_requested ? ExitCodeAborted : (IsObstructed() ? ExitCodeObstruction : ExitCodeNormal);
-
 	_left.stop();
 	_right.stop();
-
 	/*if (diff > 0)//left relative to start
 	{
 		//so we need to go more right
@@ -212,20 +212,27 @@ IDriveControl::ExitCode EV3DriveControl::Turn(int speed, Direction direction, fl
 	float left_speed = fspeed * bias_l;
 	float right_speed = fspeed * bias_r;
 
-	_left
-		.set_duty_cycle_sp(dir_mult * (int)left_speed)
-		.run_forever();
+	try
+	{
+		_left
+			.set_duty_cycle_sp(dir_mult * (int)left_speed)
+			.run_forever();
 
-	_right
-		.set_duty_cycle_sp(dir_mult * (int)right_speed)
-		.run_forever();
+		_right
+			.set_duty_cycle_sp(dir_mult * (int)right_speed)
+			.run_forever();
+	}
+	catch (const std::system_error&)
+	{
+		//It works this way, trust me, I'm an engineer
+	}
 
-	float gyro_start = GetRelativeDegrees();
+	float gyro_start = _gyro_sensor.float_value(0);
 
 	while 
 		(
 			!_stop_requested && 
-			(abs(GetRelativeDegrees() - gyro_start) < degrees && (_left.state().count("running") || _right.state().count("running")))
+			(abs(_gyro_sensor.float_value(0) - gyro_start) < degrees && (_left.state().count("running") || _right.state().count("running")))
 		)
 	{
 		std::this_thread::sleep_for(std::chrono::milliseconds(5));
@@ -280,13 +287,21 @@ bool EV3DriveControl::IsFrontHit() const
 
 sPosition EV3DriveControl::GetPos()
 {
-	_position.a = GetRelativeDegrees();
-	return _position;
+	sPosition pos;
+
+	pos.a = GetRelativeDegrees();
+	pos.x = _position.x;
+	pos.y = _position.y;
+	pos.z = _position.z;
+
+	return pos;
 }
 
 void EV3DriveControl::SetPos(const sPosition& pos)
 {
-	_position = pos;
+	_position.x = pos.x;
+	_position.y = pos.y;
+	_position.z = pos.z;
 }
 
 float EV3DriveControl::GetFrontDistance() const

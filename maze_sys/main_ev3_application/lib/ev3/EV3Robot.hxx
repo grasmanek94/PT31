@@ -11,9 +11,9 @@
 class EV3Robot : public IRobot
 {
 private:
-	EV3GripControl	_GripControl;
-	EV3DriveControl _DriveControl;
-	EV3Calibration	_Calibration;
+	EV3GripControl*	_GripControl;
+	EV3DriveControl* _DriveControl;
+	EV3Calibration*	_Calibration;
 public:
 	EV3Robot(
 		ev3dev::port_type grip_motor = ev3dev::OUTPUT_B,
@@ -27,6 +27,8 @@ public:
 	EV3GripControl*		GripControl();
 	EV3DriveControl*	DriveControl();
 	EV3Calibration*		Calibration();
+
+	virtual ~EV3Robot();
 };
 
 #endif
