@@ -73,7 +73,7 @@ JPS::Position DynamicGrid::GetSize() const
 bool DynamicGrid::SetPassable(JPS::Position pos, bool passable)
 {
 	bool size_changed = SetMinimumPos(pos.x, pos.y);
-	environment[pos.x][pos.y] = !passable;
+	environment[pos.x][pos.y] = passable;
 	return size_changed;
 }
 
@@ -114,44 +114,12 @@ void DynamicGrid::FromASCII(const std::string& map_data, char wall)
 	}
 }
 
-std::string DynamicGrid::ToASCII(JPS::PathVector& path) const
+std::string DynamicGrid::ToASCII(JPS::PathVector& path, char wall, char solution) const
 {
-	std::vector<std::string> map;
-	map.resize(GetHeight());
-	for (std::vector<std::string>::iterator it = map.begin(); it != map.end(); ++it)
-	{
-		it->assign(GetWidth(), ' ');
-	}
-
-	for (size_t y = 0; y < GetHeight(); ++y)
-	{
-		for (size_t x = 0; x < GetWidth(); ++x)
-		{
-			map[y][x] = environment[x][y] ? '|' : ' ';
-		}
-	}
-
-	for (JPS::PathVector::iterator it = path.begin(); it != path.end(); ++it)
-	{
-		//size_t y = it->y;
-		//size_t x = it->x;
-		//if (x < width && y < height)
-		//{
-		map[it->y][it->x] = '#';
-		//}
-	}
-
-	std::string output;
-
-	for (std::vector<std::string>::iterator it = map.begin(); it != map.end(); ++it)
-	{
-		output += *it + "\n";
-	}
-
-	return output;
+	return ToASCII(&path[0], path.size(), wall, solution);
 }
 
-std::string DynamicGrid::ToASCII(JPS::Position* path, size_t size) const
+std::string DynamicGrid::ToASCII(JPS::Position* path, size_t size, char wall, char solution) const
 {
 	std::vector<std::string> map;
 	map.resize(GetHeight());
@@ -164,7 +132,7 @@ std::string DynamicGrid::ToASCII(JPS::Position* path, size_t size) const
 	{
 		for (size_t x = 0; x < GetWidth(); ++x)
 		{
-			map[y][x] = environment[x][y] ? '|' : ' ';
+			map[y][x] = environment[x][y] ? wall : ' ';
 		}
 	}
 
@@ -174,7 +142,7 @@ std::string DynamicGrid::ToASCII(JPS::Position* path, size_t size) const
 		//size_t x = it->x;
 		//if (x < width && y < height)
 		//{
-		map[path[i].y][path[i].x] = '#';
+		map[path[i].y][path[i].x] = solution;
 		//}
 	}
 

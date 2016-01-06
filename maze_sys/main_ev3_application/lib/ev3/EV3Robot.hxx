@@ -7,19 +7,15 @@
 #include "EV3Calibration.hxx"
 #include "EV3DriveControl.hxx"
 #include "EV3GripControl.hxx"
-#include "EV3Sensing.hxx"
 
 class EV3Robot : public IRobot
 {
 private:
-	EV3GripControl	_GripControl;
-	EV3DriveControl _DriveControl;
-	EV3Sensing		_Measure;
-	EV3Calibration	_Calibration;
-	ILocation*		_Location;
+	EV3GripControl*	_GripControl;
+	EV3DriveControl* _DriveControl;
+	EV3Calibration*	_Calibration;
 public:
 	EV3Robot(
-		ILocation* locationProvider = NULL,
 		ev3dev::port_type grip_motor = ev3dev::OUTPUT_B,
 		ev3dev::port_type grip_sensor = ev3dev::INPUT_1,
 		ev3dev::port_type left_motor = ev3dev::OUTPUT_A,
@@ -30,9 +26,9 @@ public:
 
 	EV3GripControl*		GripControl();
 	EV3DriveControl*	DriveControl();
-	EV3Sensing*			Measure();
 	EV3Calibration*		Calibration();
-	ILocation*			Location();
+
+	virtual ~EV3Robot();
 };
 
 #endif

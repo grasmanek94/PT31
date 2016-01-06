@@ -1,16 +1,14 @@
 #ifndef HEADER_IGripControl_hxx
 #define HEADER_IGripControl_hxx
 
-class IGripControl
+#include "IComponentAvailability.hxx"
+
+class IGripControl : public virtual IComponentAvailability
 {
 public:
 	enum State
 	{
 		StateUnknown,
-		StateError,
-		StateSuccess,
-		StateNotConnected,
-
 		StateClosed,
 		StateClosing,
 		StateOpen,
@@ -24,8 +22,6 @@ public:
 	virtual bool Open() = 0;
 
 	virtual State GetState() const = 0;
-	//Does this robot have (a functioning) GripControl?
-	virtual bool Available() const = 0;
 };
 
 #endif

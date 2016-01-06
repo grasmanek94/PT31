@@ -1,20 +1,16 @@
 #ifndef HEADER_IDriveControl_hxx
 #define HEADER_IDriveControl_hxx
 
-class IDriveControl
+#include "IComponentAvailability.hxx"
+#include "ILocation.hxx"
+
+class IDriveControl : public virtual IComponentAvailability
 {
 public:
 	enum State
 	{
-		StateUnknown,
-		StateError,
-		StateSuccess,
-		StateNotConnected,
-
 		StateStopped,
-		StateMoving,
-		StateObstacleEncountered,
-		StateTurning
+		StateMoving
 	};
 
 	enum Direction
@@ -23,14 +19,27 @@ public:
 		DirectionRight
 	};
 
-public:
+	enum ExitCode
+	{
+		ExitCodeNormal,
+		ExitCodeObstruction,
+		ExitCodeAborted
+	};
 
-	virtual void Move(int speed, float centimeters) = 0;
-	virtual void Turn(int speed, Direction direction, float bias, float degrees) = 0;
+	//return ExiCodeAborted if has been aborted by Stop, ExitCodeObstruction if IsObstructed returns true while driving
+	//move until obstructed or aborted or completed
+	virtual ExitCode Move(int speed, float centimeters) = 0;
+	//return ExiCodeAborted if has been aborted by Stop, ExitCodeObstruction may NOT be returned here (how else is a robot supposed to get away from Move() obstruction?)
+	virtual ExitCode Turn(int speed, Direction direction, float bias, float degrees) = 0;
 
 	virtual State GetState() const = 0;
-	virtual bool Available() const = 0;
+	virtual bool IsObstructed() const = 0;
 
+	virtual sPosition GetPos() = 0;
+	virtual void SetPos(const sPosition& pos) = 0;
+	virtual float GetFrontDistance() const = 0;
+
+	//Make sure this function is thread-safe when implementing
 	virtual void Stop() = 0;
 };
 

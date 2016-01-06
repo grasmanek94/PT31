@@ -1,14 +1,30 @@
 #ifndef HEADER_ILocation_hxx
 #define HEADER_ILocation_hxx
 
-#include <glm/glm.hpp>
+#include "IComponentAvailability.hxx"
+#include <atomic>
 
-class ILocation
+struct sPosition
+{
+	float x;
+	float y;
+	float z;
+	float a;
+};
+
+struct vsPosition
+{
+	std::atomic<float> x;
+	std::atomic<float> y;
+	std::atomic<float> z;
+	std::atomic<float> a;
+};
+
+class ILocation : public virtual IComponentAvailability
 {
 public:
 	//return x y z angle
-	virtual glm::vec4 GetLocation() = 0;
-	virtual bool Available() const = 0;
+	virtual sPosition GetLocation() = 0;
 };
 
 #endif

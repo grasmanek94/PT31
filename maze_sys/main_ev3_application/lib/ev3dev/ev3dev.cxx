@@ -295,6 +295,7 @@ int device::get_attr_int(const std::string &name) const {
       throw system_error(make_error_code(errc::no_such_device), _path+name);
     }
   }
+  return 0;
 }
 
 //-----------------------------------------------------------------------------
