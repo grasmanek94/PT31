@@ -73,6 +73,7 @@ NetPP: $(NETWORKINGPP_SOURCES)
 PROJECT_NAME=				main_ev3_application
 
 COMMON_INCLUDE_DIRS=		-I./common \
+                            -I/usr/include/libusb-1.0 \
 							-L$(MAIN_BASE_DIR) \
 							$(NETWORKING_INCLUDE_DIRS)
 							
@@ -201,7 +202,12 @@ LIBPIX_LIBRARY=				$(MAIN_BASE_DIR)lib$(LIBPIX_NAME).a
 LIBPIX_DEFINES=				$(COMMON_DEFINITIONS)
 
 PIX_LIBRARIES=				$(COMMON_LIBRARIES) \
-                            $(LIBPIX_OBJECT_LIST)
+                            $(LIBPIX_OBJECT_LIST) \
+                            -lusb-1.0 \
+                            -lpixyusb \
+                            -lboost_thread \
+                            -lboost_system \
+                            -lboost_chrono
 #							-l$(LIBPIX_NAME)
 #							-lpixy
 PIX_INCLUDE_DIRS=			$(INCLUDE_DIRS_PIX)
