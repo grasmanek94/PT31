@@ -6,35 +6,26 @@
 #include <DynamicGrid/DynamicGrid.hxx>
 #include <Environment/Environment.hxx>
 
-typedef PathProcessorQueue<> PPQ;
-PPQ queues;
+PathProcessorQueue queues;
 
-int main()
+int __main()
 {
-	PPQ::MyIPCQueue* request_queue = queues.Request();
-	PPQ::MyIPCQueue* calculated_queue = queues.Calculated();
+	IPCQueue* request_queue = queues.Request();
+	IPCQueue* calculated_queue = queues.Calculated();
 
-	PPQ::MyQueueItem item;
+	QueueItem item;
 	JPS::Position* arr = item.template Convert<JPS::Position*>();
 
 	arr[0] = JPS::Pos(2, 2);
-	arr[1] = JPS::Pos(30, 30);
+	arr[1] = JPS::Pos(30, 20);
 
 	item.SetUsedDataSize(sizeof(JPS::Position) * 2);
 
-	request_queue->Wait();
-	bool push_result = request_queue->Push(&item);
-	request_queue->Post();
-
-	if (push_result)
+	if (request_queue->Push(&item))
 	{
 		while (true)
 		{
-			calculated_queue->Wait();
-			bool pop_result = calculated_queue->Pop(&item);
-			calculated_queue->Post();
-
-			if (pop_result)
+			if (calculated_queue->Pop(&item))
 			{
 				size_t elems = (item.GetUsedDataSize() / sizeof(JPS::Position));
 				JPS::Position* calculated_positions = item.template Convert<JPS::Position*>();

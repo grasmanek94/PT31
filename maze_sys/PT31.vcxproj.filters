@@ -106,9 +106,6 @@
     <Filter Include="main_server_application\lib">
       <UniqueIdentifier>{2ea56e3a-29d7-4621-8314-05cbf1e63579}</UniqueIdentifier>
     </Filter>
-    <Filter Include="main_server_application\lib\somelib">
-      <UniqueIdentifier>{2dbcf7c3-3f0a-4337-9334-593a22cca021}</UniqueIdentifier>
-    </Filter>
     <Filter Include="common\DynamicGrid">
       <UniqueIdentifier>{03daf59d-230f-4e62-b11d-d384d575c254}</UniqueIdentifier>
     </Filter>
@@ -120,6 +117,30 @@
     </Filter>
     <Filter Include="common\JumpPointSearch">
       <UniqueIdentifier>{d67c76e9-f555-48dc-a403-78de81e2aa47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="common\interprocess_position">
+      <UniqueIdentifier>{9c0f4d45-fd3a-4a8f-8ab3-eaff9a2d5d61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="common\shm">
+      <UniqueIdentifier>{6eaae2e4-d201-435b-ab74-35886feafdc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="main_server_application\lib\server">
+      <UniqueIdentifier>{2dbcf7c3-3f0a-4337-9334-593a22cca021}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libraries\networking">
+      <UniqueIdentifier>{b04a03ed-3fa4-47d6-bdc0-b1c1b46d1585}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="common\networking">
+      <UniqueIdentifier>{0c0f0bdf-9854-4833-93a5-d12d15249476}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="main_ev3_application\lib\client">
+      <UniqueIdentifier>{0c11d44b-6689-41a8-a97e-b3b5ad584bb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="common\ini">
+      <UniqueIdentifier>{c3e66f6d-0bde-4c85-8d78-52d05cbca5df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="common\robot_mover">
+      <UniqueIdentifier>{9deff55e-5129-43a0-8f51-e0b91d0b5c12}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -192,9 +213,6 @@
     <ClCompile Include="main_ev3_application\lib\ev3\EV3Robot.cxx">
       <Filter>main_ev3_application\lib\ev3</Filter>
     </ClCompile>
-    <ClCompile Include="main_ev3_application\lib\ev3\EV3Sensing.cxx">
-      <Filter>main_ev3_application\lib\ev3</Filter>
-    </ClCompile>
     <ClCompile Include="main_ev3_application\lib\ev3\EV3DriveControl.cxx">
       <Filter>main_ev3_application\lib\ev3</Filter>
     </ClCompile>
@@ -225,9 +243,6 @@
     <ClCompile Include="main_server_application\main.cxx">
       <Filter>main_server_application</Filter>
     </ClCompile>
-    <ClCompile Include="main_server_application\lib\somelib\somelib.cxx">
-      <Filter>main_server_application\lib\somelib</Filter>
-    </ClCompile>
     <ClCompile Include="path_processor\main.cxx">
       <Filter>path_processor</Filter>
     </ClCompile>
@@ -242,6 +257,72 @@
     </ClCompile>
     <ClCompile Include="main_server_application\queue_push_pop_example.cxx">
       <Filter>main_server_application</Filter>
+    </ClCompile>
+    <ClCompile Include="libraries\networking\enetpp.cxx">
+      <Filter>libraries\networking</Filter>
+    </ClCompile>
+    <ClCompile Include="libraries\networking\host.c">
+      <Filter>libraries\networking</Filter>
+    </ClCompile>
+    <ClCompile Include="libraries\networking\list.c">
+      <Filter>libraries\networking</Filter>
+    </ClCompile>
+    <ClCompile Include="libraries\networking\packet.c">
+      <Filter>libraries\networking</Filter>
+    </ClCompile>
+    <ClCompile Include="libraries\networking\peer.c">
+      <Filter>libraries\networking</Filter>
+    </ClCompile>
+    <ClCompile Include="libraries\networking\protocol.c">
+      <Filter>libraries\networking</Filter>
+    </ClCompile>
+    <ClCompile Include="libraries\networking\unix.c">
+      <Filter>libraries\networking</Filter>
+    </ClCompile>
+    <ClCompile Include="libraries\networking\win32.c">
+      <Filter>libraries\networking</Filter>
+    </ClCompile>
+    <ClCompile Include="libraries\networking\all_linux.c">
+      <Filter>libraries\networking</Filter>
+    </ClCompile>
+    <ClCompile Include="libraries\networking\callbacks.c">
+      <Filter>libraries\networking</Filter>
+    </ClCompile>
+    <ClCompile Include="libraries\networking\compress.c">
+      <Filter>libraries\networking</Filter>
+    </ClCompile>
+    <ClCompile Include="common\interprocess_queue\IPCQueue.cxx">
+      <Filter>common\interprocess_queue</Filter>
+    </ClCompile>
+    <ClCompile Include="common\interprocess_queue\QueueItem.cxx">
+      <Filter>common\interprocess_queue</Filter>
+    </ClCompile>
+    <ClCompile Include="common\interprocess_queue\RawQueue.cxx">
+      <Filter>common\interprocess_queue</Filter>
+    </ClCompile>
+    <ClCompile Include="path_processor\lib\PathProcessor\PathProcessor.cxx">
+      <Filter>path_processor\lib\PathProcessor</Filter>
+    </ClCompile>
+    <ClCompile Include="path_processor\lib\PathProcessor\PathProcessorQueue.cxx">
+      <Filter>path_processor\lib\PathProcessor</Filter>
+    </ClCompile>
+    <ClCompile Include="main_server_application\lib\server\RobotTaskQueue.cxx">
+      <Filter>main_server_application\lib\server</Filter>
+    </ClCompile>
+    <ClCompile Include="main_server_application\lib\server\ServBot.cxx">
+      <Filter>main_server_application\lib\server</Filter>
+    </ClCompile>
+    <ClCompile Include="main_server_application\lib\server\Server.cxx">
+      <Filter>main_server_application\lib\server</Filter>
+    </ClCompile>
+    <ClCompile Include="common\shm\SharedMemoryHelper.cxx">
+      <Filter>common\shm</Filter>
+    </ClCompile>
+    <ClCompile Include="main_ev3_application\lib\client\Client.cxx">
+      <Filter>main_ev3_application\lib\client</Filter>
+    </ClCompile>
+    <ClCompile Include="common\robot_mover\RobotMover.cxx">
+      <Filter>common\robot_mover</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -680,9 +761,6 @@
     <ClInclude Include="main_ev3_application\lib\ev3\EV3Robot.hxx">
       <Filter>main_ev3_application\lib\ev3</Filter>
     </ClInclude>
-    <ClInclude Include="main_ev3_application\lib\ev3\EV3Sensing.hxx">
-      <Filter>main_ev3_application\lib\ev3</Filter>
-    </ClInclude>
     <ClInclude Include="main_ev3_application\lib\ev3\EV3DriveControl.hxx">
       <Filter>main_ev3_application\lib\ev3</Filter>
     </ClInclude>
@@ -704,9 +782,6 @@
     <ClInclude Include="common\interfaces\IRobot.hxx">
       <Filter>common\interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="common\interfaces\ISensing.hxx">
-      <Filter>common\interfaces</Filter>
-    </ClInclude>
     <ClInclude Include="common\interfaces\ICalibration.hxx">
       <Filter>common\interfaces</Filter>
     </ClInclude>
@@ -717,9 +792,6 @@
       <Filter>common\interprocess_queue</Filter>
     </ClInclude>
     <ClInclude Include="common\interprocess_queue\RawQueue.hxx">
-      <Filter>common\interprocess_queue</Filter>
-    </ClInclude>
-    <ClInclude Include="common\interprocess_queue\SharedMemoryHelper.hxx">
       <Filter>common\interprocess_queue</Filter>
     </ClInclude>
     <ClInclude Include="common\interprocess_queue\IPCQueue.hxx">
@@ -743,11 +815,71 @@
     <ClInclude Include="common\StringSplitter\StringSplitter.hxx">
       <Filter>common\StringSplitter</Filter>
     </ClInclude>
-    <ClInclude Include="common\interprocess_queue\RawShmQueue.hxx">
-      <Filter>common\interprocess_queue</Filter>
+    <ClInclude Include="common\interprocess_position\IPCPos.hxx">
+      <Filter>common\interprocess_position</Filter>
     </ClInclude>
-    <ClInclude Include="common\interprocess_queue\IPCShmQueue.hxx">
-      <Filter>common\interprocess_queue</Filter>
+    <ClInclude Include="common\shm\SharedMemoryHelper.hxx">
+      <Filter>common\shm</Filter>
+    </ClInclude>
+    <ClInclude Include="main_server_application\lib\server\RobotTaskQueue.hxx">
+      <Filter>main_server_application\lib\server</Filter>
+    </ClInclude>
+    <ClInclude Include="main_server_application\lib\server\ServBot.hxx">
+      <Filter>main_server_application\lib\server</Filter>
+    </ClInclude>
+    <ClInclude Include="main_server_application\lib\server\Server.hxx">
+      <Filter>main_server_application\lib\server</Filter>
+    </ClInclude>
+    <ClInclude Include="libraries\networking\include\enet\utility.h">
+      <Filter>libraries\networking</Filter>
+    </ClInclude>
+    <ClInclude Include="libraries\networking\include\enet\win32.h">
+      <Filter>libraries\networking</Filter>
+    </ClInclude>
+    <ClInclude Include="libraries\networking\include\enet\callbacks.h">
+      <Filter>libraries\networking</Filter>
+    </ClInclude>
+    <ClInclude Include="libraries\networking\include\enet\enet.h">
+      <Filter>libraries\networking</Filter>
+    </ClInclude>
+    <ClInclude Include="libraries\networking\include\enet\enetpp.hxx">
+      <Filter>libraries\networking</Filter>
+    </ClInclude>
+    <ClInclude Include="libraries\networking\include\enet\list.h">
+      <Filter>libraries\networking</Filter>
+    </ClInclude>
+    <ClInclude Include="libraries\networking\include\enet\protocol.h">
+      <Filter>libraries\networking</Filter>
+    </ClInclude>
+    <ClInclude Include="libraries\networking\include\enet\time.h">
+      <Filter>libraries\networking</Filter>
+    </ClInclude>
+    <ClInclude Include="libraries\networking\include\enet\types.h">
+      <Filter>libraries\networking</Filter>
+    </ClInclude>
+    <ClInclude Include="libraries\networking\include\enet\unix.h">
+      <Filter>libraries\networking</Filter>
+    </ClInclude>
+    <ClInclude Include="common\networking\PacketInfo.hxx">
+      <Filter>common\networking</Filter>
+    </ClInclude>
+    <ClInclude Include="common\networking\PacketData.hxx">
+      <Filter>common\networking</Filter>
+    </ClInclude>
+    <ClInclude Include="main_ev3_application\lib\client\Client.hxx">
+      <Filter>main_ev3_application\lib\client</Filter>
+    </ClInclude>
+    <ClInclude Include="common\networking\NetConfig.hxx">
+      <Filter>common\networking</Filter>
+    </ClInclude>
+    <ClInclude Include="common\ini\INI.h">
+      <Filter>common\ini</Filter>
+    </ClInclude>
+    <ClInclude Include="common\interfaces\IComponentAvailability.hxx">
+      <Filter>common\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="common\robot_mover\RobotMover.hxx">
+      <Filter>common\robot_mover</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

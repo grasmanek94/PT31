@@ -1,14 +1,12 @@
 #ifndef HEADER_ICalibration_hxx
 #define HEADER_ICalibration_hxx
 
-#include <string>
-#include <map>
+#include "IComponentAvailability.hxx"
 
-class ICalibration
+class ICalibration : public virtual IComponentAvailability
 {
 public:
 	virtual void Reload() = 0;
-	virtual bool Available() const = 0;
 };
 
 #endif

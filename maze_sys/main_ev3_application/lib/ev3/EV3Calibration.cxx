@@ -53,3 +53,8 @@ bool EV3Calibration::Available() const
 {
 	return true;
 }
+
+EV3Calibration::~EV3Calibration()
+{
+
+}
