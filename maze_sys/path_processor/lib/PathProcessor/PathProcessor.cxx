@@ -46,23 +46,15 @@ void PathProcessor::Run()
 			temp_path->clear();
 
 			bool found = grid->JumpNavigate(start, target, *temp_path);
-			//bool found = grid->FullNavigate(start, target, *temp_path);
-
-			temp_item->SetActionIdentifier(found);
 
 			size_t data_size = temp_path->size() * sizeof(JPS::Position);
 			temp_item->Assign(temp_path->data(), data_size);
+			if (!found)
+			{
+				temp_item->SetUsedDataSize(0);
+			}
 
 			calculated_queue->Push(temp_item);
-
-			//if (found)
-			//{
-			//	std::cout << grid->ToASCII(temp_item->template Convert<JPS::Position*>(), data_size / sizeof(JPS::Position)) << std::endl;
-			//}
-			//else
-			//{
-			//	std::cout << "NOT FOUND" << std::endl;
-			//}
 		}
 	}
 	donerunning = true;

@@ -1,13 +1,19 @@
 #include <iostream>
 #include <vector>
 #include <string>
+
+#include <unistd.h>
+#include <stdio.h>
+#include <sys/select.h>
+
 #include <interprocess_position/IPCPos.hxx>
 #include <PathProcessor/PathProcessorQueue.hxx>
-#include "ServBot.hxx"
 
 #include <enet/enetpp.hxx>
 #include <networking/PacketInfo.hxx>
 #include <networking/PacketData.hxx>
+
+#include "ServBot.hxx"
 #include "Server.hxx"
 
 Server::Server()
@@ -158,6 +164,10 @@ void Server::HandleReceived(ENetEvent& event)
 			//HandleGotCorruptPacket(event.peer, data);
 			break;
 
+		case SPT_FollowPath:
+			//a server cannot follow a path
+			break;
+
 		default:
 			HandleUnknownPacket(event.peer, data);
 			break;
@@ -202,13 +212,46 @@ void Server::TickNetworking()
 
 void Server::TickTasking()
 {
-	// OperationIdentifier == BotID
 	if (pathCalculated->Count())
 	{
 		QueueItem item;
 		if (pathCalculated->Pop(&item))
 		{
-			robots[item.GetOperationIdentifier()]->ToDo()->Push(&item);
+			size_t robot_id = item.GetOperationIdentifier();
+			if (robot_id <= robots.size())
+			{
+				ServBot* bot = robots[robot_id];
+				if (bot->IsOnline() && bot->GetPeer())
+				{
+					if (item.GetUsedDataSize())
+					{
+						PacketData data;			
+						std::vector<JPS::Position> tosend_path;
+						JPS::Position* item_path = item.template Convert<JPS::Position*>();
+						for (size_t i = 0; i < (item.GetUsedDataSize() / sizeof(JPS::Position)); ++i)
+						{
+							tosend_path.push_back(item_path[i]);
+						}
+						data << SPT_FollowPath;
+						data << tosend_path;
+
+						connection->Send(bot->GetPeer(), data);
+						std::cout << "Sent calculated path to robot id: " << robot_id << std::endl;
+					}
+					else
+					{
+						std::cout << "Path not found for robot id: " << robot_id << std::endl;
+					}
+				}
+				else
+				{
+					std::cout << "Received offline robot id from path processor: " << robot_id << std::endl;
+				}
+			}
+			else
+			{
+				std::cout << "Received invalid robot id from path processor: " << robot_id << std::endl;
+			}
 		}
 	}
 }
@@ -219,10 +262,6 @@ void Server::Tick()
 	TickNetworking();
 	TickConsole();
 }
-
-#include <unistd.h>
-#include <stdio.h>
-#include <sys/select.h>
 
 bool lineAvailable()
 {
@@ -263,11 +302,30 @@ Server::~Server()
 }
 
 //commands
+/*
+	i,l,d - signed long
+	I,L,D - unsigned long
+	u - signed long long
+	U - unsigned long long
+	x - signed long hex
+	X - unsigned long hex
+	m - signed long long hex
+	M - unsigned long long hex
+	f - float
+	F - allow only positive float
+	z - double
+	Z - allow only positive double
+	q - long double
+	Q - allow only positive long double
+	w - std::string ( one word )
+	s - std::string ( remaining string (format process stops after this) )
 
+	parser.Good() to get number of succesfully parsed params
+*/
 void Server::RegisterCommands()
 {
 	REGISTER_COMMAND(exit, "");
-	REGISTER_COMMAND(robot_move_to, "iff");
+	REGISTER_COMMAND(robot_move_to, "Iff");
 }
 
 IMPLEMENT_COMMAND(exit)
@@ -283,9 +341,37 @@ IMPLEMENT_COMMAND(robot_move_to)
 		return;
 	}
 
-	int robot_id = parser.GetNext<long>();
+	unsigned long robot_id = parser.GetNext<unsigned long>();
+
+	if (robot_id >= robots.size())
+	{
+		std::cout << "You specified an invalid robot id" << std::endl;
+		return;
+	}
+
+	ServBot* bot = robots[robot_id];
+	if (!bot->IsOnline() || !bot->GetPeer())
+	{
+		std::cout << "The selected robot is not connected" << std::endl;
+		return;
+	}
+	
 	float move_x = parser.GetNext<float>();
 	float move_y = parser.GetNext<float>();
 
-	std::cout << "Moving robot with id " << robot_id << " to pos {" << move_x << ", " << move_y << "}" << std::endl;
+	QueueItem item;
+	JPS::Position* arr = item.template Convert<JPS::Position*>();
+	positions->Get(robot_id, arr[0]);//Get robot id position
+	arr[1] = JPS::Pos(move_x, move_y);//To which point to move to
+	item.SetUsedDataSize(sizeof(JPS::Position) * 2);//How many bytes did we use?
+	item.SetOperationIdentifier(robot_id);//We need a way to identify to which robot this calculation belongs, let's use this variable
+
+	if (pathRequested->Push(&item))
+	{
+		std::cout << "Requesting robot with id " << robot_id << " to move to pos {" << move_x << ", " << move_y << "}" << std::endl;
+	}
+	else
+	{
+		std::cout << "Request failed, an error occured while accessing the request queue" << std::endl;
+	}
 }

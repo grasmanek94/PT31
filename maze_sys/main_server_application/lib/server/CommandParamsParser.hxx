@@ -92,7 +92,6 @@ public:
 		return T();
 	}
 	/*
-		p - PlayerName or ID
 		i,l,d - signed long
 		I,L,D - unsigned long
 		u - signed long long
@@ -107,7 +106,6 @@ public:
 		Z - allow only positive double
 		q - long double
 		Q - allow only positive long double
-		n - IPv4 or IPv6 Network Address
 		w - std::string ( one word )
 		s - std::string ( remaining string (format process stops after this) )
 

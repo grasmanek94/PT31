@@ -1,5 +1,7 @@
 #ifndef PACKETINFO_H
 #define PACKETINFO_H
+#include <vector>
+#include "../JumpPointSearch/JPS.hxx"
 
 //PacketStructure: <ServerPacketType, Data>
 enum ServerPacketType
@@ -18,6 +20,9 @@ enum ServerPacketType
 
 	//<WhichPacketType>
 	SPT_GotCorruptPacket,
+
+	//<std::vector<JPS::Position>>
+	SPT_FollowPath,
 
 	SPT_NUM_PACKET_TYPES
 };

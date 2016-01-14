@@ -53,14 +53,11 @@
     <ClCompile Include="main_ev3_application\lib\client\Client.cxx" />
     <ClCompile Include="main_server_application\lib\server\CommandHandler.cxx" />
     <ClCompile Include="main_server_application\lib\server\CommandParamsParser.cxx" />
-    <ClCompile Include="main_server_application\lib\server\RobotTaskQueue.cxx" />
     <ClCompile Include="main_server_application\lib\server\ServBot.cxx" />
     <ClCompile Include="main_server_application\lib\server\Server.cxx" />
     <ClCompile Include="path_processor\lib\PathProcessor\PathProcessor.cxx" />
     <ClCompile Include="path_processor\lib\PathProcessor\PathProcessorQueue.cxx" />
     <ClCompile Include="path_processor\main.cxx" />
-    <ClCompile Include="pix_location\lib\somelib\somelib.cxx" />
-    <ClCompile Include="pix_location\main.cxx" />
     <ClCompile Include="main_ev3_application\lib\configuration\CalibrationLoader.cxx" />
     <ClCompile Include="main_ev3_application\lib\ev3dev\ev3dev.cxx" />
     <ClCompile Include="main_ev3_application\lib\ev3\EV3Calibration.cxx" />
@@ -250,7 +247,6 @@
     <ClInclude Include="libraries\networking\include\enet\win32.h" />
     <ClInclude Include="main_ev3_application\lib\client\Client.hxx" />
     <ClInclude Include="main_server_application\lib\server\CommandParamsParser.hxx" />
-    <ClInclude Include="main_server_application\lib\server\RobotTaskQueue.hxx" />
     <ClInclude Include="main_server_application\lib\server\ServBot.hxx" />
     <ClInclude Include="main_server_application\lib\server\Server.hxx" />
     <ClInclude Include="path_processor\lib\PathProcessor\PathProcessor.hxx" />
