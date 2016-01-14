@@ -324,6 +324,12 @@
     <ClCompile Include="common\robot_mover\RobotMover.cxx">
       <Filter>common\robot_mover</Filter>
     </ClCompile>
+    <ClCompile Include="main_server_application\lib\server\CommandHandler.cxx">
+      <Filter>main_server_application\lib\server</Filter>
+    </ClCompile>
+    <ClCompile Include="main_server_application\lib\server\CommandParamsParser.cxx">
+      <Filter>main_server_application\lib\server</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main_ev3_application\lib\ev3dev\ev3dev.hxx">
@@ -880,6 +886,9 @@
     </ClInclude>
     <ClInclude Include="common\robot_mover\RobotMover.hxx">
       <Filter>common\robot_mover</Filter>
+    </ClInclude>
+    <ClInclude Include="main_server_application\lib\server\CommandParamsParser.hxx">
+      <Filter>main_server_application\lib\server</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -30,6 +30,8 @@ Server::Server()
 		std::cout << "An error occurred while trying to create an ENet object." << std::endl;
 		exit(EXIT_FAILURE);
 	}
+
+	RegisterCommands();
 }
 
 void Server::HandleConnect(ENetPeer* peer)
@@ -164,6 +166,11 @@ void Server::HandleReceived(ENetEvent& event)
 	}
 }
 
+void Server::HandleConsoleCommand(const std::string& command)
+{
+	CommandHandler::Execute(this, command);
+}
+
 void Server::TickNetworking()
 {
 	if (connection->Pull())
@@ -210,6 +217,36 @@ void Server::Tick()
 {
 	TickTasking();
 	TickNetworking();
+	TickConsole();
+}
+
+#include <unistd.h>
+#include <stdio.h>
+#include <sys/select.h>
+
+bool lineAvailable()
+{
+	struct timeval tv;
+	fd_set fds;
+	tv.tv_sec = 0;
+	tv.tv_usec = 0;
+	FD_ZERO(&fds);
+	FD_SET(STDIN_FILENO, &fds);
+	select(STDIN_FILENO + 1, &fds, NULL, NULL, &tv);
+	return (FD_ISSET(0, &fds));
+}
+
+void Server::TickConsole()
+{
+	if (lineAvailable())
+	{
+		std::getline(std::cin, console_buffer);
+		if (console_buffer.size())
+		{
+			HandleConsoleCommand(console_buffer);
+			console_buffer.clear();
+		}
+	}
 }
 
 Server::~Server()
@@ -223,4 +260,32 @@ Server::~Server()
 	delete positions;
 	delete pathprocessorqueues;
 	delete connection;
+}
+
+//commands
+
+void Server::RegisterCommands()
+{
+	REGISTER_COMMAND(exit, "");
+	REGISTER_COMMAND(robot_move_to, "iff");
+}
+
+IMPLEMENT_COMMAND(exit)
+{
+	std::cout << "you requested the application to exit but unfortunately we don't allow this (cheat tip: try ctrl+c)" << std::endl;
+}
+
+IMPLEMENT_COMMAND(robot_move_to)
+{
+	if (parser.Good() != 3)
+	{
+		std::cout << "Usage: robot_move_to <robot id> <to x> <to y>" << std::endl;
+		return;
+	}
+
+	int robot_id = parser.GetNext<long>();
+	float move_x = parser.GetNext<float>();
+	float move_y = parser.GetNext<float>();
+
+	std::cout << "Moving robot with id " << robot_id << " to pos {" << move_x << ", " << move_y << "}" << std::endl;
 }
