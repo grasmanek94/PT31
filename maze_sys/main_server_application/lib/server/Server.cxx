@@ -81,9 +81,9 @@ void Server::HandleIdentify(ENetPeer* peer, PacketData& data)
 		<< peer->address.port 
 		<< std::endl;
 
-	if (data.remaining_size() == sizeof(size_t))
+	if (data.remaining_size() == sizeof(uint32_t))
 	{
-		size_t serial;
+		uint32_t serial;
 		data >> serial;
 
 		std::cout << "Using serial id " << serial << std::endl;
