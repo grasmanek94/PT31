@@ -19,6 +19,7 @@ private:
 	void HandleReceived(ENetEvent& event);
 	void HandleIdentifyResponse(bool acknowledged);
 	void HandleGotUnknownPacketResponse(PacketData& data);
+	void HandleFollowPath(PacketData& data);
 	void HandleUnknownPacket(PacketData& data);
 
 	bool connected;

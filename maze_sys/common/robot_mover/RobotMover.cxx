@@ -67,7 +67,7 @@ namespace RobotMover
 						//abort if Stop()'ed for any reason
 						break;
 					}
-					//robot->DriveControl()->SetPos(sPosition{ (float)it->x, (float)it->y, 0.0, 0.0 });
+					robot->DriveControl()->SetPos(sPosition{ (float)it->x, (float)it->y, 0.0, 0.0 });
 				}
 				else
 				{

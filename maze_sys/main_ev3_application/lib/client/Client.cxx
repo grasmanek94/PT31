@@ -6,6 +6,7 @@
 #include <enet/enetpp.hxx>
 #include <networking/PacketInfo.hxx>
 #include <networking/PacketData.hxx>
+#include <robot_mover/RobotMover.hxx>
 #include "Client.hxx"
 
 Client::Client(IRobot* robot)
@@ -108,6 +109,17 @@ void Client::HandleUnknownPacket(PacketData& data)
 	connection->Send(sendback);
 }
 
+void Client::HandleFollowPath(PacketData& data)
+{
+	std::cout << "Following path received" << std::endl;
+	std::vector<JPS::Position> path;
+	data >> path;
+	if (RobotMover::Follow(robot, path))
+	{
+		std::cout << "Going to follow path" << std::endl;
+	}
+}
+
 void Client::HandleReceived(ENetEvent& event)
 {
 	PacketData data;
@@ -123,6 +135,10 @@ void Client::HandleReceived(ENetEvent& event)
 		case SPT_IdentifyAcknowledged:
 		case SPT_IdentifyDenied:
 			HandleIdentifyResponse(action == SPT_IdentifyAcknowledged);
+			break;
+
+		case SPT_FollowPath:
+			HandleFollowPath(data);
 			break;
 
 		case SPT_Unknown:

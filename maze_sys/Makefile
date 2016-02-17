@@ -73,6 +73,7 @@ NetPP: $(NETWORKINGPP_SOURCES)
 PROJECT_NAME=				main_ev3_application
 
 COMMON_INCLUDE_DIRS=		-I./common \
+                            -I/usr/include/libusb-1.0 \
 							-L$(MAIN_BASE_DIR) \
 							$(NETWORKING_INCLUDE_DIRS)
 							
@@ -201,7 +202,12 @@ LIBPIX_LIBRARY=				$(MAIN_BASE_DIR)lib$(LIBPIX_NAME).a
 LIBPIX_DEFINES=				$(COMMON_DEFINITIONS)
 
 PIX_LIBRARIES=				$(COMMON_LIBRARIES) \
-                            $(LIBPIX_OBJECT_LIST)
+                            $(LIBPIX_OBJECT_LIST) \
+                            -lusb-1.0 \
+                            -lpixyusb \
+                            -lboost_thread \
+                            -lboost_system \
+                            -lboost_chrono
 #							-l$(LIBPIX_NAME)
 #							-lpixy
 PIX_INCLUDE_DIRS=			$(INCLUDE_DIRS_PIX)
@@ -364,7 +370,8 @@ ev3_d ev3_td rsp_d rsp_td d td: CFLAGS_SELECTED=$(CFLAGS_COMBINED_DEBUG)
 ev3_r ev3_tr rsp_r rsp_tr r tr: SUFFIX_SELECTED=$(SUFFIX_RELEASE)$(CHOSEN_NAM)
 ev3_r ev3_tr rsp_r rsp_tr r tr: CFLAGS_SELECTED=$(CFLAGS_COMBINED_RELEASE)
 
-ev3_d ev3_r rsp_d rsp_r d r: Net NetPP C_LIBCOMMON C_LIBEV3M C_LIBUWB C_LIBPIX C_LIBSRVR C_LIBPPR C_UWB C_PIX C_SRVR C_PPR C_EV3M
+ev3_d ev3_r: Net NetPP C_LIBCOMMON C_LIBEV3M C_LIBPPR C_EV3M
+rsp_d rsp_r d r: Net NetPP C_LIBCOMMON C_LIBEV3M C_LIBUWB C_LIBPIX C_LIBSRVR C_LIBPPR C_UWB C_PIX C_SRVR C_PPR C_EV3M
 
 ev3_td ev3_tr rsp_tr rsp_td td tr: GoogleTest GoogleMock Net NetPP C_LIBCOMMON C_LIBEV3M C_LIBUWB C_LIBPIX C_LIBSRVR C_LIBPPR C_TEST
 #	valgrind $(TEST_EXECUTABLE)

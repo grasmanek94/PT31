@@ -70,9 +70,6 @@
     <Filter Include="pix_location\lib">
       <UniqueIdentifier>{363ac7ba-9ad7-4122-9353-f2e5bf43c317}</UniqueIdentifier>
     </Filter>
-    <Filter Include="pix_location\lib\somelib">
-      <UniqueIdentifier>{5c6464d6-b37b-4750-98f1-1a7300cde2e7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="path_processor">
       <UniqueIdentifier>{bea44548-1cb2-4b3e-a7d8-8ac54dcfb668}</UniqueIdentifier>
     </Filter>
@@ -234,12 +231,6 @@
     <ClCompile Include="common\dummy.cxx">
       <Filter>common</Filter>
     </ClCompile>
-    <ClCompile Include="pix_location\main.cxx">
-      <Filter>pix_location</Filter>
-    </ClCompile>
-    <ClCompile Include="pix_location\lib\somelib\somelib.cxx">
-      <Filter>pix_location\lib\somelib</Filter>
-    </ClCompile>
     <ClCompile Include="main_server_application\main.cxx">
       <Filter>main_server_application</Filter>
     </ClCompile>
@@ -306,9 +297,6 @@
     <ClCompile Include="path_processor\lib\PathProcessor\PathProcessorQueue.cxx">
       <Filter>path_processor\lib\PathProcessor</Filter>
     </ClCompile>
-    <ClCompile Include="main_server_application\lib\server\RobotTaskQueue.cxx">
-      <Filter>main_server_application\lib\server</Filter>
-    </ClCompile>
     <ClCompile Include="main_server_application\lib\server\ServBot.cxx">
       <Filter>main_server_application\lib\server</Filter>
     </ClCompile>
@@ -323,6 +311,12 @@
     </ClCompile>
     <ClCompile Include="common\robot_mover\RobotMover.cxx">
       <Filter>common\robot_mover</Filter>
+    </ClCompile>
+    <ClCompile Include="main_server_application\lib\server\CommandHandler.cxx">
+      <Filter>main_server_application\lib\server</Filter>
+    </ClCompile>
+    <ClCompile Include="main_server_application\lib\server\CommandParamsParser.cxx">
+      <Filter>main_server_application\lib\server</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -821,9 +815,6 @@
     <ClInclude Include="common\shm\SharedMemoryHelper.hxx">
       <Filter>common\shm</Filter>
     </ClInclude>
-    <ClInclude Include="main_server_application\lib\server\RobotTaskQueue.hxx">
-      <Filter>main_server_application\lib\server</Filter>
-    </ClInclude>
     <ClInclude Include="main_server_application\lib\server\ServBot.hxx">
       <Filter>main_server_application\lib\server</Filter>
     </ClInclude>
@@ -880,6 +871,9 @@
     </ClInclude>
     <ClInclude Include="common\robot_mover\RobotMover.hxx">
       <Filter>common\robot_mover</Filter>
+    </ClInclude>
+    <ClInclude Include="main_server_application\lib\server\CommandParamsParser.hxx">
+      <Filter>main_server_application\lib\server</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

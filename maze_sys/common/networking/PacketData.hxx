@@ -167,11 +167,11 @@ public:
 		_data.assign(data, data + size);
 		currentOffset_r = 0;
 	}
-	size_t size() const
+	uint32_t size() const
 	{
 		return _data.size();
 	}
-	size_t remaining_size() const
+	uint32_t remaining_size() const
 	{
 		return _data.size() - currentOffset_r;
 	}
